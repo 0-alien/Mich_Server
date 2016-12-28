@@ -5,3 +5,7 @@
 Homestead.json
 Homestead.yaml
 .env
+config/l5-swagger.php
+public/vendor/
+resources/views/vendor/
+storage/api-docs/

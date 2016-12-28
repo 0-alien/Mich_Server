@@ -4,22 +4,21 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCredentialsTable extends Migration {
+class CreateTokensTable extends Migration {
 
   public function up() {
-    Schema::create('credentials', function (Blueprint $table) {
+    Schema::create('tokens', function (Blueprint $table) {
       $table->increments('id');
-      $table->string('email')->unique();
-      $table->char('password', 64);
-      $table->char('salt', 50);
+      $table->char('token', 64)->unique();
       $table->timestamps();
+
+      $table->foreign('id')->references('id')->on('credentials')->onDelete('cascade');
     });
   }
 
 
 
   public function down() {
-    Schema::drop('credentials');
+    Schema::drop('tokens');
   }
-
 }
