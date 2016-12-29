@@ -2,14 +2,15 @@
 
 namespace App\MS\Services\Auth;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
 use App\MS\Models\Token;
 use App\MS\Models\User\Credential;
 use App\MS\Models\User\User;
 use App\MS\Responder;
 use App\MS\Services\Security\Hash;
 use App\MS\StatusCodes;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class AuthService {
 
@@ -44,6 +45,8 @@ class AuthService {
     $user->id = $credential->id;
     $user->firstname = $payload->firstname;
     $user->lastname = $payload->lastname;
+    $user->following = '[]';
+    $user->followers = '[]';
     $user->save();
 
 
@@ -66,7 +69,7 @@ class AuthService {
 
     $token = null;
 
-    if (Token::exists($credential->id)) {
+    if (Token::where('id', $credential->id)->exists()) {
       $token = Token::where('id', $credential->id)->first();
     } else {
       $token = new Token();

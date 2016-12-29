@@ -10,4 +10,20 @@ class Credential extends Model {
 
   protected $fillable = ['email', 'password'];
 
+
+
+  public function user() {
+    return $this->hasOne('\App\MS\Models\User\User', 'id', 'id');
+  }
+
+
+  public function token() {
+    return $this->hasOne('\App\MS\Models\Token', 'id', 'id');
+  }
+
+
+  public function posts() {
+    return $this->hasMany('\App\MS\Models\Post\Post', 'user_id', 'id');
+  }
+
 }

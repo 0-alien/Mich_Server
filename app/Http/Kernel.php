@@ -30,6 +30,7 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
 
             \App\Http\Middleware\JsonPayload::class,
+            \App\Http\Middleware\AuthToken::class,
         ],
 
         'api' => [
@@ -53,5 +54,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
 
         'jsonpayload' => \App\Http\Middleware\JsonPayload::class,
+        'authToken' => \App\Http\Middleware\AuthToken::class,
+
     ];
 }

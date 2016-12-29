@@ -8,6 +8,12 @@ class User extends Model {
 
   protected $hidden = ['id'];
 
-  protected $fillable = ['firstname', 'lastname'];
+  protected $fillable = ['firstname', 'lastname', 'avatar', 'following', 'followers'];
+
+
+
+  public function credential() {
+    return $this->hasOne('\App\MS\Models\User\Credential', 'id', 'id');
+  }
 
 }

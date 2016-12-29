@@ -11,6 +11,9 @@ class CreateUsersTable extends Migration {
       $table->increments('id');
       $table->string('firstname');
       $table->string('lastname');
+      $table->string('avatar')->default('https://s23.postimg.org/ruz8mjsfv/funny_avatar_by_avatarys_cartoon_avatar_by_avata.jpg');
+      $table->mediumText('following');
+      $table->mediumText('followers');
       $table->timestamps();
 
       $table->foreign('id')->references('id')->on('credentials')->onDelete('cascade');
