@@ -29,4 +29,12 @@ Route::group(['prefix' => 'post', 'middleware' => 'authToken'], function () {
   Route::post('create', 'Post\PostController@create');
   Route::post('get', 'Post\PostController@get');
   Route::post('delete', 'Post\PostController@delete');
+  Route::post('mich', 'Post\PostController@mich');
+  Route::post('unmich', 'Post\PostController@unmich');
+});
+
+
+
+Route::group(['prefix' => 'feed', 'middleware' => 'authToken'], function () {
+  Route::post('get', 'Post\FeedController@get');
 });

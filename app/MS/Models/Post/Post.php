@@ -8,7 +8,7 @@ class Post extends Model {
 
   protected $hidden = ['id'];
 
-  protected $fillable = ['user_id', 'title', 'image'];
+  protected $fillable = ['user_id', 'title', 'image', 'mich'];
 
 
 

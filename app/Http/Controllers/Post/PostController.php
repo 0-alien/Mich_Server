@@ -23,4 +23,16 @@ class PostController {
     return PostService::delete($request);
   }
 
+
+
+  public function mich(Request $request) {
+    return PostService::mich($request);
+  }
+
+
+
+  public function unmich(Request $request) {
+    return PostService::unmich($request);
+  }
+
 }

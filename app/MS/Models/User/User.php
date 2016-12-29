@@ -8,7 +8,7 @@ class User extends Model {
 
   protected $hidden = ['id'];
 
-  protected $fillable = ['firstname', 'lastname', 'avatar', 'following', 'followers'];
+  protected $fillable = ['firstname', 'lastname', 'avatar', 'following', 'followers', 'mich'];
 
 
 

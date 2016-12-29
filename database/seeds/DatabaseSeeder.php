@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder {
         'lastname' => str_random(10),
         'following' => '[]',
         'followers' => '[]',
+        'mich' => '[]',
         'created_at' => \Carbon\Carbon::now(),
         'updated_at' => \Carbon\Carbon::now()
       ]);
@@ -35,6 +36,7 @@ class DatabaseSeeder extends Seeder {
       DB::table('posts')->insert([
         'user_id' => $i,
         'title' => str_random(50),
+        'mich' => '[]',
         'created_at' => \Carbon\Carbon::now(),
         'updated_at' => \Carbon\Carbon::now()
       ]);

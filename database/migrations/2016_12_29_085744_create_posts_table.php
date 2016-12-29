@@ -12,6 +12,7 @@ class CreatePostsTable extends Migration {
       $table->unsignedInteger('user_id');
       $table->string('title');
       $table->string('image')->default('http://wallpaper-gallery.net/images/funny-pictures/funny-pictures-2.jpg');
+      $table->mediumText('mich');
       $table->timestamps();
 
       $table->foreign('user_id')->references('id')->on('credentials')->onDelete('cascade');

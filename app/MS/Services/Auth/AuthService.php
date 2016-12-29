@@ -47,6 +47,7 @@ class AuthService {
     $user->lastname = $payload->lastname;
     $user->following = '[]';
     $user->followers = '[]';
+    $user->mich = '[]';
     $user->save();
 
 
