@@ -4,6 +4,8 @@ namespace App\MS\Services\Post;
 
 use App\MS\Models\Post\Post;
 use App\MS\Models\Token;
+use App\MS\Responder;
+use App\MS\StatusCodes;
 use Illuminate\Http\Request;
 
 class FeedService {
@@ -18,6 +20,8 @@ class FeedService {
     array_push($following, $token->id);
 
     $posts = Post::whereIn('user_id', $following)->orderBy('created_at', 'desc')->get();
+
+    return Responder::respond(StatusCodes::SUCCESS, '', $posts);
   }
 
 }
