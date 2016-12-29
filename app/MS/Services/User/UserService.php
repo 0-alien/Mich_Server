@@ -62,7 +62,7 @@ class UserService {
     $user->lastname = $payload->lastname;
     $user->save();
 
-    return Responder::respond(StatusCodes::SUCCESS, 'Profile updated successfully');
+    return Responder::respond(StatusCodes::SUCCESS, 'Profile updated successfully', $user);
   }
 
 
