@@ -8,7 +8,7 @@ class Credential extends Model {
 
   protected $hidden = ['id', 'salt'];
 
-  protected $fillable = ['email', 'password'];
+  protected $fillable = ['username', 'email', 'password'];
 
 
 

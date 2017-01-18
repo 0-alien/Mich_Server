@@ -25,7 +25,7 @@ class AuthController extends Controller {
 
     $validator = Validator::make($payloadArray, [
       'type' => 'required|numeric|in:0,1,2',
-      'email' => 'required|email',
+      'username' => 'required',
       'password' => 'required|min:6|max:50'
     ]);
 

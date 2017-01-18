@@ -19,6 +19,7 @@ class AuthService {
     $payloadArray = json_decode($request->payload, true);
 
     $validator = Validator::make($payloadArray, [
+      'username' => 'required|alpha_num|max:50',
       'email' => 'required|email',
       'password' => 'required|min:6|max:50',
       'firstname' => 'required|alpha|min:2|max:50',
@@ -30,12 +31,17 @@ class AuthService {
     }
 
 
+    if (Credential::where('username', $payload->username)->exists()) {
+      return Responder::respond(StatusCodes::ALREADY_EXISTS, 'Account with this username already exists');
+    }
+
     if (Credential::where('email', $payload->email)->exists()) {
       return Responder::respond(StatusCodes::ALREADY_EXISTS, 'Account with this email already exists');
     }
 
 
     $credential = new Credential();
+    $credential->username = $payload->username;
     $credential->email = $payload->email;
     $credential->salt = Hash::salt();
     $credential->password = Hash::make($payload->password, $credential->salt);
@@ -57,11 +63,13 @@ class AuthService {
 
 
   public static function login($payload) {
-    if (!Credential::where('email', $payload->email)->exists()) {
-      return Responder::respond(StatusCodes::NOT_FOUND, 'Account with this email could not be found');
+    $usernameType = (filter_var($payload->username, FILTER_VALIDATE_EMAIL) ? 'email' : 'username');
+
+    if (!Credential::where($usernameType, $payload->username)->exists()) {
+      return Responder::respond(StatusCodes::NOT_FOUND, 'Account with this '. $usernameType .' could not be found');
     }
 
-    $credential = Credential::where('email', $payload->email)->first();
+    $credential = Credential::where($usernameType, $payload->username)->first();
 
     if (Hash::make($payload->password, $credential->salt) !== $credential->password) {
       return Responder::respond(StatusCodes::INVALID_PARAMETER, 'Invalid password');
