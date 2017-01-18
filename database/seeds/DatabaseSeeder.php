@@ -7,6 +7,7 @@ class DatabaseSeeder extends Seeder {
   public function run() {
     for ($i = 1; $i <= 50; $i++) {
       DB::table('credentials')->insert([
+        'username' => str_random(10),
         'email' => str_random(10).'@gmail.com',
         'password' => '866b9f7bc56964632eda158e9023504f699ce7a99bf4b6bbbb717f5481aebef2',
         'salt' => '11949251205864de933c44b5.79888714',

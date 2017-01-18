@@ -32,6 +32,7 @@ class UserService {
     $profile = [
       'firstname' => $user->firstname,
       'lastname' => $user->lastname,
+      'username' => $user->credential->username,
       'email' => $user->credential->email,
       'avatar' => $user->avatar
     ];
