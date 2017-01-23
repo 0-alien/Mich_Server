@@ -6,11 +6,12 @@ class StatusCodes {
 
   const SUCCESS = 10;
 
-  const INVALID_PAYLOAD = 20;
+  const MISSING_REQUEST = 20;
   const BAD_REQUEST = 21;
   const NOT_FOUND = 22;
   const TOKEN_MISSING = 23;
   const INVALID_TOKEN = 24;
+  const INVALID_CREDENTIALS = 25;
 
   const ALREADY_EXISTS = 30;
   const INVALID_PARAMETER = 31;
@@ -21,12 +22,13 @@ class StatusCodes {
 
   public static $MESSAGE = [
     10 => 'success',
-    20 => 'invalid payload',
 
+    20 => 'missing request body',
     21 => 'bad request',
     22 => 'not found',
     23 => 'token missing',
     24 => 'invalid token',
+    25 => 'invalid credentials',
 
     30 => 'already exists',
     31 => 'invalid parameter',

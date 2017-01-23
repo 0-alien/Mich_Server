@@ -9,8 +9,7 @@ class DatabaseSeeder extends Seeder {
       DB::table('credentials')->insert([
         'username' => str_random(10),
         'email' => str_random(10).'@gmail.com',
-        'password' => '866b9f7bc56964632eda158e9023504f699ce7a99bf4b6bbbb717f5481aebef2',
-        'salt' => '11949251205864de933c44b5.79888714',
+        'password' => '$2y$10$mYokVfr2sVTisG5fzgRVMuANTUuxYype6NapC8t5v477W26GVanoK',
         'created_at' => \Carbon\Carbon::now(),
         'updated_at' => \Carbon\Carbon::now()
       ]);
@@ -19,25 +18,6 @@ class DatabaseSeeder extends Seeder {
       DB::table('users')->insert([
         'firstname' => str_random(10),
         'lastname' => str_random(10),
-        'following' => '[]',
-        'followers' => '[]',
-        'mich' => '[]',
-        'created_at' => \Carbon\Carbon::now(),
-        'updated_at' => \Carbon\Carbon::now()
-      ]);
-
-
-      DB::table('tokens')->insert([
-        'token' => str_random(64),
-        'created_at' => \Carbon\Carbon::now(),
-        'updated_at' => \Carbon\Carbon::now()
-      ]);
-
-
-      DB::table('posts')->insert([
-        'user_id' => $i,
-        'title' => str_random(50),
-        'mich' => '[]',
         'created_at' => \Carbon\Carbon::now(),
         'updated_at' => \Carbon\Carbon::now()
       ]);

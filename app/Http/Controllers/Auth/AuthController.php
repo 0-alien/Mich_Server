@@ -2,41 +2,31 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseController;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-
-use App\MS\Responder;
-use App\MS\StatusCodes;
 use App\MS\Services\Auth\AuthService;
+use App\MS\Validation;
 
-class AuthController extends Controller {
+class AuthController extends BaseController {
 
-  public function register(Request $request) {
-    return AuthService::register($request);
+  public function register() {
+    return AuthService::register($this->payload);
   }
 
 
 
-  public function login(Request $request) {
-    $payload = json_decode($request->payload);
-    $payloadArray = json_decode($request->payload, true);
+  public function login() {
+    Validation::validate($this->payload, Validation::getPreLogin());
 
-    $validator = Validator::make($payloadArray, [
-      'type' => 'required|numeric|in:0,1,2',
-      'username' => 'required',
-      'password' => 'required|min:6|max:50'
-    ]);
-
-    if (!$validator->passes()) {
-      return Responder::respond(StatusCodes::BAD_REQUEST, $validator->messages()->first());
+    if ($this->payload['type'] === 0) {
+      return AuthService::login($this->payload);
     }
+  }
 
 
-    if ($payload->type === 0) {
-      return AuthService::login($payload);
-    }
+
+  public function logout() {
+    return AuthService::logout($this->payload);
   }
 
 }

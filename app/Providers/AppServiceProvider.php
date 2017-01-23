@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Validator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -11,9 +13,10 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
-    {
-        //
+    public function boot() {
+      Validator::extend('not_exists', function ($attribute, $value, $parameters, $validator) {
+        return !DB::table($parameters[0])->where($parameters[1], $value)->exists();
+      });
     }
 
     /**

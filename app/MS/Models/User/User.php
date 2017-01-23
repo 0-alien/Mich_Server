@@ -6,9 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class User extends Model {
 
-  protected $hidden = ['id'];
-
-  protected $fillable = ['firstname', 'lastname', 'avatar', 'following', 'followers', 'mich'];
+  protected $fillable = ['firstname', 'lastname', 'avatar'];
 
 
 
