@@ -8,7 +8,7 @@ use App\MS\Services\Auth\RecoveryService;
 
 class RecoveryController extends BaseController {
 
-  public function recover() {
+  public function sendRecovery() {
     return RecoveryService::sendRecovery($this->payload);
   }
 

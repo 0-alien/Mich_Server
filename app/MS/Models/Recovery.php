@@ -2,10 +2,12 @@
 
 namespace App\MS\Models;
 
-class Recovery {
+use Illuminate\Database\Eloquent\Model;
+
+class Recovery extends Model{
 
   protected $table = 'recovery';
 
-  protected $fillable = ['token'];
+  protected $fillable = ['code', 'token'];
 
 }

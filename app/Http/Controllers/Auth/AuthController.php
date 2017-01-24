@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\BaseController;
 
+use App\MS\Validation as V;
 use App\MS\Services\Auth\AuthService;
-use App\MS\Validation;
 
 class AuthController extends BaseController {
 
@@ -16,7 +16,7 @@ class AuthController extends BaseController {
 
 
   public function login() {
-    Validation::validate($this->payload, Validation::getPreLogin());
+    V::validate($this->payload, array_merge(V::loginType, V::mixed, V::password));
 
     if ($this->payload['type'] === 0) {
       return AuthService::login($this->payload);

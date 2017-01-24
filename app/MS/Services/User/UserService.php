@@ -2,16 +2,24 @@
 
 namespace App\MS\Services\User;
 
-use App\MS\Responder;
 use App\MS\StatusCodes;
-use App\MS\Validation;
+use App\MS\Responder;
+use App\MS\Validation as V;
 use App\MS\Models\Token;
 use App\MS\Models\User\User;
 
 class UserService {
 
+  private static function Vget($payload) {
+    $userID = V::userID;
+    $userID['userID'] .= '|exists:credentials,id';
+
+    V::validate($payload, $userID);
+  }
+
+
   public static function get($payload) {
-    Validation::validate($payload, Validation::getUser());
+    self::Vget($payload);
 
     $token = Token::where('token', $payload['token'])->first();
 

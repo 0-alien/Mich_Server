@@ -2,19 +2,30 @@
 
 namespace App\MS\Services\Auth;
 
-use App\MS\Models\Token;
 use Illuminate\Support\Facades\Hash;
 
-use App\MS\Models\User\Credential;
-use App\MS\Models\User\User;
 use App\MS\StatusCodes;
 use App\MS\Responder;
-use App\MS\Validation;
+use App\MS\Validation as V;
+use App\MS\Models\User\Credential;
+use App\MS\Models\User\User;
+use App\MS\Models\Token;
 
 class AuthService {
 
+  private static function Vregister($payload) {
+    $username = V::username;
+    $username['username'] .= '|not_exists:credentials,username';
+
+    $email = V::email;
+    $email['email'] .= '|not_exists:credentials,email';
+
+    V::validate($payload, array_merge($username, $email, V::password, V::firstname, V::lastname));
+  }
+
+
   public static function register($payload) {
-    Validation::validate($payload, Validation::getRegister());
+    self::Vregister($payload);
 
     $credential = new Credential();
     $credential->username = $payload['username'];
@@ -31,6 +42,17 @@ class AuthService {
     return Responder::respond(StatusCodes::SUCCESS, 'Account created successfully');
   }
 
+
+
+  private static function generateUniqueToken() {
+    $token = str_random(64);
+
+    while (Token::where('token', $token)->exists()) {
+      $token = str_random(64);
+    }
+
+    return $token;
+  }
 
 
   public static function login($payload) {
@@ -60,17 +82,6 @@ class AuthService {
     }
 
     return Responder::respond(StatusCodes::SUCCESS, 'Logged in successfully', ['token' => $token->token]);
-  }
-
-
-  private static function generateUniqueToken() {
-    $token = str_random(64);
-
-    while (Token::where('token', $token)->exists()) {
-      $token = str_random(64);
-    }
-
-    return $token;
   }
 
 
