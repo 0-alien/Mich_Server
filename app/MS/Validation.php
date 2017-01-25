@@ -14,6 +14,8 @@ class Validation {
   const lastname      = ['lastname' => 'required|alpha|min:2|max:50'];
   const loginType     = ['type' => 'required|numeric|in:0,1,2'];
   const userID        = ['userID' => 'numeric'];
+  const token         = ['token' => 'required|size:64'];
+  const code          = ['code' => 'required|digits:6'];
 
   const MESSAGES = [
     'required' => 'The [:attribute] parameter is required',
@@ -26,7 +28,8 @@ class Validation {
     'in' => 'The [:attribute] parameter\'s value is invalid',
     'email' => 'The [:attribute] parameter must be a valid email',
     'exists' => 'The [:attribute] value does not exist',
-    'not_exists' => 'This [:attribute] already exists'
+    'not_exists' => 'This [:attribute] already exists',
+    'digits' => 'The [:attribute] must contain only digits and have length of :digits'
   ];
 
 

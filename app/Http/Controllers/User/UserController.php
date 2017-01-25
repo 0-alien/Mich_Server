@@ -12,4 +12,16 @@ class UserController extends BaseController {
     return UserService::get($this->payload);
   }
 
+
+
+  public function update() {
+    return UserService::update($this->payload);
+  }
+
+
+
+  public function delete() {
+    return UserService::delete($this->payload);
+  }
+
 }

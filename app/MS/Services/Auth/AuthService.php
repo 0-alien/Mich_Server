@@ -39,7 +39,7 @@ class AuthService {
     $user->lastname = $payload['lastname'];
     $user->save();
 
-    return Responder::respond(StatusCodes::SUCCESS, 'Account created successfully');
+    return Responder::respond(StatusCodes::SUCCESS, 'Account created');
   }
 
 
@@ -81,7 +81,7 @@ class AuthService {
       $token->save();
     }
 
-    return Responder::respond(StatusCodes::SUCCESS, 'Logged in successfully', ['token' => $token->token]);
+    return Responder::respond(StatusCodes::SUCCESS, 'Logged in', ['token' => $token->token]);
   }
 
 
@@ -91,7 +91,7 @@ class AuthService {
 
     $token->delete();
 
-    return Responder::respond(StatusCodes::SUCCESS, 'Logged out successfully');
+    return Responder::respond(StatusCodes::SUCCESS, 'Logged out');
   }
 
 }

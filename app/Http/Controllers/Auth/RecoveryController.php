@@ -12,4 +12,16 @@ class RecoveryController extends BaseController {
     return RecoveryService::sendRecovery($this->payload);
   }
 
+
+
+  public function checkCode() {
+    return RecoveryService::checkCode($this->payload);
+  }
+
+
+
+  public function recover() {
+    return RecoveryService::recover($this->payload);
+  }
+
 }

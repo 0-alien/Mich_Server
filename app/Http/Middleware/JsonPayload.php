@@ -10,15 +10,17 @@ use Closure;
 class JsonPayload {
 
   public function handle($request, Closure $next) {
-    if (empty($request->getContent())) {
-      return Responder::respond(StatusCodes::MISSING_REQUEST, 'Missing request body');
-    }
+    if ($request->method() === 'POST') {
+      if (empty($request->getContent())) {
+        return Responder::respond(StatusCodes::MISSING_REQUEST, 'Missing request body');
+      }
 
 
-    json_decode($request->getContent(), true);
+      json_decode($request->getContent(), true);
 
-    if (json_last_error() !== JSON_ERROR_NONE) {
-      return Responder::respond(StatusCodes::BAD_REQUEST, 'Invalid request body JSON');
+      if (json_last_error() !== JSON_ERROR_NONE) {
+        return Responder::respond(StatusCodes::BAD_REQUEST, 'Invalid request body JSON');
+      }
     }
 
 

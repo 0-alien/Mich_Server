@@ -12,6 +12,7 @@ class StatusCodes {
   const TOKEN_MISSING = 23;
   const INVALID_TOKEN = 24;
   const INVALID_CREDENTIALS = 25;
+  const TRY_LIMIT = 26;
 
   const ALREADY_EXISTS = 30;
   const INVALID_PARAMETER = 31;
@@ -29,6 +30,7 @@ class StatusCodes {
     23 => 'token missing',
     24 => 'invalid token',
     25 => 'invalid credentials',
+    26 => 'no more tries',
 
     30 => 'already exists',
     31 => 'invalid parameter',

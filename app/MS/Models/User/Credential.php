@@ -14,4 +14,14 @@ class Credential extends Model {
     return $this->hasOne('\App\MS\Models\User\User', 'id', 'id');
   }
 
+
+  public function followers() {
+    return $this->hasMany('\App\MS\Models\Relationship', 'following', 'id');
+  }
+
+
+  public function following() {
+    return $this->hasMany('\App\MS\Models\Relationship', 'follower', 'id');
+  }
+
 }

@@ -8,6 +8,8 @@ class Token extends Model {
 
   protected $fillable = ['token'];
 
+
+
   public function credential() {
     return $this->hasOne('\App\MS\Models\User\Credential', 'id', 'id');
   }
