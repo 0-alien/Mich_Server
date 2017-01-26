@@ -17,7 +17,6 @@ Route::group(['prefix' => 'user', 'middleware' => 'authToken'], function () {
   Route::post('update', 'User\UserController@update');
   Route::post('delete', 'User\UserController@delete');
 
-
   Route::group(['prefix' => 'relation'], function () {
     Route::post('follow', 'User\RelationshipController@follow');
     Route::post('unfollow', 'User\RelationshipController@unfollow');
@@ -26,6 +25,15 @@ Route::group(['prefix' => 'user', 'middleware' => 'authToken'], function () {
     Route::post('getFollowers', 'User\RelationshipController@getFollowers');
     Route::post('getFollowing', 'User\RelationshipController@getFollowing');
   });
+});
+
+
+
+Route::group(['prefix' => 'post', 'middleware' => 'authToken'], function () {
+  Route::post('create', 'Post\PostController@create');
+  Route::post('get', 'Post\PostController@get');
+  Route::post('delete', 'Post\PostController@delete');
+  Route::post('feed', 'Post\PostController@feed');
 });
 
 

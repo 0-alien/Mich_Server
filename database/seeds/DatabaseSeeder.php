@@ -37,6 +37,15 @@ class DatabaseSeeder extends Seeder {
         'created_at' => \Carbon\Carbon::now(),
         'updated_at' => \Carbon\Carbon::now()
       ]);
+
+
+      DB::table('posts')->insert([
+        'userid' => $i,
+        'title' => str_random(10),
+        'image' => 'noavatar',
+        'created_at' => \Carbon\Carbon::now(),
+        'updated_at' => \Carbon\Carbon::now()
+      ]);
     }
   }
 

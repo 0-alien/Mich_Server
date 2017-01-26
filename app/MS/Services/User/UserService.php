@@ -3,6 +3,7 @@
 namespace App\MS\Services\User;
 
 use App\MS\Helpers\Media;
+use App\MS\Models\Post;
 use App\MS\Models\Relationship;
 use App\MS\StatusCodes;
 use App\MS\Responder;
@@ -64,6 +65,7 @@ class UserService {
     $user = User::where('id', $token->id)->first();
 
     Relationship::where('following', $user->id)->orWhere('follower', $user->id)->delete();
+    Post::where('userid', $user->id)->delete();
 
     $user->credential->delete();
 

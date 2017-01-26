@@ -24,4 +24,9 @@ class Credential extends Model {
     return $this->hasMany('\App\MS\Models\Relationship', 'follower', 'id');
   }
 
+
+  public function posts() {
+    return $this->hasMany('\App\MS\Models\Post', 'userid', 'id');
+  }
+
 }

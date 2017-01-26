@@ -9,9 +9,12 @@ class CreateRelationshipTable extends Migration {
   public function up() {
     Schema::create('relationship', function (Blueprint $table) {
       $table->increments('id');
-      $table->integer('follower');
-      $table->integer('following');
+      $table->integer('follower')->unsigned();
+      $table->integer('following')->unsigned();
       $table->timestamps();
+
+      $table->foreign('follower')->references('id')->on('credentials')->onDelete('cascade');
+      $table->foreign('following')->references('id')->on('credentials')->onDelete('cascade');
     });
   }
 

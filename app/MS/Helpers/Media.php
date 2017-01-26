@@ -25,10 +25,19 @@ class Media {
   }
 
 
-  public static function saveImage($base64, $folders, $name) {
+  public static function saveImage($base64, $folders, $name = null) {
     $img = Image::make(base64_decode($base64))->resize(200, 200)->encode('jpg');
 
-    $path = self::createDirectories($folders) . $name;
+    $path = self::createDirectories($folders);
+
+    if (is_null($name)) {
+      $name = str_random(20);
+      while (File::exists(storage_path() . '/uploads/' . $path . $name . 'jpg')) {
+        $name = str_random(20);
+      }
+    }
+
+    $path .= $name;
 
     $img->save(storage_path() . '/uploads/' . $path . '.jpg', 80);
 

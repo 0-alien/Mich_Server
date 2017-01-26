@@ -13,19 +13,17 @@ use App\MS\Models\Token;
 
 class AuthService {
 
-  private static function Vregister($payload) {
-    $username = V::username;
-    $username['username'] .= '|not_exists:credentials,username';
-
-    $email = V::email;
-    $email['email'] .= '|not_exists:credentials,email';
-
-    V::validate($payload, array_merge($username, $email, V::password, V::firstname, V::lastname));
-  }
-
-
   public static function register($payload) {
-    self::Vregister($payload);
+    V::validate($payload, array_merge(V::username, V::email, V::password, V::firstname, V::lastname));
+
+    if (Credential::where('username', $payload['username'])->exists()) {
+      return Responder::respond(StatusCodes::ALREADY_EXISTS, 'This username already exists');
+    }
+
+    if (Credential::where('email', $payload['email'])->exists()) {
+      return Responder::respond(StatusCodes::ALREADY_EXISTS, 'This email already exists');
+    }
+
 
     $credential = new Credential();
     $credential->username = $payload['username'];
