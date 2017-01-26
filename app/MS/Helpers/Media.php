@@ -26,7 +26,11 @@ class Media {
 
 
   public static function saveImage($base64, $folders, $name = null) {
-    $img = Image::make(base64_decode($base64))->resize(200, 200)->encode('jpg');
+    $img = Image::make(base64_decode($base64))->encode('jpg');
+
+    if ($img->width() > 1024) {
+      $img->fit(1024);
+    }
 
     $path = self::createDirectories($folders);
 

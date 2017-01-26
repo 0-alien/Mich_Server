@@ -22,7 +22,9 @@ class PostService {
     $post->image = Media::saveImage($payload['image'], [$token->id]);
     $post->save();
 
-    return Responder::respond(StatusCodes::SUCCESS, 'Post created');
+    $post->image = url('/api/media/display/' . $post->image);
+
+    return Responder::respond(StatusCodes::SUCCESS, 'Post created', $post);
   }
 
 

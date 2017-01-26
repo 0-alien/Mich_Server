@@ -66,9 +66,6 @@ class UserService {
 
     $user = User::where('id', $token->id)->first();
 
-    Relationship::where('following', $user->id)->orWhere('follower', $user->id)->delete();
-    Post::where('userid', $user->id)->delete();
-
     $user->credential->delete();
 
     return Responder::respond(StatusCodes::SUCCESS, 'Account deleted');
