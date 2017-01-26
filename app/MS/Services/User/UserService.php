@@ -54,6 +54,8 @@ class UserService {
     }
     $user->save();
 
+    $user->avatar = url('/api/media/display/' . $user->avatar);
+
     return Responder::respond(StatusCodes::SUCCESS, 'Account updated', $user);
   }
 

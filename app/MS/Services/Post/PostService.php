@@ -71,7 +71,11 @@ class PostService {
     }
 
 
-    $posts = Post::whereIn('id', $followingIDs)->orderBy('created_at', 'desc')->get();
+    $posts = Post::whereIn('userid', $followingIDs)->orderBy('created_at', 'desc')->get();
+
+    foreach ($posts as $post) {
+      $post->image = url('/api/media/display/' . $post->image);
+    }
 
     return Responder::respond(StatusCodes::SUCCESS, '', $posts);
   }
