@@ -17,6 +17,10 @@ class AppServiceProvider extends ServiceProvider
       Validator::extend('not_exists', function ($attribute, $value, $parameters, $validator) {
         return !DB::table($parameters[0])->where($parameters[1], $value)->exists();
       });
+
+      Validator::extend('alpha_spaces', function ($attribute, $value, $parameters, $validator) {
+        return preg_match('/^[\pL\s]+$/u', $value);
+      });
     }
 
     /**

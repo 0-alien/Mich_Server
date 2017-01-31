@@ -9,8 +9,7 @@ class CreateUsersTable extends Migration {
   public function up() {
     Schema::create('users', function (Blueprint $table)  {
       $table->increments('id');
-      $table->string('firstname');
-      $table->string('lastname');
+      $table->string('name');
       $table->string('avatar')->default('noavatar');
       $table->timestamps();
 

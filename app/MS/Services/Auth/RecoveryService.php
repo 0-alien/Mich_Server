@@ -56,7 +56,7 @@ class RecoveryService {
     $recovery->token = self::generateUniqueToken();
     $recovery->save();
 
-    Mail::send('recovery', ['code' => $recovery->code], $credential->email, $user->firstname.' '.$user->lastname, 'Password Recovery');
+    Mail::send('recovery', ['code' => $recovery->code], $credential->email, $user->name, 'Password Recovery');
 
     return Responder::respond(StatusCodes::SUCCESS, 'Mail sent', ['token' => $recovery->token]);
   }

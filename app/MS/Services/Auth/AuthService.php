@@ -14,7 +14,7 @@ use App\MS\Models\Token;
 class AuthService {
 
   public static function register($payload) {
-    V::validate($payload, array_merge(V::username, V::email, V::password, V::firstname, V::lastname));
+    V::validate($payload, array_merge(V::username, V::email, V::password, V::name));
 
     if (Credential::where('username', $payload['username'])->exists()) {
       return Responder::respond(StatusCodes::ALREADY_EXISTS, 'This username already exists');
@@ -33,8 +33,7 @@ class AuthService {
 
     $user = new User();
     $user->id = $credential->id;
-    $user->firstname = $payload['firstname'];
-    $user->lastname = $payload['lastname'];
+    $user->name = trim($payload['name']);
     $user->save();
 
     return Responder::respond(StatusCodes::SUCCESS, 'Account created');

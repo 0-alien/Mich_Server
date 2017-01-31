@@ -10,8 +10,7 @@ class Validation {
   const email         = ['email' => 'required|email|max:100'];
   const mixed         = ['username' => 'required|max:100'];
   const password      = ['password' => 'required|min:6|max:50'];
-  const firstname     = ['firstname' => 'required|alpha|min:2|max:50'];
-  const lastname      = ['lastname' => 'required|alpha|min:2|max:50'];
+  const name          = ['name' => 'required|alpha_spaces|min:2|max:100'];
   const loginType     = ['type' => 'required|numeric|in:0,1,2'];
   const userID        = ['userID' => 'numeric'];
   const token         = ['token' => 'required|size:64'];
@@ -24,6 +23,7 @@ class Validation {
     'required' => 'The [:attribute] parameter is required',
     'alpha' => 'The [:attribute] parameter must contain only letters',
     'alpha_num' => 'The [:attribute] parameter must contain only letters and numbers',
+    'alpha_spaces' => 'The [:attribute] parameter must contain only letters and spaces',
     'numeric' => 'The [:attribute] parameter must contain only numbers',
     'min' => 'The [:attribute] parameter\'s length must be at least :min',
     'max' => 'The [:attribute] parameter\'s length must not be more than :max',

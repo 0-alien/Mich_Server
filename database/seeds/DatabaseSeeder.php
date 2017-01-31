@@ -14,8 +14,7 @@ class DatabaseSeeder extends Seeder {
     ]);
 
     DB::table('users')->insert([
-      'firstname' => 'Giorgi',
-      'lastname' => 'Tskhondia',
+      'name' => 'Giorgi Tskhondia',
       'created_at' => \Carbon\Carbon::now(),
       'updated_at' => \Carbon\Carbon::now()
     ]);
@@ -32,8 +31,7 @@ class DatabaseSeeder extends Seeder {
 
 
       DB::table('users')->insert([
-        'firstname' => str_random(10),
-        'lastname' => str_random(10),
+        'name' => str_random(10) . ' ' . str_random(10),
         'created_at' => \Carbon\Carbon::now(),
         'updated_at' => \Carbon\Carbon::now()
       ]);

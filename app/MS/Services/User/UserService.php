@@ -29,8 +29,7 @@ class UserService {
 
     $profile = [
       'id' => $userID,
-      'firstname' => $user->firstname,
-      'lastname' => $user->lastname,
+      'name' => $user->name,
       'username' => $user->credential->username,
       'email' => $user->credential->email,
       'avatar' => url('/api/media/display/' . $user->avatar)
@@ -42,13 +41,12 @@ class UserService {
 
 
   public static function update($payload) {
-    V::validate($payload, array_merge(V::firstname, V::lastname));
+    V::validate($payload, array_merge(V::name));
 
     $token = Token::where('token', $payload['token'])->first();
 
     $user = User::where('id', $token->id)->first();
-    $user->firstname = $payload['firstname'];
-    $user->lastname = $payload['lastname'];
+    $user->name = $payload['name'];
     if (!empty($payload['avatar'])) {
       $user->avatar = Media::saveImage($payload['avatar'], [$user->id], 'avatar');
     }
