@@ -40,6 +40,7 @@ class PostService {
 
     $post = Post::where('id', $payload['postID'])->first();
     $post->image = url('/api/media/display/' . $post->image);
+    $post->likes = Like::where('postid', $post->id)->count();
 
     return Responder::respond(StatusCodes::SUCCESS, '', $post);
   }
@@ -78,6 +79,7 @@ class PostService {
 
     foreach ($posts as $post) {
       $post->image = url('/api/media/display/' . $post->image);
+      $post->likes = Like::where('postid', $post->id)->count();
     }
 
     return Responder::respond(StatusCodes::SUCCESS, '', $posts);

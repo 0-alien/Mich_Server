@@ -3,6 +3,7 @@
 namespace App\MS\Services\User;
 
 use App\MS\Helpers\Media;
+use App\MS\Models\Like;
 use App\MS\Models\Post;
 use App\MS\Models\Relationship;
 use App\MS\StatusCodes;
@@ -36,6 +37,10 @@ class UserService {
       'avatar' => url('/api/media/display/' . $user->avatar),
       'posts' => $user->credential->posts
     ];
+
+    foreach ($profile['posts'] as $post) {
+      $post->likes = Like::where('postid', $post->id)->count();
+    }
 
     return Responder::respond(StatusCodes::SUCCESS, '', $profile);
   }

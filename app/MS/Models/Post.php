@@ -16,7 +16,7 @@ class Post extends Model {
 
 
   public function likes() {
-    return $this->hasMany('\App\MS\Models\User\Like', 'postid', 'id');
+    return $this->hasMany('\App\MS\Models\Like', 'postid', 'id');
   }
 
 }
