@@ -24,4 +24,10 @@ class UserController extends BaseController {
     return UserService::delete($this->payload);
   }
 
+
+
+  public function changePassword() {
+    return UserService::changePassword($this->payload);
+  }
+
 }

@@ -10,6 +10,7 @@ use App\MS\Responder;
 use App\MS\Validation as V;
 use App\MS\Models\Token;
 use App\MS\Models\User\User;
+use Illuminate\Support\Facades\Hash;
 
 class UserService {
 
@@ -45,11 +46,14 @@ class UserService {
 
     $token = Token::where('token', $payload['token'])->first();
 
-    $user = User::where('id', $token->id)->first();
+    $user = $token->credential->user;
+
     $user->name = $payload['name'];
+
     if (!empty($payload['avatar'])) {
       $user->avatar = Media::saveImage($payload['avatar'], [$user->id], 'avatar');
     }
+
     $user->save();
 
     $user->avatar = url('/api/media/display/' . $user->avatar);
@@ -67,6 +71,20 @@ class UserService {
     $user->credential->delete();
 
     return Responder::respond(StatusCodes::SUCCESS, 'Account deleted');
+  }
+
+
+
+  public static function changePassword($payload) {
+    V::validate($payload, V::password);
+
+    $token = Token::where('token', $payload['token'])->first();
+
+    $credential = $token->credential;
+    $credential->password = Hash::make($payload['password']);
+    $credential->save();
+
+    return Responder::respond(StatusCodes::SUCCESS, 'Password changed');
   }
 
 }

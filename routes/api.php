@@ -16,6 +16,7 @@ Route::group(['prefix' => 'user', 'middleware' => 'authToken'], function () {
   Route::post('get', 'User\UserController@get');
   Route::post('update', 'User\UserController@update');
   Route::post('delete', 'User\UserController@delete');
+  Route::post('changePassword', 'User\UserController@changePassword');
 
   Route::group(['prefix' => 'relation'], function () {
     Route::post('follow', 'User\RelationshipController@follow');
