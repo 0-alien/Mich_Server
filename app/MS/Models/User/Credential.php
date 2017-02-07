@@ -29,4 +29,9 @@ class Credential extends Model {
     return $this->hasMany('\App\MS\Models\Post', 'userid', 'id');
   }
 
+
+  public function likes() {
+    return $this->hasMany('\App\MS\Models\Like', 'userid', 'id');
+  }
+
 }

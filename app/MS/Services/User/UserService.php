@@ -33,7 +33,8 @@ class UserService {
       'name' => $user->name,
       'username' => $user->credential->username,
       'email' => $user->credential->email,
-      'avatar' => url('/api/media/display/' . $user->avatar)
+      'avatar' => url('/api/media/display/' . $user->avatar),
+      'posts' => $user->credential->posts
     ];
 
     return Responder::respond(StatusCodes::SUCCESS, '', $profile);

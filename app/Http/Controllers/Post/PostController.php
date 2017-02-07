@@ -30,4 +30,16 @@ class PostController extends BaseController {
     return PostService::feed($this->payload);
   }
 
+
+
+  public function like() {
+    return PostService::like($this->payload);
+  }
+
+
+
+  public function unlike() {
+    return PostService::unlike($this->payload);
+  }
+
 }

@@ -4,9 +4,9 @@ namespace App\MS\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Post extends Model {
+class Like extends Model {
 
-  protected $fillable = ['userid', 'title', 'image'];
+  protected $fillable = ['userid', 'postid'];
 
 
 
@@ -15,8 +15,8 @@ class Post extends Model {
   }
 
 
-  public function likes() {
-    return $this->hasMany('\App\MS\Models\User\Like', 'postid', 'id');
+  public function post() {
+    return $this->hasOne('\App\MS\Models\Post', 'id', 'postid');
   }
 
 }
