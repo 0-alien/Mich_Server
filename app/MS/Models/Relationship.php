@@ -12,12 +12,12 @@ class Relationship extends Model{
 
 
 
-  public function follower() {
+  public function followerUser() {
     return $this->hasOne('\App\MS\Models\User\Credential', 'id', 'follower');
   }
 
 
-  public function following() {
+  public function followingUser() {
     return $this->hasOne('\App\MS\Models\User\Credential', 'id', 'following');
   }
 
