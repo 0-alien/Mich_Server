@@ -152,7 +152,7 @@ class RelationshipService {
       $followingCredential = $relationship->followingUser;
       $followingUser = $followingCredential->user;
 
-      $followings[] = [
+      $following[] = [
         'id' => $followingCredential->id,
         'name' => $followingUser->name,
         'username' => $followingCredential->username,
