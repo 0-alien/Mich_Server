@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Validator;
 
 class Validation {
 
-  const username      = ['username' => 'required|alpha_num|max:50'];
+  const username      = ['username' => 'required|alpha_num|min:2|max:50'];
   const email         = ['email' => 'required|email|max:100'];
   const mixed         = ['username' => 'required|max:100'];
   const password      = ['password' => 'required|min:6|max:50'];
@@ -18,6 +18,7 @@ class Validation {
   const title         = ['title' => 'required|min:2|max:200'];
   const image         = ['image' => 'required'];
   const postID        = ['postID' => 'required'];
+  const term          = ['term' => 'required|alpha_num|min:1|max:50'];
 
   const MESSAGES = [
     'required' => 'The [:attribute] parameter is required',

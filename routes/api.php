@@ -46,3 +46,9 @@ Route::group(['prefix' => 'post', 'middleware' => 'authToken'], function () {
 Route::group(['prefix' => 'media'], function () {
   Route::get('display/{userID}/{image?}', 'Media\MediaController@display');
 });
+
+
+
+Route::group(['prefix' => 'search', 'middleware' => 'authToken'], function () {
+  Route::post('users', 'Search\SearchController@users');
+});
