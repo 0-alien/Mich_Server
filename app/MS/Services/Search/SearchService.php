@@ -33,6 +33,12 @@ class SearchService {
       ];
 
       array_push($users, $user);
+
+      $limit--;
+
+      if ($limit === 0) {
+        break;
+      }
     }
 
     return Responder::respond(StatusCodes::SUCCESS, '', $users);
