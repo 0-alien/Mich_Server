@@ -38,9 +38,12 @@ class PostService {
     }
 
 
+    $token = Token::where('token', $payload['token'])->first();
+
     $post = Post::where('id', $payload['postID'])->first();
     $post->image = url('/api/media/display/' . $post->image);
     $post->likes = Like::where('postid', $post->id)->count();
+    $post->mylike = (Like::where('postid', $post->id)->where('userid', $token->id)->exists() ? 1 : 0);
 
     return Responder::respond(StatusCodes::SUCCESS, '', $post);
   }
@@ -80,6 +83,7 @@ class PostService {
     foreach ($posts as $post) {
       $post->image = url('/api/media/display/' . $post->image);
       $post->likes = Like::where('postid', $post->id)->count();
+      $post->mylike = (Like::where('postid', $post->id)->where('userid', $token->id)->exists() ? 1 : 0);
     }
 
     return Responder::respond(StatusCodes::SUCCESS, '', $posts);

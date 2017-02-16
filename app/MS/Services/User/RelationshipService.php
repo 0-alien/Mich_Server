@@ -116,7 +116,16 @@ class RelationshipService {
     $followers = [];
 
     foreach ($relationships as $relationship) {
-      $followers[] = $relationship->follower;
+      $followerCredential = $relationship->followerUser;
+      $followerUser = $followerCredential->user;
+
+      $followers[] = [
+        'id' => $followerCredential->id,
+        'name' => $followerUser->name,
+        'username' => $followerCredential->username,
+        'email' => $followerCredential->email,
+        'avatar' => url('/api/media/display/' . $followerUser->avatar)
+      ];
     }
 
     return Responder::respond(StatusCodes::SUCCESS, '', $followers);
@@ -140,7 +149,16 @@ class RelationshipService {
     $following = [];
 
     foreach ($relationships as $relationship) {
-      $following[] = $relationship->following;
+      $followingCredential = $relationship->followingUser;
+      $followingUser = $followingCredential->user;
+
+      $following[] = [
+        'id' => $followingCredential->id,
+        'name' => $followingUser->name,
+        'username' => $followingCredential->username,
+        'email' => $followingCredential->email,
+        'avatar' => url('/api/media/display/' . $followingUser->avatar)
+      ];
     }
 
     return Responder::respond(StatusCodes::SUCCESS, '', $following);

@@ -40,6 +40,7 @@ class UserService {
 
     foreach ($profile['posts'] as $post) {
       $post->likes = Like::where('postid', $post->id)->count();
+      $post->image = url('/api/media/display/' . $post->image);
     }
 
     return Responder::respond(StatusCodes::SUCCESS, '', $profile);
