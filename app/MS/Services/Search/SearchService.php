@@ -29,7 +29,8 @@ class SearchService {
         'id' => $credential->id,
         'username' => $credential->username,
         'email' => $credential->email,
-        'name' => $credential->user->name
+        'name' => $credential->user->name,
+        'avatar' => url('/api/media/display/' . $credential->user->avatar),
       ];
 
       array_push($users, $user);
