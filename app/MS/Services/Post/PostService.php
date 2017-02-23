@@ -3,6 +3,7 @@
 namespace App\MS\Services\Post;
 
 use App\MS\Helpers\Media;
+use App\MS\Models\Comment;
 use App\MS\Models\Like;
 use App\MS\Models\Post;
 use App\MS\Models\Token;
@@ -44,6 +45,7 @@ class PostService {
     $post->image = url('/api/media/display/' . $post->image);
     $post->likes = Like::where('postid', $post->id)->count();
     $post->mylike = (Like::where('postid', $post->id)->where('userid', $token->id)->exists() ? 1 : 0);
+    $post->comments = $post->comments;
 
     return Responder::respond(StatusCodes::SUCCESS, '', $post);
   }
@@ -84,6 +86,7 @@ class PostService {
       $post->image = url('/api/media/display/' . $post->image);
       $post->likes = Like::where('postid', $post->id)->count();
       $post->mylike = (Like::where('postid', $post->id)->where('userid', $token->id)->exists() ? 1 : 0);
+      $post->comments = $post->comments;
     }
 
     return Responder::respond(StatusCodes::SUCCESS, '', $posts);
@@ -128,6 +131,29 @@ class PostService {
     Like::where('userid', $token->id)->where('postid', $post->id)->delete();
 
     return Responder::respond(StatusCodes::SUCCESS, 'Post unliked');
+  }
+
+
+
+  public static function comment($payload) {
+    V::validate($payload, array_merge(V::postID, V::comment));
+
+    if (!Post::where('id', $payload['postID'])->exists()) {
+      return Responder::respond(StatusCodes::NOT_FOUND, 'Post not found');
+    }
+
+
+    $token = Token::where('token', $payload['token'])->first();
+    $post = Post::where('id', $payload['postID'])->first();
+
+
+    $comment= new Comment();
+    $comment->userid = $token->id;
+    $comment->postid = $payload['postID'];
+    $comment->data = $payload['comment'];
+    $comment->save();
+
+    return Responder::respond(StatusCodes::SUCCESS, 'Comment added');
   }
 
 }
