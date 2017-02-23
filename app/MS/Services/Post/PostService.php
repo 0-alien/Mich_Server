@@ -86,7 +86,6 @@ class PostService {
       $post->image = url('/api/media/display/' . $post->image);
       $post->likes = Like::where('postid', $post->id)->count();
       $post->mylike = (Like::where('postid', $post->id)->where('userid', $token->id)->exists() ? 1 : 0);
-      $post->comments = $post->comments;
     }
 
     return Responder::respond(StatusCodes::SUCCESS, '', $posts);
