@@ -30,4 +30,10 @@ class UserController extends BaseController {
     return UserService::changePassword($this->payload);
   }
 
+
+
+  public function posts() {
+    return UserService::posts($this->payload);
+  }
+
 }

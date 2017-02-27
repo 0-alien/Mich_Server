@@ -4,8 +4,8 @@ namespace App\MS\Services\User;
 
 use App\MS\Helpers\Media;
 use App\MS\Models\Like;
-use App\MS\Models\Post;
 use App\MS\Models\Relationship;
+use App\MS\Models\User\Credential;
 use App\MS\StatusCodes;
 use App\MS\Responder;
 use App\MS\Validation as V;
@@ -35,13 +35,9 @@ class UserService {
       'username' => $user->credential->username,
       'email' => $user->credential->email,
       'avatar' => url('/api/media/display/' . $user->avatar),
-      'posts' => $user->credential->posts
+      'nfollowers' => Relationship::where('following', $userID)->count(),
+      'nfollowing' => Relationship::where('follower', $userID)->count(),
     ];
-
-    foreach ($profile['posts'] as $post) {
-      $post->likes = Like::where('postid', $post->id)->count();
-      $post->image = url('/api/media/display/' . $post->image);
-    }
 
     return Responder::respond(StatusCodes::SUCCESS, '', $profile);
   }
@@ -63,9 +59,17 @@ class UserService {
 
     $user->save();
 
-    $user->avatar = url('/api/media/display/' . $user->avatar);
+    $profile = [
+      'id' => $user->id,
+      'name' => $user->name,
+      'username' => $user->credential->username,
+      'email' => $user->credential->email,
+      'avatar' => url('/api/media/display/' . $user->avatar),
+      'nfollowers' => Relationship::where('following', $user->id)->count(),
+      'nfollowing' => Relationship::where('follower', $user->id)->count(),
+    ];
 
-    return Responder::respond(StatusCodes::SUCCESS, 'Account updated', $user);
+    return Responder::respond(StatusCodes::SUCCESS, 'Account updated', $profile);
   }
 
 
@@ -92,6 +96,33 @@ class UserService {
     $credential->save();
 
     return Responder::respond(StatusCodes::SUCCESS, 'Password changed');
+  }
+
+
+
+  public static function posts($payload) {
+    V::validate($payload, V::userID);
+
+    $token = Token::where('token', $payload['token'])->first();
+
+    $userID = (isset($payload['userID']) ? $payload['userID'] : $token->id);
+
+    if (!User::where('id', $userID)->exists()) {
+      return Responder::respond(StatusCodes::NOT_FOUND, 'User not found');
+    }
+
+
+    $credential = Credential::where('id', $userID)->first();
+
+    $posts = $credential->posts;
+
+    foreach ($posts as $post) {
+      $post->image = url('/api/media/display/' . $post->image);
+      $post->likes = Like::where('postid', $post->id)->count();
+      $post->mylike = (Like::where('postid', $post->id)->where('userid', $token->id)->exists() ? 1 : 0);
+    }
+
+    return Responder::respond(StatusCodes::SUCCESS, '', $posts);
   }
 
 }
