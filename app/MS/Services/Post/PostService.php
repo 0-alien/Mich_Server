@@ -115,7 +115,7 @@ class PostService {
   public static function explore($payload) {
     $token = Token::where('token', $payload['token'])->first();
 
-    $likes = Like::select(DB::raw('postid, count(postid) as nlikes'))->groupBy('postid')->orderBy('nlikes', 'desc')->orderBy('created_at', 'desc')->limit(30)->get();
+    $likes = Like::select(DB::raw('postid, count(postid) as nlikes'))->groupBy('postid')->limit(30)->get();
 
     $posts = [];
 
