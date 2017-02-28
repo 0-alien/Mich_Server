@@ -10,6 +10,7 @@ use App\MS\Models\Token;
 use App\MS\Responder;
 use App\MS\StatusCodes;
 use App\MS\Validation as V;
+use Illuminate\Support\Facades\DB;
 
 class PostService {
 
@@ -45,7 +46,7 @@ class PostService {
     $post->image = url('/api/media/display/' . $post->image);
     $post->likes = Like::where('postid', $post->id)->count();
     $post->mylike = (Like::where('postid', $post->id)->where('userid', $token->id)->exists() ? 1 : 0);
-    $post->comments = $post->comments;
+    $post->ncomments = Comment::where('postid', $post->id)->count();
 
     return Responder::respond(StatusCodes::SUCCESS, '', $post);
   }
@@ -68,6 +69,23 @@ class PostService {
 
 
 
+  public static function comments($payload) {
+    V::validate($payload, V::postID);
+
+    if (!Post::where('id', $payload['postID'])->exists()) {
+      return Responder::respond(StatusCodes::NOT_FOUND, 'Post not found');
+    }
+
+
+    $post = Post::where('id', $payload['postID'])->first();
+
+    $comments = $post->comments;
+
+    return Responder::respond(StatusCodes::SUCCESS, '', $comments);
+  }
+
+
+
   public static function feed($payload) {
     $token = Token::where('token', $payload['token'])->first();
 
@@ -86,6 +104,29 @@ class PostService {
       $post->image = url('/api/media/display/' . $post->image);
       $post->likes = Like::where('postid', $post->id)->count();
       $post->mylike = (Like::where('postid', $post->id)->where('userid', $token->id)->exists() ? 1 : 0);
+      $post->ncomments = Comment::where('postid', $post->id)->count();
+    }
+
+    return Responder::respond(StatusCodes::SUCCESS, '', $posts);
+  }
+
+
+
+  public static function explore($payload) {
+    $token = Token::where('token', $payload['token'])->first();
+
+    $likes = Like::select(DB::raw('postid, count(postid) as nlikes'))->groupBy('postid')->orderBy('nlikes', 'desc')->orderBy('created_at', 'desc')->limit(30)->get();
+
+    $posts = [];
+
+    foreach ($likes as $like) {
+      $post = $like->post;
+      $post->image = url('/api/media/display/' . $post->image);
+      $post->likes = $like->nlikes;
+      $post->mylike = (Like::where('postid', $post->id)->where('userid', $token->id)->exists() ? 1 : 0);
+      $post->ncomments = Comment::where('postid', $post->id)->count();
+
+      $posts[] = $post;
     }
 
     return Responder::respond(StatusCodes::SUCCESS, '', $posts);

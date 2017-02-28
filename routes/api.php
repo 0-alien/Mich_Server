@@ -37,7 +37,11 @@ Route::group(['prefix' => 'post', 'middleware' => 'authToken'], function () {
   Route::post('get', 'Post\PostController@get');
   Route::post('delete', 'Post\PostController@delete');
 
+  Route::post('comments', 'Post\PostController@comments');
+
   Route::post('feed', 'Post\PostController@feed');
+
+  Route::post('explore', 'Post\PostController@explore');
 
   Route::post('like', 'Post\PostController@like');
   Route::post('unlike', 'Post\PostController@unlike');

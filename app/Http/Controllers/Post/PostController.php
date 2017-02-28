@@ -26,8 +26,20 @@ class PostController extends BaseController {
 
 
 
+  public function comments() {
+    return PostService::comments($this->payload);
+  }
+
+
+
   public function feed() {
     return PostService::feed($this->payload);
+  }
+
+
+
+  public function explore() {
+    return PostService::explore($this->payload);
   }
 
 
