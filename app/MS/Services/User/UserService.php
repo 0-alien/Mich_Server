@@ -3,6 +3,7 @@
 namespace App\MS\Services\User;
 
 use App\MS\Helpers\Media;
+use App\MS\Models\Comment;
 use App\MS\Models\Like;
 use App\MS\Models\Relationship;
 use App\MS\Models\User\Credential;
