@@ -120,6 +120,9 @@ class UserService {
       $post->image = url('/api/media/display/' . $post->image);
       $post->likes = Like::where('postid', $post->id)->count();
       $post->mylike = (Like::where('postid', $post->id)->where('userid', $token->id)->exists() ? 1 : 0);
+      $post->ncomments = Comment::where('postid', $post->id)->count();
+      $post->username = $credential->username;
+      $post->avatar = url('/api/media/display/' . $credential->user->avatar);
     }
 
     return Responder::respond(StatusCodes::SUCCESS, '', $posts);
