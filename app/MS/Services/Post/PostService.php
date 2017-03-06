@@ -47,8 +47,8 @@ class PostService {
     $post->likes = Like::where('postid', $post->id)->count();
     $post->mylike = (Like::where('postid', $post->id)->where('userid', $token->id)->exists() ? 1 : 0);
     $post->ncomments = Comment::where('postid', $post->id)->count();
-    $post->username = $token->credential->username;
-    $post->avatar = url('/api/media/display/' . $token->credential->user->avatar);
+    $post->username = $post->credential->username;
+    $post->avatar = url('/api/media/display/' . $post->credential->user->avatar);
 
     return Responder::respond(StatusCodes::SUCCESS, '', $post);
   }
@@ -107,8 +107,8 @@ class PostService {
       $post->likes = Like::where('postid', $post->id)->count();
       $post->mylike = (Like::where('postid', $post->id)->where('userid', $token->id)->exists() ? 1 : 0);
       $post->ncomments = Comment::where('postid', $post->id)->count();
-      $post->username = $token->credential->username;
-      $post->avatar = url('/api/media/display/' . $token->credential->user->avatar);
+      $post->username = $post->credential->username;
+      $post->avatar = url('/api/media/display/' . $post->credential->user->avatar);
     }
 
     return Responder::respond(StatusCodes::SUCCESS, '', $posts);
@@ -129,8 +129,8 @@ class PostService {
       $post->likes = $like->nlikes;
       $post->mylike = (Like::where('postid', $post->id)->where('userid', $token->id)->exists() ? 1 : 0);
       $post->ncomments = Comment::where('postid', $post->id)->count();
-      $post->username = $token->credential->username;
-      $post->avatar = url('/api/media/display/' . $token->credential->user->avatar);
+      $post->username = $post->credential->username;
+      $post->avatar = url('/api/media/display/' . $post->credential->user->avatar);
 
       $posts[] = $post;
     }
