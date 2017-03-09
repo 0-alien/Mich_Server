@@ -13,6 +13,7 @@ class Validation {
   const name          = ['name' => 'required|alpha_spaces|min:2|max:100'];
   const loginType     = ['type' => 'required|numeric|in:0,1,2'];
   const userID        = ['userID' => 'numeric'];
+  const reqUserID     = ['userID' => 'required|numeric'];
   const token         = ['token' => 'required|size:64'];
   const code          = ['code' => 'required|digits:6'];
   const title         = ['title' => 'required|min:2|max:200'];
@@ -20,6 +21,7 @@ class Validation {
   const postID        = ['postID' => 'required'];
   const term          = ['term' => 'required|alpha_num|min:1|max:50'];
   const comment       = ['comment' => 'required|min:1|max:500'];
+  const battleID      = ['battleID' => 'required'];
 
   const MESSAGES = [
     'required' => 'The [:attribute] parameter is required',

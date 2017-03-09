@@ -60,3 +60,10 @@ Route::group(['prefix' => 'media'], function () {
 Route::group(['prefix' => 'search', 'middleware' => 'authToken'], function () {
   Route::post('users', 'Search\SearchController@users');
 });
+
+
+
+Route::group(['prefix' => 'battle', 'middleware' => 'authToken'], function () {
+  Route::post('invite', 'Battle\BattleController@invite');
+  Route::post('accept', 'Battle\BattleController@accept');
+});
