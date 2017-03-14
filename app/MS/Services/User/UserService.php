@@ -63,7 +63,7 @@ class UserService {
       $user->avatar = Media::saveImage($payload['avatar'], [$user->id], 'avatar');
     }
 
-    if (!empty($payload['email'])) {
+    if (!empty($payload['email']) && $payload['email'] != $user->credential->email) {
       V::validate($payload, V::email);
 
       if (Credential::where('email', $payload['email'])->exists()) {
