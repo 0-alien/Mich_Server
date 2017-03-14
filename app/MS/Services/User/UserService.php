@@ -47,8 +47,6 @@ class UserService {
 
 
   public static function update($payload) {
-    file_put_contents('request.txt', print_r($payload, true));
-
     V::validate($payload, V::name);
 
     $token = Token::where('token', $payload['token'])->first();
@@ -65,6 +63,11 @@ class UserService {
 
     if (!empty($payload['email'])) {
       V::validate($payload, V::email);
+
+      if (Credential::where('email', $payload['email'])->exists()) {
+        return Responder::respond(StatusCodes::ALREADY_EXISTS, 'This email already exists');
+      }
+
       $credential = $user->credential;
       $credential->email = $payload['email'];
       $credential->save();
