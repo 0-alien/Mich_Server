@@ -46,7 +46,7 @@ class UserService {
 
 
   public static function update($payload) {
-    V::validate($payload, array_merge(V::name));
+    V::validate($payload, V::name);
 
     $token = Token::where('token', $payload['token'])->first();
 
@@ -56,6 +56,13 @@ class UserService {
 
     if (!empty($payload['avatar'])) {
       $user->avatar = Media::saveImage($payload['avatar'], [$user->id], 'avatar');
+    }
+
+    if (!empty($payload['email'])) {
+      V::validate($payload, V::email);
+      $credential = $user->credential;
+      $credential->email = $payload['email'];
+      $credential->save();
     }
 
     $user->save();

@@ -12,9 +12,9 @@
       encrypted: true
     });
 
-    var channel = pusher.subscribe('1');
-    channel.bind('accept', function(data) {
-      console.log('host', data.battle);
+    var channel = pusher.subscribe('59');
+    channel.bind('invitation', function(data) {
+      console.log(data);
     });
   </script>
 </head>
