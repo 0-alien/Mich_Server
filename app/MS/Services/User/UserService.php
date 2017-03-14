@@ -47,6 +47,8 @@ class UserService {
 
 
   public static function update($payload) {
+    file_put_contents('request.txt', print_r($payload, true));
+
     V::validate($payload, V::name);
 
     $token = Token::where('token', $payload['token'])->first();
