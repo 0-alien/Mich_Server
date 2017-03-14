@@ -52,7 +52,9 @@ class UserService {
 
     $user = $token->credential->user;
 
-    $user->name = $payload['name'];
+    if (!empty($payload['name'])) {
+      $user->name = $payload['name'];
+    }
 
     if (!empty($payload['avatar'])) {
       $user->avatar = Media::saveImage($payload['avatar'], [$user->id], 'avatar');
