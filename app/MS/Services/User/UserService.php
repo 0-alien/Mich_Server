@@ -12,6 +12,7 @@ use App\MS\Responder;
 use App\MS\Validation as V;
 use App\MS\Models\Token;
 use App\MS\Models\User\User;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 
 class UserService {
@@ -46,6 +47,8 @@ class UserService {
 
 
   public static function update($payload) {
+    file_put_contents('request.txt', print_r($payload, true));
+
     V::validate($payload, V::name);
 
     $token = Token::where('token', $payload['token'])->first();
