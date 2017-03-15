@@ -78,7 +78,7 @@ class AuthService {
       $token->save();
     }
 
-    return Responder::respond(StatusCodes::SUCCESS, 'Logged in', ['token' => $token->token]);
+    return Responder::respond(StatusCodes::SUCCESS, 'Logged in', ['id' => $token->id, 'token' => $token->token]);
   }
 
 
