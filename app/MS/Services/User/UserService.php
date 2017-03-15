@@ -5,6 +5,7 @@ namespace App\MS\Services\User;
 use App\MS\Helpers\Media;
 use App\MS\Models\Comment;
 use App\MS\Models\Like;
+use App\MS\Models\Post;
 use App\MS\Models\Relationship;
 use App\MS\Models\User\Credential;
 use App\MS\StatusCodes;
@@ -130,9 +131,7 @@ class UserService {
     }
 
 
-    $credential = Credential::where('id', $userID)->first();
-
-    $posts = $credential->posts;
+    $posts = Post::where('userid', $userID)->orderBy('id', 'desc')->get();
 
     foreach ($posts as $post) {
       $post->image = url('/api/media/display/' . $post->image) . '?v=' . str_random(20);
