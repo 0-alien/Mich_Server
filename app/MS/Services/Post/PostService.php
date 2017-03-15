@@ -25,7 +25,7 @@ class PostService {
     $post->image = Media::saveImage($payload['image'], [$token->id]);
     $post->save();
 
-    $post->image = url('/api/media/display/' . $post->image);
+    $post->image = url('/api/media/display/' . $post->image) . '?v=' . str_random(20);
 
     return Responder::respond(StatusCodes::SUCCESS, 'Post created', $post);
   }
@@ -43,12 +43,12 @@ class PostService {
     $token = Token::where('token', $payload['token'])->first();
 
     $post = Post::where('id', $payload['postID'])->first();
-    $post->image = url('/api/media/display/' . $post->image);
+    $post->image = url('/api/media/display/' . $post->image) . '?v=' . str_random(20);
     $post->likes = Like::where('postid', $post->id)->count();
     $post->mylike = (Like::where('postid', $post->id)->where('userid', $token->id)->exists() ? 1 : 0);
     $post->ncomments = Comment::where('postid', $post->id)->count();
     $post->username = $post->credential->username;
-    $post->avatar = url('/api/media/display/' . $post->credential->user->avatar);
+    $post->avatar = url('/api/media/display/' . $post->credential->user->avatar) . '?v=' . str_random(20);
     unset($post->credential);
 
     return Responder::respond(StatusCodes::SUCCESS, '', $post);
@@ -104,12 +104,12 @@ class PostService {
     $posts = Post::whereIn('userid', $followingIDs)->orderBy('created_at', 'desc')->get();
 
     foreach ($posts as $post) {
-      $post->image = url('/api/media/display/' . $post->image);
+      $post->image = url('/api/media/display/' . $post->image) . '?v=' . str_random(20);
       $post->likes = Like::where('postid', $post->id)->count();
       $post->mylike = (Like::where('postid', $post->id)->where('userid', $token->id)->exists() ? 1 : 0);
       $post->ncomments = Comment::where('postid', $post->id)->count();
       $post->username = $post->credential->username;
-      $post->avatar = url('/api/media/display/' . $post->credential->user->avatar);
+      $post->avatar = url('/api/media/display/' . $post->credential->user->avatar) . '?v=' . str_random(20);
       unset($post->credential);
     }
 
@@ -127,12 +127,12 @@ class PostService {
 
     foreach ($likes as $like) {
       $post = $like->post;
-      $post->image = url('/api/media/display/' . $post->image);
+      $post->image = url('/api/media/display/' . $post->image) . '?v=' . str_random(20);
       $post->likes = $like->nlikes;
       $post->mylike = (Like::where('postid', $post->id)->where('userid', $token->id)->exists() ? 1 : 0);
       $post->ncomments = Comment::where('postid', $post->id)->count();
       $post->username = $post->credential->username;
-      $post->avatar = url('/api/media/display/' . $post->credential->user->avatar);
+      $post->avatar = url('/api/media/display/' . $post->credential->user->avatar) . '?v=' . str_random(20);
       unset($post->credential);
 
       $posts[] = $post;

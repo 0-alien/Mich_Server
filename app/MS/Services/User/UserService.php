@@ -82,7 +82,7 @@ class UserService {
       'name' => $user->name,
       'username' => $user->credential->username,
       'email' => $user->credential->email,
-      'avatar' => url('/api/media/display/' . $user->avatar),
+      'avatar' => url('/api/media/display/' . $user->avatar) . '?v=' . str_random(20),
       'nfollowers' => Relationship::where('following', $user->id)->count(),
       'nfollowing' => Relationship::where('follower', $user->id)->count(),
     ];
@@ -135,12 +135,13 @@ class UserService {
     $posts = $credential->posts;
 
     foreach ($posts as $post) {
-      $post->image = url('/api/media/display/' . $post->image);
+      $post->image = url('/api/media/display/' . $post->image) . '?v=' . str_random(20);
       $post->likes = Like::where('postid', $post->id)->count();
       $post->mylike = (Like::where('postid', $post->id)->where('userid', $token->id)->exists() ? 1 : 0);
       $post->ncomments = Comment::where('postid', $post->id)->count();
       $post->username = $post->credential->username;
-      $post->avatar = url('/api/media/display/' . $post->credential->user->avatar);
+      $post->avatar = url('/api/media/display/' . $post->credential->user->avatar) . '?v=' . str_random(20);
+      unset($post->credential);
     }
 
     return Responder::respond(StatusCodes::SUCCESS, '', $posts);
