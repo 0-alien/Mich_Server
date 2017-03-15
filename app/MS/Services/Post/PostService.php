@@ -49,6 +49,7 @@ class PostService {
     $post->ncomments = Comment::where('postid', $post->id)->count();
     $post->username = $post->credential->username;
     $post->avatar = url('/api/media/display/' . $post->credential->user->avatar);
+    unset($post->credential);
 
     return Responder::respond(StatusCodes::SUCCESS, '', $post);
   }
@@ -109,6 +110,7 @@ class PostService {
       $post->ncomments = Comment::where('postid', $post->id)->count();
       $post->username = $post->credential->username;
       $post->avatar = url('/api/media/display/' . $post->credential->user->avatar);
+      unset($post->credential);
     }
 
     return Responder::respond(StatusCodes::SUCCESS, '', $posts);
@@ -131,6 +133,7 @@ class PostService {
       $post->ncomments = Comment::where('postid', $post->id)->count();
       $post->username = $post->credential->username;
       $post->avatar = url('/api/media/display/' . $post->credential->user->avatar);
+      unset($post->credential);
 
       $posts[] = $post;
     }
