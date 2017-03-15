@@ -36,7 +36,7 @@ class UserService {
       'name' => $user->name,
       'username' => $user->credential->username,
       'email' => $user->credential->email,
-      'avatar' => url('/api/media/display/' . $user->avatar),
+      'avatar' => url('/api/media/display/' . $user->avatar) . '?v=' . str_random(20),
       'nfollowers' => Relationship::where('following', $userID)->count(),
       'nfollowing' => Relationship::where('follower', $userID)->count(),
     ];
