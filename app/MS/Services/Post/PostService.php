@@ -59,12 +59,19 @@ class PostService {
   public static function delete($payload) {
     V::validate($payload, V::postID);
 
+    $token = Token::where('token', $payload['token'])->first();
+
     if (!Post::where('id', $payload['postID'])->exists()) {
       return Responder::respond(StatusCodes::NOT_FOUND, 'Post not found');
     }
 
 
     $post = Post::where('id', $payload['postID'])->first();
+
+    if ($post->userid != $token->id) {
+      return Responder::respond(StatusCodes::NO_PERMISSION, 'You don`t have permission to delte this post');
+    }
+
     $post->delete();
 
     return Responder::respond(StatusCodes::SUCCESS, 'Post deleted');
