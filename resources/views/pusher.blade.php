@@ -12,7 +12,7 @@
       encrypted: true
     });
 
-    var channel = pusher.subscribe('59');
+    var channel = pusher.subscribe('10');
     channel.bind('invitation', function(data) {
       console.log(data);
     });

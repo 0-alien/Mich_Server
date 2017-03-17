@@ -34,4 +34,9 @@ class Credential extends Model {
     return $this->hasMany('\App\MS\Models\Like', 'userid', 'id');
   }
 
+
+  public function notifications() {
+    return $this->hasMany('\App\MS\Models\Notification', 'userid', 'id');
+  }
+
 }
