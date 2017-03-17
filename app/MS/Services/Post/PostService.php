@@ -91,6 +91,12 @@ class PostService {
 
     $comments = $post->comments;
 
+    foreach ($comments as $comment) {
+      $comment->username = $comment->credential->username;
+      $comment->avatar = url('/api/media/display/' . $comment->credential->user->avatar) . '?v=' . str_random(20);
+      unset($comment->credential);
+    }
+
     return Responder::respond(StatusCodes::SUCCESS, '', $comments);
   }
 
