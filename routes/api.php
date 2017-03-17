@@ -50,6 +50,12 @@ Route::group(['prefix' => 'post', 'middleware' => 'authToken'], function () {
 });
 
 
+Route::group(['prefix' => 'comment', 'middleware' => 'authToken'], function () {
+  Route::post('like', 'Post\PostController@likeComment');
+  Route::post('unlike', 'Post\PostController@unlikeComment');
+});
+
+
 
 Route::group(['prefix' => 'media'], function () {
   Route::get('display/{userID}/{image?}', 'Media\MediaController@display');

@@ -21,6 +21,7 @@ class Validation {
   const postID        = ['postID' => 'required'];
   const term          = ['term' => 'required|alpha_num|min:1|max:50'];
   const comment       = ['comment' => 'required|min:1|max:500'];
+  const commentID     = ['commentID' => 'required'];
   const battleID      = ['battleID' => 'required'];
 
   const MESSAGES = [

@@ -3,6 +3,7 @@
 namespace App\MS\Services\Post;
 
 use App\MS\Helpers\Media;
+use App\MS\Models\Comlike;
 use App\MS\Models\Comment;
 use App\MS\Models\Like;
 use App\MS\Models\Post;
@@ -86,7 +87,7 @@ class PostService {
       return Responder::respond(StatusCodes::NOT_FOUND, 'Post not found');
     }
 
-
+    $token = Token::where('token', $payload['token'])->first();
     $post = Post::where('id', $payload['postID'])->first();
 
     $comments = $post->comments;
@@ -95,6 +96,13 @@ class PostService {
       $comment->username = $comment->credential->username;
       $comment->avatar = url('/api/media/display/' . $comment->credential->user->avatar) . '?v=' . str_random(20);
       unset($comment->credential);
+
+      $comment->nlikes = Comlike::where('commentid', $comment->id)->count();
+      $comment->mylike = 0;
+
+      if (Comlike::where('commentid', $comment->id)->where('userid', $token->id)->exists()) {
+        $comment->mylike = 1;
+      }
     }
 
     return Responder::respond(StatusCodes::SUCCESS, '', $comments);
@@ -216,6 +224,44 @@ class PostService {
     $comment->save();
 
     return Responder::respond(StatusCodes::SUCCESS, 'Comment added');
+  }
+
+
+
+  public static function likeComment($payload) {
+    V::validate($payload, V::commentID);
+
+    if (!Comment::where('id', $payload['commentID'])->exists()) {
+      return Responder::respond(StatusCodes::NOT_FOUND, 'Comment not found');
+    }
+
+
+    $token = Token::where('token', $payload['token'])->first();
+    $comment = Comment::where('id', $payload['commentID'])->first();
+
+    $comlike = new Comlike();
+    $comlike->userid = $token->id;
+    $comlike->commentid = $payload['commentID'];
+    $comlike->save();
+
+    return Responder::respond(StatusCodes::SUCCESS, 'Comment liked');
+  }
+
+
+
+  public static function unlikeComment($payload) {
+    V::validate($payload, V::commentID);
+
+    if (!Comment::where('id', $payload['commentID'])->exists()) {
+      return Responder::respond(StatusCodes::NOT_FOUND, 'Comment not found');
+    }
+
+
+    $token = Token::where('token', $payload['token'])->first();
+
+    Comlike::where('userid', $token->id)->where('commentid', $payload['commentID'])->delete();
+
+    return Responder::respond(StatusCodes::SUCCESS, 'Comment unliked');
   }
 
 }

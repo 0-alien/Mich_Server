@@ -60,4 +60,16 @@ class PostController extends BaseController {
     return PostService::comment($this->payload);
   }
 
+
+
+  public function likeComment() {
+    return PostService::likeComment($this->payload);
+  }
+
+
+
+  public function unlikeComment() {
+    return PostService::unlikeComment($this->payload);
+  }
+
 }
