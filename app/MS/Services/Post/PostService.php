@@ -5,6 +5,7 @@ namespace App\MS\Services\Post;
 use App\MS\Helpers\Media;
 use App\MS\Models\Comlike;
 use App\MS\Models\Comment;
+use App\MS\Models\Hiddenpost;
 use App\MS\Models\Like;
 use App\MS\Models\Post;
 use App\MS\Models\Token;
@@ -134,6 +135,8 @@ class PostService {
       unset($post->credential);
     }
 
+    $posts = self::filterHiddenPosts($posts, $token->id);
+
     return Responder::respond(StatusCodes::SUCCESS, '', $posts);
   }
 
@@ -158,6 +161,8 @@ class PostService {
 
       $posts[] = $post;
     }
+
+    $posts = self::filterHiddenPosts($posts, $token->id);
 
     return Responder::respond(StatusCodes::SUCCESS, '', $posts);
   }
@@ -223,7 +228,12 @@ class PostService {
     $comment->data = $payload['comment'];
     $comment->save();
 
-    return Responder::respond(StatusCodes::SUCCESS, 'Comment added');
+    $comment->username = $token->credential->username;
+    $comment->avatar = url('/api/media/display/' . $token->credential->user->avatar) . '?v=' . str_random(20);
+    $comment->nlikes = 0;
+    $comment->mylike = 0;
+
+    return Responder::respond(StatusCodes::SUCCESS, 'Comment added', $comment);
   }
 
 
@@ -262,6 +272,44 @@ class PostService {
     Comlike::where('userid', $token->id)->where('commentid', $payload['commentID'])->delete();
 
     return Responder::respond(StatusCodes::SUCCESS, 'Comment unliked');
+  }
+
+
+
+  public static function hide($payload) {
+    V::validate($payload, V::postID);
+
+    if (!Post::where('id', $payload['postID'])->exists()) {
+      return Responder::respond(StatusCodes::NOT_FOUND, 'Post not found');
+    }
+
+    $token = Token::where('token', $payload['token'])->first();
+
+    $hiddenpost = new Hiddenpost();
+    $hiddenpost->userid = $token->id;
+    $hiddenpost->postid = $payload['postID'];
+    $hiddenpost->save();
+
+    return Responder::respond(StatusCodes::SUCCESS, 'Post hidden');
+  }
+
+
+
+  public static function filterHiddenPosts($posts, $userID) {
+    $hiddenPosts = Hiddenpost::where('userID', $userID)->get();
+    $ids = array_map(function ($item) {
+      return $item['postid'];
+    }, $hiddenPosts->toArray());
+
+    $result = [];
+
+    foreach ($posts as $post) {
+      if (!in_array($post->id, $ids)) {
+        $result[] = $post;
+      }
+    }
+
+    return $result;
   }
 
 }

@@ -47,6 +47,8 @@ Route::group(['prefix' => 'post', 'middleware' => 'authToken'], function () {
   Route::post('unlike', 'Post\PostController@unlike');
 
   Route::post('comment', 'Post\PostController@comment');
+
+  Route::post('hide', 'Post\PostController@hide');
 });
 
 

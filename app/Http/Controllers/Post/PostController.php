@@ -72,4 +72,10 @@ class PostController extends BaseController {
     return PostService::unlikeComment($this->payload);
   }
 
+
+
+  public function hide() {
+    return PostService::hide($this->payload);
+  }
+
 }
