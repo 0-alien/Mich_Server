@@ -264,6 +264,28 @@ class PostService {
 
 
 
+  public static function deleteComment($payload) {
+    V::validate($payload, V::commentID);
+
+    if (!Comment::where('id', $payload['commentID'])->exists()) {
+      return Responder::respond(StatusCodes::NOT_FOUND, 'Comment not found');
+    }
+
+
+    $token = Token::where('token', $payload['token'])->first();
+    $comment = Comment::where('id', $payload['commentID'])->first();
+
+    if ($token->id != $comment->credential->id) {
+      return Responder::respond(StatusCodes::NO_PERMISSION, 'You do not have permission on this comment');
+    }
+
+    $comment->delete();
+
+    return Responder::respond(StatusCodes::SUCCESS, 'Comment deleted');
+  }
+
+
+
   public static function likeComment($payload) {
     V::validate($payload, V::commentID);
 

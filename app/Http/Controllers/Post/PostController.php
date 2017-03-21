@@ -62,6 +62,12 @@ class PostController extends BaseController {
 
 
 
+  public function deleteComment() {
+    return PostService::deleteComment($this->payload);
+  }
+
+
+
   public function likeComment() {
     return PostService::likeComment($this->payload);
   }
