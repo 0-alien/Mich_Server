@@ -13,9 +13,9 @@ class NotificationService {
   public static function get($payload) {
     $token = Token::where('token', $payload['token'])->first();
 
-    $notifications = Notification::where('userid', $token->id)->where('status', 0)->get();
+    $count = Notification::where('userid', $token->id)->where('status', 0)->count();
 
-    return Responder::respond(StatusCodes::SUCCESS, '', $notifications);
+    return Responder::respond(StatusCodes::SUCCESS, '', ['count' => $count]);
   }
 
 
