@@ -106,11 +106,16 @@ class UserService {
 
 
   public static function changePassword($payload) {
-    V::validate($payload, V::password);
+    V::validate($payload, array_merge(V::password, ['oldPassword' => 'required|min:6|max:50']));
 
     $token = Token::where('token', $payload['token'])->first();
 
     $credential = $token->credential;
+
+    if (!Hash::check($payload['oldPassword'], $credential->password)) {
+      return Responder::respond(StatusCodes::INVALID_CREDENTIALS, 'Invalid old password');
+    }
+
     $credential->password = Hash::make($payload['password']);
     $credential->save();
 

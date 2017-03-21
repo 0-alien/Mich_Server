@@ -3,6 +3,7 @@
 namespace App\MS\Services\Battle;
 
 use App\MS\Models\Battle\Battle;
+use App\MS\Models\Notification;
 use App\MS\Models\Token;
 use App\MS\Models\User\Credential;
 use App\MS\Responder;
@@ -36,6 +37,14 @@ class BattleService {
     $pusher->trigger(''.$battle->guest, 'invitation', ['battle' => $battle->id]);
 
 
+    $notification = new Notification();
+    $notification->type = 5;
+    $notification->itemid = $battle->id;
+    $notification->message = 'You are invited to the battle';
+    $notification->userid = $battle->guest;
+    $notification->save();
+
+
     return Responder::respond(StatusCodes::SUCCESS, 'Invitation sent');
   }
 
@@ -63,6 +72,16 @@ class BattleService {
     $options = ['cluster' => 'eu', 'encrypted' => true];
     $pusher = new \Pusher(env('PUSHER_KEY'), env('PUSHER_SECRET'), env('PUSHER_APP_ID'), $options);
     $pusher->trigger(''.$battle->host, 'accept', ['battle' => $battle->id]);
+
+
+
+    $notification = new Notification();
+    $notification->type = 6;
+    $notification->itemid = $battle->id;
+    $notification->message = 'You rival accepted to battle';
+    $notification->userid = $battle->host;
+    $notification->save();
+
 
     return Responder::respond(StatusCodes::SUCCESS, 'Battle accepted');
   }

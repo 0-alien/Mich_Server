@@ -1,6 +1,0 @@
-Array
-(
-    [token] => KT8nfMwvKY3Tm5Jw9uOUJHuGVJrOhzXgqGcZU6tm20WZGDqquxZZeHoJlri97q4C
-    [name] => Giorgi Tskhondia
-    [email] => test@post.com
-)

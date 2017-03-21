@@ -23,6 +23,7 @@ class Validation {
   const comment       = ['comment' => 'required|min:1|max:500'];
   const commentID     = ['commentID' => 'required'];
   const battleID      = ['battleID' => 'required'];
+  const notificationID = ['notificationID' => 'required'];
 
   const MESSAGES = [
     'required' => 'The [:attribute] parameter is required',

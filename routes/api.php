@@ -75,3 +75,12 @@ Route::group(['prefix' => 'battle', 'middleware' => 'authToken'], function () {
   Route::post('invite', 'Battle\BattleController@invite');
   Route::post('accept', 'Battle\BattleController@accept');
 });
+
+
+
+Route::group(['prefix' => 'notification', 'middleware' => 'authToken'], function () {
+  Route::post('get', 'Notification\NotificationController@get');
+  Route::post('getAll', 'Notification\NotificationController@getAll');
+  Route::post('seen', 'Notification\NotificationController@seen');
+  Route::post('seenAll', 'Notification\NotificationController@seenAll');
+});

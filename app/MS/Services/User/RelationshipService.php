@@ -2,6 +2,7 @@
 
 namespace App\MS\Services\User;
 
+use App\MS\Models\Notification;
 use App\MS\Models\Relationship;
 use App\MS\Models\Token;
 use App\MS\Models\User\Credential;
@@ -72,6 +73,14 @@ class RelationshipService {
       $relationship->follower = $token->id;
       $relationship->following = $payload['userID'];
       $relationship->save();
+
+
+      $notification = new Notification();
+      $notification->type = 4;
+      $notification->itemid = $relationship->follower;
+      $notification->message = 'You have new follower';
+      $notification->userid = $relationship->following;
+      $notification->save();
     }
 
     return Responder::respond(StatusCodes::SUCCESS, 'You are following this user');

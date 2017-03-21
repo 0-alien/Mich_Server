@@ -7,6 +7,7 @@ use App\MS\Models\Comlike;
 use App\MS\Models\Comment;
 use App\MS\Models\Hiddenpost;
 use App\MS\Models\Like;
+use App\MS\Models\Notification;
 use App\MS\Models\Post;
 use App\MS\Models\Token;
 use App\MS\Responder;
@@ -186,6 +187,19 @@ class PostService {
     $like->postid = $post->id;
     $like->save();
 
+
+
+    if ($token->id != $post->credential->id) {
+      $notification = new Notification();
+      $notification->type = 1;
+      $notification->itemid = $post->id;
+      $notification->message = 'Someone likes your post';
+      $notification->userid = $post->credential->id;
+      $notification->save();
+    }
+
+
+
     return Responder::respond(StatusCodes::SUCCESS, 'Post liked');
   }
 
@@ -222,7 +236,7 @@ class PostService {
     $post = Post::where('id', $payload['postID'])->first();
 
 
-    $comment= new Comment();
+    $comment = new Comment();
     $comment->userid = $token->id;
     $comment->postid = $payload['postID'];
     $comment->data = $payload['comment'];
@@ -232,6 +246,18 @@ class PostService {
     $comment->avatar = url('/api/media/display/' . $token->credential->user->avatar) . '?v=' . str_random(20);
     $comment->nlikes = 0;
     $comment->mylike = 0;
+
+
+
+    if ($token->id != $post->credential->id) {
+      $notification = new Notification();
+      $notification->type = 2;
+      $notification->itemid = $post->id;
+      $notification->message = 'New comment added to your post';
+      $notification->userid = $post->credential->id;
+      $notification->save();
+    }
+
 
     return Responder::respond(StatusCodes::SUCCESS, 'Comment added', $comment);
   }
@@ -253,6 +279,19 @@ class PostService {
     $comlike->userid = $token->id;
     $comlike->commentid = $payload['commentID'];
     $comlike->save();
+
+
+
+    if ($token->id != $comment->credential->id) {
+      $notification = new Notification();
+      $notification->type = 3;
+      $notification->itemid = $comment->post->id;
+      $notification->message = 'Someone likes your comment';
+      $notification->userid = $comment->credential->id;
+      $notification->save();
+    }
+
+
 
     return Responder::respond(StatusCodes::SUCCESS, 'Comment liked');
   }
