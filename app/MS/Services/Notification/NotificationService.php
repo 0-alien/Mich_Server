@@ -15,7 +15,7 @@ class NotificationService {
 
     $count = Notification::where('userid', $token->id)->where('status', 0)->count();
 
-    return Responder::respond(StatusCodes::SUCCESS, '', ['count' => $count]);
+    return Responder::respond(StatusCodes::SUCCESS, '', $count);
   }
 
 
@@ -23,7 +23,7 @@ class NotificationService {
   public static function getAll($payload) {
     $token = Token::where('token', $payload['token'])->first();
 
-    $notifications = Notification::where('userid', $token->id)->get();
+    $notifications = Notification::where('userid', $token->id)->orderBy('id', 'desc')->get();
 
     return Responder::respond(StatusCodes::SUCCESS, '', $notifications);
   }
