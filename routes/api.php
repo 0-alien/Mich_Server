@@ -85,3 +85,9 @@ Route::group(['prefix' => 'notification', 'middleware' => 'authToken'], function
   Route::post('seen', 'Notification\NotificationController@seen');
   Route::post('seenAll', 'Notification\NotificationController@seenAll');
 });
+
+
+
+Route::group(['prefix' => 'social', 'middleware' => 'authToken'], function () {
+  Route::post('share', 'Social\SocialController@share');
+});
