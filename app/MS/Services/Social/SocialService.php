@@ -20,7 +20,7 @@ class SocialService {
     $post = Post::where('id', $payload['postID'])->first();
     $image = url('/api/media/display/' . $post->image) . '?v=' . str_random(20);
 
-    return Responder::respond(StatusCodes::SUCCESS, '', $image);
+    return Responder::respond(StatusCodes::SUCCESS, '', ['url' => $image]);
   }
 
 }
