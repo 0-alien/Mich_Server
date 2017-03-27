@@ -193,7 +193,7 @@ class PostService {
       $notification = new Notification();
       $notification->type = 1;
       $notification->itemid = $post->id;
-      $notification->message = 'Someone likes your post';
+      $notification->message = $like->credential->username . ' likes your post';
       $notification->userid = $post->credential->id;
       $notification->save();
     }
@@ -253,7 +253,7 @@ class PostService {
       $notification = new Notification();
       $notification->type = 2;
       $notification->itemid = $post->id;
-      $notification->message = 'New comment added to your post';
+      $notification->message = $comment->username . ' commented on your post';
       $notification->userid = $post->credential->id;
       $notification->save();
     }
@@ -308,7 +308,7 @@ class PostService {
       $notification = new Notification();
       $notification->type = 3;
       $notification->itemid = $comment->post->id;
-      $notification->message = 'Someone likes your comment';
+      $notification->message = $token->credential->username . ' likes your comment';
       $notification->userid = $comment->credential->id;
       $notification->save();
     }

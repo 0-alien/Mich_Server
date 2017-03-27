@@ -40,7 +40,7 @@ class BattleService {
     $notification = new Notification();
     $notification->type = 5;
     $notification->itemid = $battle->id;
-    $notification->message = 'You are invited to the battle';
+    $notification->message = $battle->hostCredential->username . ' invited you to the battle';
     $notification->userid = $battle->guest;
     $notification->save();
 
@@ -78,7 +78,7 @@ class BattleService {
     $notification = new Notification();
     $notification->type = 6;
     $notification->itemid = $battle->id;
-    $notification->message = 'You rival accepted to battle';
+    $notification->message = $battle->guestCredential->username . ' accepted your invitation';
     $notification->userid = $battle->host;
     $notification->save();
 

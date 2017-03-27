@@ -78,7 +78,7 @@ class RelationshipService {
       $notification = new Notification();
       $notification->type = 4;
       $notification->itemid = $relationship->follower;
-      $notification->message = 'You have new follower';
+      $notification->message = $token->credential->username . ' is following you';
       $notification->userid = $relationship->following;
       $notification->save();
     }
