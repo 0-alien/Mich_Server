@@ -1,9 +1,0 @@
-Pusher: ->trigger received string channel "59". Converting to array.
-Pusher: create_curl( https://api-eu.pusher.com:443/apps/310085/events?auth_key=631cad75e06b7aa8904a&auth_signature=d0541946a5e620b822a073d856aefbd9ccdc68cdd9955eead4a593e89b4d51dc&auth_timestamp=1490101218&auth_version=1.0&body_md5=42717e3ecc7f7ea6a9c720529330cfb8 )
-Pusher: trigger POST: {"name":"invitation","data":"{\"battle\":19}","channels":["59"]}
-Pusher: exec_curl response: Array
-(
-    [body] => {}
-    [status] => 200
-)
-
