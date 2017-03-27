@@ -194,6 +194,7 @@ class PostService {
       $notification->type = 1;
       $notification->itemid = $post->id;
       $notification->message = $like->credential->username . ' likes your post';
+      $notification->avatar = url('/api/media/display/' . $like->credential->user->avatar);
       $notification->userid = $post->credential->id;
       $notification->save();
     }
@@ -254,6 +255,7 @@ class PostService {
       $notification->type = 2;
       $notification->itemid = $post->id;
       $notification->message = $comment->username . ' commented on your post';
+      $notification->avatar = url('/api/media/display/' . $token->credential->user->avatar);
       $notification->userid = $post->credential->id;
       $notification->save();
     }
@@ -309,6 +311,7 @@ class PostService {
       $notification->type = 3;
       $notification->itemid = $comment->post->id;
       $notification->message = $token->credential->username . ' likes your comment';
+      $notification->avatar = url('/api/media/display/' . $token->credential->user->avatar);
       $notification->userid = $comment->credential->id;
       $notification->save();
     }

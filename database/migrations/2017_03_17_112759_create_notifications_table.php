@@ -12,9 +12,10 @@ class CreateNotificationsTable extends Migration {
       $table->integer('type')->unsigned();
       $table->integer('itemid')->unsigned();
       $table->string('message');
+      $table->string('avatar');
+      $table->timestamps();
       $table->boolean('status')->default(0);
       $table->integer('userid')->unsigned();
-      $table->timestamps();
 
       $table->foreign('userid')->references('id')->on('credentials')->onDelete('cascade');
     });
