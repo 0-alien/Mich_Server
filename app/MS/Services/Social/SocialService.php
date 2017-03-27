@@ -29,7 +29,7 @@ class SocialService {
     }
 
 
-    $post = Post::where('id', 2)->first();
+    $post = Post::where('id', $payload['postID'])->first();
 
     $image = Image::make(storage_path() . '/uploads/' . $post->image . '.jpg');
     $image->fit(self::$WIDTH);
