@@ -75,6 +75,7 @@ class AuthService {
       $token = new Token();
       $token->id = $credential->id;
       $token->token = self::generateUniqueToken();
+      $token->fcmrt = $payload['fcmrt'];
       $token->save();
     }
 

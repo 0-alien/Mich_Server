@@ -15,6 +15,7 @@ class Validation {
   const userID        = ['userID' => 'numeric'];
   const reqUserID     = ['userID' => 'required|numeric'];
   const token         = ['token' => 'required|size:64'];
+  const fcmrt         = ['fcmrt' => 'required'];
   const code          = ['code' => 'required|digits:6'];
   const title         = ['title' => 'required|min:2|max:200'];
   const image         = ['image' => 'required'];

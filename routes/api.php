@@ -91,3 +91,9 @@ Route::group(['prefix' => 'notification', 'middleware' => 'authToken'], function
 Route::group(['prefix' => 'social', 'middleware' => 'authToken'], function () {
   Route::post('share', 'Social\SocialController@share');
 });
+
+
+
+Route::group(['prefix' => 'fcm', 'middleware' => 'authToken'], function () {
+  Route::post('update', 'FCM\FCMController@update');
+});

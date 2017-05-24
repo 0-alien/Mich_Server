@@ -10,6 +10,7 @@ class CreateTokensTable extends Migration {
     Schema::create('tokens', function (Blueprint $table) {
       $table->increments('id');
       $table->char('token', 64)->unique();
+      $table->string('fcmrt', 500);
       $table->timestamps();
 
       $table->foreign('id')->references('id')->on('credentials')->onDelete('cascade');
