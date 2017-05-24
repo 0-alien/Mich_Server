@@ -2,6 +2,7 @@
 
 namespace App\MS\Services\Post;
 
+use App\MS\Helpers\Censor;
 use App\MS\Helpers\Media;
 use App\MS\Models\Comlike;
 use App\MS\Models\Comment;
@@ -19,6 +20,10 @@ class PostService {
 
   public static function create($payload) {
     V::validate($payload, array_merge(V::title, V::image));
+
+    if (!Censor::isValid($payload['title'])) {
+      return Responder::respond(StatusCodes::BANNED_WORD, 'Post title includes banned word');
+    }
 
     $token = Token::where('token', $payload['token'])->first();
 
@@ -230,6 +235,10 @@ class PostService {
 
     if (!Post::where('id', $payload['postID'])->exists()) {
       return Responder::respond(StatusCodes::NOT_FOUND, 'Post not found');
+    }
+
+    if (!Censor::isValid($payload['comment'])) {
+      return Responder::respond(StatusCodes::BANNED_WORD, 'Comment includes banned word');
     }
 
 
