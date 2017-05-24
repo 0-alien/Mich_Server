@@ -50,12 +50,15 @@ Route::group(['prefix' => 'post', 'middleware' => 'authToken'], function () {
   Route::post('deleteComment', 'Post\PostController@deleteComment');
 
   Route::post('hide', 'Post\PostController@hide');
+
+  Route::post('report', 'Post\PostController@reportPost');
 });
 
 
 Route::group(['prefix' => 'comment', 'middleware' => 'authToken'], function () {
   Route::post('like', 'Post\PostController@likeComment');
   Route::post('unlike', 'Post\PostController@unlikeComment');
+  Route::post('report', 'Post\PostController@reportComment');
 });
 
 

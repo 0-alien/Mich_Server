@@ -84,4 +84,16 @@ class PostController extends BaseController {
     return PostService::hide($this->payload);
   }
 
+
+
+  public function ReportPost() {
+    return PostService::reportPost($this->payload);
+  }
+
+
+
+  public function ReportComment() {
+    return PostService::reportComment($this->payload);
+  }
+
 }

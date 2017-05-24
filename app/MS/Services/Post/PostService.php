@@ -10,6 +10,7 @@ use App\MS\Models\Hiddenpost;
 use App\MS\Models\Like;
 use App\MS\Models\Notification;
 use App\MS\Models\Post;
+use App\MS\Models\Report;
 use App\MS\Models\Token;
 use App\MS\Responder;
 use App\MS\StatusCodes;
@@ -383,6 +384,46 @@ class PostService {
     }
 
     return $result;
+  }
+
+
+
+  public static function reportPost($payload) {
+    V::validate($payload, V::postID);
+
+    if (!Post::where('id', $payload['postID'])->exists()) {
+      return Responder::respond(StatusCodes::NOT_FOUND, 'Post not found');
+    }
+
+    $token = Token::where('token', $payload['token'])->first();
+
+    $report = new Report();
+    $report->userid = $token->id;
+    $report->type = 0;
+    $report->item = $payload['postID'];
+    $report->save();
+
+    return Responder::respond(StatusCodes::SUCCESS, 'Post reported');
+  }
+
+
+
+  public static function reportComment($payload) {
+    V::validate($payload, V::commentID);
+
+    if (!Comment::where('id', $payload['commentID'])->exists()) {
+      return Responder::respond(StatusCodes::NOT_FOUND, 'Comment not found');
+    }
+
+    $token = Token::where('token', $payload['token'])->first();
+
+    $report = new Report();
+    $report->userid = $token->id;
+    $report->type = 1;
+    $report->item = $payload['commentID'];
+    $report->save();
+
+    return Responder::respond(StatusCodes::SUCCESS, 'Comment reported');
   }
 
 }
