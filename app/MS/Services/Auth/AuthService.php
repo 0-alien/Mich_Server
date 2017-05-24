@@ -75,9 +75,10 @@ class AuthService {
       $token = new Token();
       $token->id = $credential->id;
       $token->token = self::generateUniqueToken();
-      $token->fcmrt = $payload['fcmrt'];
-      $token->save();
     }
+
+    $token->fcmrt = $payload['fcmrt'];
+    $token->save();
 
     return Responder::respond(StatusCodes::SUCCESS, 'Logged in', ['id' => $token->id, 'token' => $token->token]);
   }
