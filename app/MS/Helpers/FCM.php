@@ -7,14 +7,14 @@ class FCM {
   public static function send($to, $title, $body, $data) {
     $msg = array (
       'title'	=> $title,
-      'body' => $body
+      'body' => $body,
+      'sound' => 'default',
+      'badge' => 1
     );
     $fields = array (
       'to' => $to,
       'notification' => $msg,
-      'data' => $data,
-      'sound' => 'default',
-      'badge' => 1
+      'data' => $data
     );
     $headers = array (
       'Authorization: key=AAAAoybEsDQ:APA91bGpARFjr6BneFv55N-YzoBOEOvJTjLGNbqH9oAxQGr8VipSEd0_7BUJWbz1kW3QaA7h9cgzL_g9cS2kANb-PsDsZu8Evz0sTiRNC-kHaxMMgXysUmrNG5fzbavk0zPcYByUb0GA',
