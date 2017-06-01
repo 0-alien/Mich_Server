@@ -267,6 +267,7 @@ class PostService {
       $notification->avatar = url('/api/media/display/' . $token->credential->user->avatar);
       $notification->userid = $post->credential->id;
       $notification->save();
+      $notification->send();
     }
 
 
@@ -323,6 +324,7 @@ class PostService {
       $notification->avatar = url('/api/media/display/' . $token->credential->user->avatar);
       $notification->userid = $comment->credential->id;
       $notification->save();
+      $notification->send();
     }
 
 

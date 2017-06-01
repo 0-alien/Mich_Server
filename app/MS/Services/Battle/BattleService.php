@@ -44,6 +44,7 @@ class BattleService {
     $notification->avatar = url('/api/media/display/' . $battle->hostCredential->user->avatar);
     $notification->userid = $battle->guest;
     $notification->save();
+    $notification->send();
 
 
     return Responder::respond(StatusCodes::SUCCESS, 'Invitation sent');
@@ -83,6 +84,7 @@ class BattleService {
     $notification->avatar = url('/api/media/display/' . $battle->guestCredential->user->avatar);
     $notification->userid = $battle->host;
     $notification->save();
+    $notification->send();
 
 
     return Responder::respond(StatusCodes::SUCCESS, 'Battle accepted');

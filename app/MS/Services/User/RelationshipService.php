@@ -82,6 +82,7 @@ class RelationshipService {
       $notification->avatar = url('/api/media/display/' . $token->credential->user->avatar);
       $notification->userid = $relationship->following;
       $notification->save();
+      $notification->send();
     }
 
     return Responder::respond(StatusCodes::SUCCESS, 'You are following this user');
