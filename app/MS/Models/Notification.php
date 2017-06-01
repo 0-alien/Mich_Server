@@ -2,6 +2,7 @@
 
 namespace App\MS\Models;
 
+use App\MS\Helpers\FCM;
 use Illuminate\Database\Eloquent\Model;
 
 class Notification extends Model {
@@ -12,6 +13,12 @@ class Notification extends Model {
 
   public function credential() {
     return $this->hasOne('\App\MS\Models\User\Credential', 'id', 'userid');
+  }
+
+
+
+  public function send() {
+    FCM::send(Token::where('id')->first()->fcmrt, $this->message, '', ['type' => $this->type, 'id' => $this->itemid]);
   }
 
 }

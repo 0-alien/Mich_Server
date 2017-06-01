@@ -203,9 +203,8 @@ class PostService {
       $notification->avatar = url('/api/media/display/' . $like->credential->user->avatar);
       $notification->userid = $post->credential->id;
       $notification->save();
+      $notification->send();
     }
-
-
 
     return Responder::respond(StatusCodes::SUCCESS, 'Post liked');
   }
