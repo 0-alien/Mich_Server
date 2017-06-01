@@ -187,23 +187,22 @@ class PostService {
     $token = Token::where('token', $payload['token'])->first();
     $post = Post::where('id', $payload['postID'])->first();
 
+    if (!Like::where('userid', $token->id)->where('postid', $post->id)->exists()) {
+      $like = new Like();
+      $like->userid = $token->id;
+      $like->postid = $post->id;
+      $like->save();
 
-    $like = new Like();
-    $like->userid = $token->id;
-    $like->postid = $post->id;
-    $like->save();
-
-
-
-    if ($token->id != $post->credential->id) {
-      $notification = new Notification();
-      $notification->type = 1;
-      $notification->itemid = $post->id;
-      $notification->message = $like->credential->username . ' likes your post';
-      $notification->avatar = url('/api/media/display/' . $like->credential->user->avatar);
-      $notification->userid = $post->credential->id;
-      $notification->save();
-      $notification->send();
+      if ($token->id != $post->credential->id) {
+        $notification = new Notification();
+        $notification->type = 1;
+        $notification->itemid = $post->id;
+        $notification->message = $like->credential->username . ' likes your post';
+        $notification->avatar = url('/api/media/display/' . $like->credential->user->avatar);
+        $notification->userid = $post->credential->id;
+        $notification->save();
+        $notification->send();
+      }
     }
 
     return Responder::respond(StatusCodes::SUCCESS, 'Post liked');
@@ -221,7 +220,6 @@ class PostService {
 
     $token = Token::where('token', $payload['token'])->first();
     $post = Post::where('id', $payload['postID'])->first();
-
 
     Like::where('userid', $token->id)->where('postid', $post->id)->delete();
 
@@ -245,7 +243,6 @@ class PostService {
     $token = Token::where('token', $payload['token'])->first();
     $post = Post::where('id', $payload['postID'])->first();
 
-
     $comment = new Comment();
     $comment->userid = $token->id;
     $comment->postid = $payload['postID'];
@@ -257,8 +254,6 @@ class PostService {
     $comment->nlikes = 0;
     $comment->mylike = 0;
 
-
-
     if ($token->id != $post->credential->id) {
       $notification = new Notification();
       $notification->type = 2;
@@ -269,7 +264,6 @@ class PostService {
       $notification->save();
       $notification->send();
     }
-
 
     return Responder::respond(StatusCodes::SUCCESS, 'Comment added', $comment);
   }
@@ -309,25 +303,23 @@ class PostService {
     $token = Token::where('token', $payload['token'])->first();
     $comment = Comment::where('id', $payload['commentID'])->first();
 
-    $comlike = new Comlike();
-    $comlike->userid = $token->id;
-    $comlike->commentid = $payload['commentID'];
-    $comlike->save();
+    if (!Comlike::where('userid', $token->id)->where('commentid', $comment->id)->exists()) {
+      $comlike = new Comlike();
+      $comlike->userid = $token->id;
+      $comlike->commentid = $comment->id;
+      $comlike->save();
 
-
-
-    if ($token->id != $comment->credential->id) {
-      $notification = new Notification();
-      $notification->type = 3;
-      $notification->itemid = $comment->post->id;
-      $notification->message = $token->credential->username . ' likes your comment';
-      $notification->avatar = url('/api/media/display/' . $token->credential->user->avatar);
-      $notification->userid = $comment->credential->id;
-      $notification->save();
-      $notification->send();
+      if ($token->id != $comment->credential->id) {
+        $notification = new Notification();
+        $notification->type = 3;
+        $notification->itemid = $comment->post->id;
+        $notification->message = $token->credential->username . ' likes your comment';
+        $notification->avatar = url('/api/media/display/' . $token->credential->user->avatar);
+        $notification->userid = $comment->credential->id;
+        $notification->save();
+        $notification->send();
+      }
     }
-
-
 
     return Responder::respond(StatusCodes::SUCCESS, 'Comment liked');
   }
