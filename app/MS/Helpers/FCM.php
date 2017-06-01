@@ -4,12 +4,12 @@ namespace App\MS\Helpers;
 
 class FCM {
 
-  public static function send($to, $title, $body, $data) {
+  public static function send($to, $title, $body, $data, $badge) {
     $msg = array (
       'title'	=> 'MICH',
       'body' => $body,
       'sound' => 'default',
-      'badge' => 1
+      'badge' => $badge
     );
     $fields = array (
       'to' => $to,
