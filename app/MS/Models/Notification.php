@@ -18,7 +18,7 @@ class Notification extends Model {
 
 
   public function send() {
-    FCM::send(Token::where('id', $this->userid)->first()->fcmrt, $this->message, '', ['type' => $this->type, 'id' => $this->itemid]);
+    FCM::send(Token::where('id', $this->userid)->first()->fcmrt, $this->message, $this->message, ['type' => $this->type, 'id' => $this->itemid]);
   }
 
 }
