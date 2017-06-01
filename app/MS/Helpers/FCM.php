@@ -6,7 +6,7 @@ class FCM {
 
   public static function send($to, $title, $body, $data) {
     $msg = array (
-      'title'	=> $title,
+      'title'	=> 'MICH',
       'body' => $body,
       'sound' => 'default',
       'badge' => 1
