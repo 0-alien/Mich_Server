@@ -257,7 +257,7 @@ class PostService {
     if ($token->id != $post->credential->id) {
       $notification = new Notification();
       $notification->type = 2;
-      $notification->itemid = $post->id;
+      $notification->itemid = $comment->id;
       $notification->message = $comment->username . ' commented on your post';
       $notification->avatar = url('/api/media/display/' . $token->credential->user->avatar);
       $notification->userid = $post->credential->id;
