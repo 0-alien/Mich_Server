@@ -312,7 +312,7 @@ class PostService {
       if ($token->id != $comment->credential->id) {
         $notification = new Notification();
         $notification->type = 3;
-        $notification->itemid = $comment->post->id;
+        $notification->itemid = $comment->id;
         $notification->message = $token->credential->username . ' likes your comment';
         $notification->avatar = url('/api/media/display/' . $token->credential->user->avatar);
         $notification->userid = $comment->credential->id;
