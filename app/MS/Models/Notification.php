@@ -19,7 +19,7 @@ class Notification extends Model {
 
   public function send() {
     $badge = Notification::where('userid', $this->userid)->where('status', 0)->count();
-    $data = ['type' => $this->type, 'id' => $this->itemid];
+    $data = ['type' => $this->type, 'id' => $this->itemid, 'notificationid' => $this->id];
     if ($this->type === 2 || $this->type === 3) {
       $data['commentid'] = $data['id'];
       unset($data['id']);
