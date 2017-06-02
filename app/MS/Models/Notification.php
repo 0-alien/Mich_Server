@@ -21,6 +21,8 @@ class Notification extends Model {
     $badge = Notification::where('userid', $this->userid)->where('status', 0)->count();
     $data = ['type' => $this->type, 'id' => $this->itemid];
     if ($this->type === 3) {
+      $data['commentid'] = $data['id'];
+      unset($data['id']);
       $data['postid'] = Comment::where('id', $this->itemid)->first()->post->id;
     }
     FCM::send(Token::where('id', $this->userid)->first()->fcmrt, $this->message, $this->message, $data, $badge);
