@@ -100,3 +100,9 @@ Route::group(['prefix' => 'social', 'middleware' => 'authToken'], function () {
 Route::group(['prefix' => 'fcm', 'middleware' => 'authToken'], function () {
   Route::post('update', 'FCM\FCMController@update');
 });
+
+
+
+Route::group(['prefix' => 'faq'], function () {
+  Route::post('ask', 'FAQ\FAQController@ask');
+});

@@ -17,7 +17,7 @@ class Validation {
   const token         = ['token' => 'required|size:64'];
   const fcmrt         = ['fcmrt' => 'required'];
   const code          = ['code' => 'required|digits:6'];
-  const title         = ['title' => 'required|min:2|max:200'];
+  const title         = ['title' => 'min:2|max:200'];
   const image         = ['image' => 'required'];
   const postID        = ['postID' => 'required'];
   const term          = ['term' => 'required|alpha_num|min:1|max:50'];
@@ -25,6 +25,7 @@ class Validation {
   const commentID     = ['commentID' => 'required'];
   const battleID      = ['battleID' => 'required'];
   const notificationID = ['notificationID' => 'required'];
+  const question      = ['question' => 'required'];
 
   const MESSAGES = [
     'required' => 'The [:attribute] parameter is required',
