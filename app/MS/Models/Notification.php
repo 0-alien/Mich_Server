@@ -18,6 +18,10 @@ class Notification extends Model {
 
 
   public function send() {
+    if (!Token::where('id', $this->userid)->exists()) {
+      return false;
+    }
+
     $badge = Notification::where('userid', $this->userid)->where('status', 0)->count();
     FCM::send(Token::where('id', $this->userid)->first()->fcmrt, $this->message, $this->message, [
       'type' => $this->type,

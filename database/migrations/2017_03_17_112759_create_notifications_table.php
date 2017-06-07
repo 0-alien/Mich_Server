@@ -14,10 +14,10 @@ class CreateNotificationsTable extends Migration {
       $table->string('avatar');
       $table->boolean('status')->default(0);
       $table->integer('userid')->unsigned();
-      $table->integer('postid')->unsigned();
-      $table->integer('commentid')->unsigned();
-      $table->integer('followerid')->unsigned();
-      $table->integer('battleid')->unsigned();
+      $table->integer('postid')->unsigned()->default(0);
+      $table->integer('commentid')->unsigned()->default(0);
+      $table->integer('followerid')->unsigned()->default(0);
+      $table->integer('battleid')->unsigned()->default(0);
       $table->timestamps();
 
       $table->foreign('userid')->references('id')->on('credentials')->onDelete('cascade');

@@ -94,12 +94,6 @@ class BattleService {
     $battle->guest = $payload['userID'];
     $battle->save();
 
-
-    $options = ['cluster' => 'eu', 'encrypted' => true];
-    $pusher = new \Pusher(env('PUSHER_KEY'), env('PUSHER_SECRET'), env('PUSHER_APP_ID'), $options);
-    $pusher->trigger(''.$battle->guest, 'invitation', ['battle' => $battle->id]);
-
-
     $notification = new Notification();
     $notification->type = 5;
     $notification->battleid = $battle->id;
@@ -133,12 +127,6 @@ class BattleService {
 
     $battle->status = 2;
     $battle->save();
-
-    $options = ['cluster' => 'eu', 'encrypted' => true];
-    $pusher = new \Pusher(env('PUSHER_KEY'), env('PUSHER_SECRET'), env('PUSHER_APP_ID'), $options);
-    $pusher->trigger(''.$battle->host, 'accept', ['battle' => $battle->id]);
-
-
 
     $notification = new Notification();
     $notification->type = 6;
