@@ -32,6 +32,8 @@ class BattleService {
 
       $battle->hostuser = $battle->hostCredential->user;
       $battle->guestuser = $battle->guestCredential->user;
+      unset($battle->hostCredential);
+      unset($battle->guestCredential);
     }
 
     return Responder::respond(StatusCodes::SUCCESS, '', $battles);
