@@ -13,6 +13,39 @@ use App\MS\Validation as V;
 class BattleService {
 
   public static function get($payload) {
+    V::validate($payload, V::battleID);
+
+    if (!Battle::where('id', $payload['battleID'])->exists()) {
+      return Responder::respond(StatusCodes::NOT_FOUND, 'Battle not found');
+    }
+
+    $token = Token::where('token', $payload['token'])->first();
+
+    $battle = Battle::where('id', $payload['battleID'])->first();
+
+    $battle->mybattle = false;
+    $battle->iamhost = false;
+    $battle->iamguest = false;
+
+    if ($token->id === $battle->host) {
+      $battle->mybattle = true;
+      $battle->iamhost = true;
+    } else if ($token->id === $battle->guest) {
+      $battle->mybattle = true;
+      $battle->iamguest = true;
+    }
+
+    $battle->host = ['id' => $battle->host, 'username' => $battle->hostCredential->username, 'avatar' => url('/api/media/display/' . $battle->hostCredential->user->avatar) . '?v=' . str_random(20)];
+    $battle->guest = ['id' => $battle->guest, 'username' => $battle->guestCredential->username, 'avatar' => url('/api/media/display/' . $battle->guestCredential->user->avatar) . '?v=' . str_random(20)];
+    unset($battle->hostCredential);
+    unset($battle->guestCredential);
+
+    return Responder::respond(StatusCodes::SUCCESS, '', $battle);
+  }
+
+
+
+  public static function getAll($payload) {
     $token = Token::where('token', $payload['token'])->first();
 
     $battles = Battle::orderBy('id', 'desc')->get();
@@ -30,12 +63,10 @@ class BattleService {
         $battle->iamguest = true;
       }
 
-      $battle->hostuser = $battle->hostCredential->user;
-      $battle->guestuser = $battle->guestCredential->user;
+      $battle->host = ['id' => $battle->host, 'username' => $battle->hostCredential->username, 'avatar' => url('/api/media/display/' . $battle->hostCredential->user->avatar) . '?v=' . str_random(20)];
+      $battle->guest = ['id' => $battle->guest, 'username' => $battle->guestCredential->username, 'avatar' => url('/api/media/display/' . $battle->guestCredential->user->avatar) . '?v=' . str_random(20)];
       unset($battle->hostCredential);
       unset($battle->guestCredential);
-      $battle->hostuser->avatar = url('/api/media/display/' . $battle->hostuser->avatar) . '?v=' . str_random(20);
-      $battle->guestuser->avatar = url('/api/media/display/' . $battle->guestuser->avatar) . '?v=' . str_random(20);
     }
 
     return Responder::respond(StatusCodes::SUCCESS, '', $battles);

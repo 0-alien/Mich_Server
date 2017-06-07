@@ -77,6 +77,7 @@ Route::group(['prefix' => 'search', 'middleware' => 'authToken'], function () {
 
 Route::group(['prefix' => 'battle', 'middleware' => 'authToken'], function () {
   Route::post('get', 'Battle\BattleController@get');
+  Route::post('getAll', 'Battle\BattleController@getAll');
   Route::post('invite', 'Battle\BattleController@invite');
   Route::post('accept', 'Battle\BattleController@accept');
 });

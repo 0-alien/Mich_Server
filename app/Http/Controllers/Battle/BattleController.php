@@ -13,6 +13,12 @@ class BattleController extends BaseController {
 
 
 
+  public function getAll() {
+    return BattleService::getAll($this->payload);
+  }
+
+
+
   public function invite() {
     return BattleService::invite($this->payload);
   }
