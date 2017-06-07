@@ -29,6 +29,9 @@ class BattleService {
         $battle->mybattle = true;
         $battle->iamguest = true;
       }
+
+      $battle->hostuser = $battle->hostCredential->user;
+      $battle->guestuser = $battle->guestCredential->user;
     }
 
     return Responder::respond(StatusCodes::SUCCESS, '', $battles);
