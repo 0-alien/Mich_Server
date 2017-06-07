@@ -34,6 +34,8 @@ class BattleService {
       $battle->guestuser = $battle->guestCredential->user;
       unset($battle->hostCredential);
       unset($battle->guestCredential);
+      $battle->hostuser->avatar = url('/api/media/display/' . $battle->hostuser->avatar) . '?v=' . str_random(20);
+      $battle->guestuser->avatar = url('/api/media/display/' . $battle->guestuser->avatar) . '?v=' . str_random(20);
     }
 
     return Responder::respond(StatusCodes::SUCCESS, '', $battles);
