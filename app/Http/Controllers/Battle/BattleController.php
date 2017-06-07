@@ -7,6 +7,12 @@ use App\MS\Services\Battle\BattleService;
 
 class BattleController extends BaseController {
 
+  public function get() {
+    return BattleService::get($this->payload);
+  }
+
+
+
   public function invite() {
     return BattleService::invite($this->payload);
   }

@@ -12,6 +12,31 @@ use App\MS\Validation as V;
 
 class BattleService {
 
+  public static function get($payload) {
+    $token = Token::where('token', $payload['token'])->first();
+
+    $battles = Battle::orderBy('id', 'desc')->get();
+
+    foreach ($battles as $battle) {
+      $battle->mybattle = false;
+      $battle->iamhost = false;
+      $battle->iamguest = false;
+
+      if ($token->id === $battle->host) {
+        $battle->mybattle = true;
+        $battle->iamhost = true;
+      } else if ($token->id === $battle->guest) {
+        $battle->mybattle = true;
+        $battle->iamguest = true;
+      }
+    }
+
+    return Responder::respond(StatusCodes::SUCCESS, '', $battles);
+  }
+
+
+
+
   public static function invite($payload) {
     V::validate($payload, V::reqUserID);
 
