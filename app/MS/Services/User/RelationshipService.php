@@ -77,7 +77,7 @@ class RelationshipService {
 
       $notification = new Notification();
       $notification->type = 4;
-      $notification->itemid = $relationship->follower;
+      $notification->followerid = $relationship->follower;
       $notification->message = $token->credential->username . ' is following you';
       $notification->avatar = url('/api/media/display/' . $token->credential->user->avatar);
       $notification->userid = $relationship->following;

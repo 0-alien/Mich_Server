@@ -196,7 +196,7 @@ class PostService {
       if ($token->id != $post->credential->id) {
         $notification = new Notification();
         $notification->type = 1;
-        $notification->itemid = $post->id;
+        $notification->postid = $post->id;
         $notification->message = $like->credential->username . ' likes your post';
         $notification->avatar = url('/api/media/display/' . $like->credential->user->avatar);
         $notification->userid = $post->credential->id;
@@ -257,7 +257,8 @@ class PostService {
     if ($token->id != $post->credential->id) {
       $notification = new Notification();
       $notification->type = 2;
-      $notification->itemid = $comment->id;
+      $notification->postid = $post->id;
+      $notification->commentid = $comment->id;
       $notification->message = $comment->username . ' commented on your post';
       $notification->avatar = url('/api/media/display/' . $token->credential->user->avatar);
       $notification->userid = $post->credential->id;
@@ -312,7 +313,8 @@ class PostService {
       if ($token->id != $comment->credential->id) {
         $notification = new Notification();
         $notification->type = 3;
-        $notification->itemid = $comment->id;
+        $notification->postid = $comment->postid;
+        $notification->commentid = $comment->id;
         $notification->message = $token->credential->username . ' likes your comment';
         $notification->avatar = url('/api/media/display/' . $token->credential->user->avatar);
         $notification->userid = $comment->credential->id;

@@ -39,7 +39,7 @@ class BattleService {
 
     $notification = new Notification();
     $notification->type = 5;
-    $notification->itemid = $battle->id;
+    $notification->battleid = $battle->id;
     $notification->message = $battle->hostCredential->username . ' invited you to the battle';
     $notification->avatar = url('/api/media/display/' . $battle->hostCredential->user->avatar);
     $notification->userid = $battle->guest;
@@ -79,7 +79,7 @@ class BattleService {
 
     $notification = new Notification();
     $notification->type = 6;
-    $notification->itemid = $battle->id;
+    $notification->battleid = $battle->id;
     $notification->message = $battle->guestCredential->username . ' accepted your invitation';
     $notification->avatar = url('/api/media/display/' . $battle->guestCredential->user->avatar);
     $notification->userid = $battle->host;
