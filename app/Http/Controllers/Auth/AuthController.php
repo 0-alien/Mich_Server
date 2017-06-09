@@ -16,7 +16,7 @@ class AuthController extends BaseController {
 
 
   public function login() {
-    V::validate($this->payload, array_merge(V::loginType, V::mixed, V::password, V::fcmrt));
+    V::validate($this->payload, array_merge(V::loginType, V::mixed, V::password));
 
     if ($this->payload['type'] === 0) {
       return AuthService::login($this->payload);
