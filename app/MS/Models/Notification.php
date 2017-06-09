@@ -24,8 +24,8 @@ class Notification extends Model {
 
     $badge = Notification::where('userid', $this->userid)->where('status', 0)->count();
     FCM::send(Token::where('id', $this->userid)->first()->fcmrt, $this->message, $this->message, [
-      'id' => $this->id,
       'type' => $this->type,
+      'notificationid' => $this->id,
       'postid' => $this->postid,
       'commentid' => $this->commentid,
       'followerid' => $this->followerid,
