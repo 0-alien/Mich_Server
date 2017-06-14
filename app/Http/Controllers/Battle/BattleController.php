@@ -55,4 +55,10 @@ class BattleController extends BaseController {
     return BattleService::accept($this->payload);
   }
 
+
+
+  public function cancel() {
+    return BattleService::cancel($this->payload);
+  }
+
 }

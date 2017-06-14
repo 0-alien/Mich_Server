@@ -141,4 +141,38 @@ class BattleService {
     return Responder::respond(StatusCodes::SUCCESS, 'Battle accepted');
   }
 
+
+
+  public static function cancel($payload) {
+    V::validate($payload, V::battleID);
+
+    $token = Token::where('token', $payload['token'])->first();
+
+    if (!Battle::where('id', $payload['battleID'])->where('status', 0)->exists()) {
+      return Responder::respond(StatusCodes::NOT_FOUND, 'Battle not found');
+    }
+
+    $battle = Battle::where('id', $payload['battleID'])->first();
+
+    if ($battle->guest != $token->id) {
+      return Responder::respond(StatusCodes::NO_PERMISSION, 'You are not invited to this battle');
+    }
+
+
+    $battle->status = 2;
+    $battle->save();
+
+    $notification = new Notification();
+    $notification->type = 7;
+    $notification->battleid = $battle->id;
+    $notification->message = $battle->guestCredential->username . ' canceled your invitation';
+    $notification->avatar = url('/api/media/display/' . $battle->guestCredential->user->avatar);
+    $notification->userid = $battle->host;
+    $notification->save();
+    $notification->send();
+
+
+    return Responder::respond(StatusCodes::SUCCESS, 'Battle canceled');
+  }
+
 }
