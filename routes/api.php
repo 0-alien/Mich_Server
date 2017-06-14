@@ -20,6 +20,8 @@ Route::group(['prefix' => 'user', 'middleware' => 'authToken'], function () {
 
   Route::post('posts', 'User\UserController@posts');
 
+  Route::post('report', 'User\UserController@report');
+
   Route::group(['prefix' => 'relation'], function () {
     Route::post('follow', 'User\RelationshipController@follow');
     Route::post('unfollow', 'User\RelationshipController@unfollow');

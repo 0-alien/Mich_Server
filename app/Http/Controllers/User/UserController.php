@@ -36,4 +36,10 @@ class UserController extends BaseController {
     return UserService::posts($this->payload);
   }
 
+
+
+  public function report() {
+    return UserService::report($this->payload);
+  }
+
 }

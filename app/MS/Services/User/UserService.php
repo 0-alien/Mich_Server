@@ -7,6 +7,7 @@ use App\MS\Models\Comment;
 use App\MS\Models\Like;
 use App\MS\Models\Post;
 use App\MS\Models\Relationship;
+use App\MS\Models\Report;
 use App\MS\Models\User\Credential;
 use App\MS\StatusCodes;
 use App\MS\Responder;
@@ -149,6 +150,27 @@ class UserService {
     }
 
     return Responder::respond(StatusCodes::SUCCESS, '', $posts);
+  }
+
+
+
+  public static function report($payload) {
+    V::validate($payload, V::userID);
+
+    if (!User::where('id', $payload['userID'])->exists()) {
+      return Responder::respond(StatusCodes::NOT_FOUND, 'User not found');
+    }
+
+    $token = Token::where('token', $payload['token'])->first();
+
+
+    $report = new Report();
+    $report->userid = $token->id;
+    $report->type = 2;
+    $report->item = $payload['userID'];
+    $report->save();
+
+    return Responder::respond(StatusCodes::SUCCESS, 'User reported');
   }
 
 }

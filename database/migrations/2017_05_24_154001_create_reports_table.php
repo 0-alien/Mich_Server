@@ -10,7 +10,7 @@ class CreateReportsTable extends Migration {
     Schema::create('reports', function (Blueprint $table) {
       $table->increments('id');
       $table->integer('userid')->unsigned();
-      $table->tinyInteger('type');
+      $table->integer('type')->unsigned();
       $table->integer('item');
       $table->timestamps();
 
