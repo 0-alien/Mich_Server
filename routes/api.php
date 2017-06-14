@@ -22,6 +22,7 @@ Route::group(['prefix' => 'user', 'middleware' => 'authToken'], function () {
 
   Route::post('report', 'User\UserController@report');
   Route::post('block', 'User\UserController@block');
+  Route::post('unblock', 'User\UserController@unblock');
 
   Route::group(['prefix' => 'relation'], function () {
     Route::post('follow', 'User\RelationshipController@follow');
