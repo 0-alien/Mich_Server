@@ -3,6 +3,7 @@
 namespace App\MS\Services\User;
 
 use App\MS\Helpers\Media;
+use App\MS\Models\Block;
 use App\MS\Models\Comment;
 use App\MS\Models\Like;
 use App\MS\Models\Post;
@@ -172,6 +173,42 @@ class UserService {
     $report->notify();
 
     return Responder::respond(StatusCodes::SUCCESS, 'User reported');
+  }
+
+
+
+  public static function block($payload) {
+    V::validate($payload, V::userID);
+
+    if (!User::where('id', $payload['userID'])->exists()) {
+      return Responder::respond(StatusCodes::NOT_FOUND, 'User not found');
+    }
+
+    $token = Token::where('token', $payload['token'])->first();
+
+
+    $block = new Block();
+    $block->userid = $token->id;
+    $block->blockid = $payload['userID'];
+    $block->save();
+
+    return Responder::respond(StatusCodes::SUCCESS, 'User blocked');
+  }
+
+
+
+  public static function unblock($payload) {
+    V::validate($payload, V::userID);
+
+    if (!User::where('id', $payload['userID'])->exists()) {
+      return Responder::respond(StatusCodes::NOT_FOUND, 'User not found');
+    }
+
+    $token = Token::where('token', $payload['token'])->first();
+
+    Block::where('userid', $token->id)->where('blockid', $payload['userID'])->delete();
+
+    return Responder::respond(StatusCodes::SUCCESS, 'User unblocked');
   }
 
 }

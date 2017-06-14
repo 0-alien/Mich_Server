@@ -42,4 +42,15 @@ class UserController extends BaseController {
     return UserService::report($this->payload);
   }
 
+
+
+  public function block() {
+    return UserService::block($this->payload);
+  }
+
+
+  public function unblock() {
+    return UserService::unblock($this->payload);
+  }
+
 }

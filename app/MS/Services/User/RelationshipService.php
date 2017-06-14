@@ -2,6 +2,7 @@
 
 namespace App\MS\Services\User;
 
+use App\MS\Models\Block;
 use App\MS\Models\Notification;
 use App\MS\Models\Relationship;
 use App\MS\Models\Report;
@@ -195,7 +196,7 @@ class RelationshipService {
 
 
   private static function getBlockers($id) {
-    $reports = Report::where('type', 2)->where('item', $id)->get();
+    $reports = Block::where('blockid', $id)->get();
 
     $blockers = [];
 

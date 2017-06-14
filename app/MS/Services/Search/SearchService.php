@@ -2,6 +2,7 @@
 
 namespace App\MS\Services\Search;
 
+use App\MS\Models\Block;
 use App\MS\Models\Report;
 use App\MS\Models\Token;
 use App\MS\Models\User\Credential;
@@ -54,7 +55,7 @@ class SearchService {
 
 
   private static function getBlockers($id) {
-    $reports = Report::where('type', 2)->where('item', $id)->get();
+    $reports = Block::where('blockid', $id)->get();
 
     $blockers = [];
 

@@ -4,6 +4,7 @@ namespace App\MS\Services\Post;
 
 use App\MS\Helpers\Censor;
 use App\MS\Helpers\Media;
+use App\MS\Models\Block;
 use App\MS\Models\Comlike;
 use App\MS\Models\Comment;
 use App\MS\Models\Hiddenpost;
@@ -457,7 +458,7 @@ class PostService {
 
 
   private static function getBlockers($id) {
-    $reports = Report::where('type', 2)->where('item', $id)->get();
+    $reports = Block::where('blockid', $id)->get();
 
     $blockers = [];
 
