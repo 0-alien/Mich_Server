@@ -7,7 +7,7 @@ use Illuminate\Database\Migrations\Migration;
 class CreateBlocksTable extends Migration {
 
   public function up() {
-    Schema::create('block', function (Blueprint $table) {
+    Schema::create('blocks', function (Blueprint $table) {
       $table->increments('id');
       $table->integer('userid')->unsigned();
       $table->integer('blockid')->unsigned();
@@ -21,7 +21,7 @@ class CreateBlocksTable extends Migration {
 
 
   public function down() {
-    Schema::drop('block');
+    Schema::drop('blocks');
   }
 
 }

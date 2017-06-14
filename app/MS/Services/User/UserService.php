@@ -34,6 +34,8 @@ class UserService {
 
     $user = User::where('id', $userID)->first();
 
+    $blocked = Block::where('userid', $token->id)->where('blockid', $user->id)->exists();
+
     $profile = [
       'id' => $userID,
       'name' => $user->name,
@@ -42,6 +44,7 @@ class UserService {
       'avatar' => url('/api/media/display/' . $user->avatar) . '?v=' . str_random(20),
       'nfollowers' => Relationship::where('following', $userID)->count(),
       'nfollowing' => Relationship::where('follower', $userID)->count(),
+      'blocked' => $blocked
     ];
 
     return Responder::respond(StatusCodes::SUCCESS, '', $profile);
