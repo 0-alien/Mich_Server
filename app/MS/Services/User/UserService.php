@@ -169,6 +169,7 @@ class UserService {
     $report->type = 2;
     $report->item = $payload['userID'];
     $report->save();
+    $report->notify();
 
     return Responder::respond(StatusCodes::SUCCESS, 'User reported');
   }

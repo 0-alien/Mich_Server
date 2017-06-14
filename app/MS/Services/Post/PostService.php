@@ -397,6 +397,7 @@ class PostService {
     $report->type = 0;
     $report->item = $payload['postID'];
     $report->save();
+    $report->notify();
 
     return Responder::respond(StatusCodes::SUCCESS, 'Post reported');
   }
@@ -417,6 +418,7 @@ class PostService {
     $report->type = 1;
     $report->item = $payload['commentID'];
     $report->save();
+    $report->notify();
 
     return Responder::respond(StatusCodes::SUCCESS, 'Comment reported');
   }
