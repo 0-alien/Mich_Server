@@ -4,6 +4,7 @@ namespace App\MS\Services\User;
 
 use App\MS\Models\Notification;
 use App\MS\Models\Relationship;
+use App\MS\Models\Report;
 use App\MS\Models\Token;
 use App\MS\Models\User\Credential;
 use App\MS\Responder;
@@ -122,6 +123,7 @@ class RelationshipService {
     $token = Token::where('token', $payload['token'])->first();
     $credentialID = (!empty($payload['userID']) ? $payload['userID'] : $token->id);
     $credential = Credential::where('id', $credentialID)->first();
+    $blockers = self::getBlockers($token->id);
 
     $relationships = $credential->followers;
     $followers = [];
@@ -129,6 +131,8 @@ class RelationshipService {
     foreach ($relationships as $relationship) {
       $followerCredential = $relationship->followerUser;
       $followerUser = $followerCredential->user;
+
+      if (in_array($followerCredential->id, $blockers)) continue;
 
       $followers[] = [
         'id' => $followerCredential->id,
@@ -155,6 +159,7 @@ class RelationshipService {
     $token = Token::where('token', $payload['token'])->first();
     $credentialID = (!empty($payload['userID']) ? $payload['userID'] : $token->id);
     $credential = Credential::where('id', $credentialID)->first();
+    $blockers = self::getBlockers($token->id);
 
     $relationships = $credential->following;
     $following = [];
@@ -162,6 +167,8 @@ class RelationshipService {
     foreach ($relationships as $relationship) {
       $followingCredential = $relationship->followingUser;
       $followingUser = $followingCredential->user;
+
+      if (in_array($followingCredential->id, $blockers)) continue;
 
       $following[] = [
         'id' => $followingCredential->id,
@@ -173,6 +180,30 @@ class RelationshipService {
     }
 
     return Responder::respond(StatusCodes::SUCCESS, '', $following);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+  private static function getBlockers($id) {
+    $reports = Report::where('type', 2)->where('item', $id)->get();
+
+    $blockers = [];
+
+    foreach ($reports as $report) {
+      array_push($blockers, $report->userid);
+    }
+
+    return $blockers;
   }
 
 }

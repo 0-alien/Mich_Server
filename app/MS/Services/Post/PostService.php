@@ -48,10 +48,15 @@ class PostService {
       return Responder::respond(StatusCodes::NOT_FOUND, 'Post not found');
     }
 
-
     $token = Token::where('token', $payload['token'])->first();
-
     $post = Post::where('id', $payload['postID'])->first();
+    $blockers = self::getBlockers($token->id);
+
+    if (in_array($post->userid, $blockers)) {
+      return Responder::respond(StatusCodes::NOT_FOUND, 'Post not found');
+    }
+
+
     $post->image = url('/api/media/display/' . $post->image) . '?v=' . str_random(20);
     $post->likes = Like::where('postid', $post->id)->count();
     $post->mylike = (Like::where('postid', $post->id)->where('userid', $token->id)->exists() ? 1 : 0);
@@ -97,10 +102,19 @@ class PostService {
 
     $token = Token::where('token', $payload['token'])->first();
     $post = Post::where('id', $payload['postID'])->first();
+    $blockers = self::getBlockers($token->id);
+
+    if (in_array($post->userid, $blockers)) {
+      return Responder::respond(StatusCodes::NOT_FOUND, 'Post not found');
+    }
 
     $comments = $post->comments;
 
-    foreach ($comments as $comment) {
+    foreach ($comments as $index => $comment) {
+      if (in_array($comment->userid, $blockers)) {
+        unset($comments[$index]);
+      };
+
       $comment->username = $comment->credential->username;
       $comment->avatar = url('/api/media/display/' . $comment->credential->user->avatar) . '?v=' . str_random(20);
       unset($comment->credential);
@@ -120,6 +134,7 @@ class PostService {
 
   public static function feed($payload) {
     $token = Token::where('token', $payload['token'])->first();
+    $blockers = self::getBlockers($token->id);
 
     $followingIDs = [$token->id];
 
@@ -130,7 +145,7 @@ class PostService {
     }
 
 
-    $posts = Post::whereIn('userid', $followingIDs)->orderBy('created_at', 'desc')->get();
+    $posts = Post::whereIn('userid', $followingIDs)->whereNotIn('userid', $blockers)->orderBy('created_at', 'desc')->get();
 
     foreach ($posts as $post) {
       $post->image = url('/api/media/display/' . $post->image) . '?v=' . str_random(20);
@@ -151,13 +166,17 @@ class PostService {
 
   public static function explore($payload) {
     $token = Token::where('token', $payload['token'])->first();
+    $blockers = self::getBlockers($token->id);
 
-    $likes = Like::select(DB::raw('postid, count(postid) as nlikes'))->groupBy('postid')->limit(30)->get();
+    $likes = Like::select(DB::raw('postid, count(postid) as nlikes'))->whereNotIn('userid', $blockers)->groupBy('postid')->limit(30)->get();
 
     $posts = [];
 
     foreach ($likes as $like) {
       $post = $like->post;
+
+      if (in_array($post->userid, $blockers)) continue;
+
       $post->image = url('/api/media/display/' . $post->image) . '?v=' . str_random(20);
       $post->likes = $like->nlikes;
       $post->mylike = (Like::where('postid', $post->id)->where('userid', $token->id)->exists() ? 1 : 0);
@@ -421,6 +440,32 @@ class PostService {
     $report->notify();
 
     return Responder::respond(StatusCodes::SUCCESS, 'Comment reported');
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  private static function getBlockers($id) {
+    $reports = Report::where('type', 2)->where('item', $id)->get();
+
+    $blockers = [];
+
+    foreach ($reports as $report) {
+      array_push($blockers, $report->userid);
+    }
+
+    return $blockers;
   }
 
 }
