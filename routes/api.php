@@ -113,3 +113,9 @@ Route::group(['prefix' => 'fcm', 'middleware' => 'authToken'], function () {
 Route::group(['prefix' => 'faq'], function () {
   Route::post('ask', 'FAQ\FAQController@ask');
 });
+
+
+
+Route::group(['prefix' => 'cron'], function () {
+  Route::get('minute', 'Cron\CronController@minute');
+});
