@@ -114,7 +114,7 @@ class BattleService {
 
     $token = Token::where('token', $payload['token'])->first();
 
-    if (!Battle::where('id', $payload['battleID'])->where('status', 1)->exists()) {
+    if (!Battle::where('id', $payload['battleID'])->where('status', 0)->exists()) {
       return Responder::respond(StatusCodes::NOT_FOUND, 'Battle not found');
     }
 
@@ -125,7 +125,7 @@ class BattleService {
     }
 
 
-    $battle->status = 2;
+    $battle->status = 1;
     $battle->save();
 
     $notification = new Notification();

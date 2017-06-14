@@ -11,7 +11,7 @@ class CreateBattlesTable extends Migration {
       $table->increments('id');
       $table->integer('host')->unsigned();
       $table->integer('guest')->unsigned();
-      $table->integer('status')->unsigned()->default(1);
+      $table->integer('status')->unsigned()->default(0);
       $table->timestamps();
 
       $table->foreign('host')->references('id')->on('credentials')->onDelete('cascade');
