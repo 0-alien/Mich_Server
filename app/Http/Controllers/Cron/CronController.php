@@ -14,7 +14,7 @@ class CronController extends BaseController {
 
     $battles = Battle::where('status', 0)->get();
     foreach ($battles as $battle) {
-      if ($now->diffInMinutes(Carbon::parse($battle->created_at))) {
+      if ($now->diffInMinutes(Carbon::parse($battle->created_at)) >= 1) {
         $battle->status = 2;
         $battle->save();
 
@@ -31,7 +31,7 @@ class CronController extends BaseController {
 
     $battles = Battle::where('status', 1)->get();
     foreach ($battles as $battle) {
-      if ($now->diffInHours(Carbon::parse($battle->created_at))) {
+      if ($now->diffInMinutes(Carbon::parse($battle->created_at)) >= 3) {
         $battle->status = 3;
         $battle->save();
 

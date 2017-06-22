@@ -35,8 +35,18 @@ class BattleService {
       $battle->iamguest = true;
     }
 
-    $battle->host = ['id' => $battle->host, 'username' => $battle->hostCredential->username, 'avatar' => url('/api/media/display/' . $battle->hostCredential->user->avatar) . '?v=' . str_random(20)];
-    $battle->guest = ['id' => $battle->guest, 'username' => $battle->guestCredential->username, 'avatar' => url('/api/media/display/' . $battle->guestCredential->user->avatar) . '?v=' . str_random(20)];
+    $battle->host = [
+      'id' => $battle->host,
+      'username' => $battle->hostCredential->username,
+      'avatar' => url('/api/media/display/' . $battle->hostCredential->user->avatar) . '?v=' . str_random(20),
+      'votes' => $battle->hostvotes
+    ];
+    $battle->guest = [
+      'id' => $battle->guest,
+      'username' => $battle->guestCredential->username,
+      'avatar' => url('/api/media/display/' . $battle->guestCredential->user->avatar) . '?v=' . str_random(20),
+      'votes' => $battle->guestvotes
+    ];
     unset($battle->hostCredential);
     unset($battle->guestCredential);
 
@@ -63,8 +73,18 @@ class BattleService {
         $battle->iamguest = true;
       }
 
-      $battle->host = ['id' => $battle->host, 'username' => $battle->hostCredential->username, 'avatar' => url('/api/media/display/' . $battle->hostCredential->user->avatar) . '?v=' . str_random(20)];
-      $battle->guest = ['id' => $battle->guest, 'username' => $battle->guestCredential->username, 'avatar' => url('/api/media/display/' . $battle->guestCredential->user->avatar) . '?v=' . str_random(20)];
+      $battle->host = [
+        'id' => $battle->host,
+        'username' => $battle->hostCredential->username,
+        'avatar' => url('/api/media/display/' . $battle->hostCredential->user->avatar) . '?v=' . str_random(20),
+        'votes' => $battle->hostvotes
+      ];
+      $battle->guest = [
+        'id' => $battle->guest,
+        'username' => $battle->guestCredential->username,
+        'avatar' => url('/api/media/display/' . $battle->guestCredential->user->avatar) . '?v=' . str_random(20),
+        'votes' => $battle->guestvotes
+      ];
       unset($battle->hostCredential);
       unset($battle->guestCredential);
     }
@@ -173,6 +193,31 @@ class BattleService {
 
 
     return Responder::respond(StatusCodes::SUCCESS, 'Battle canceled');
+  }
+
+
+
+  public static function vote($payload) {
+    V::validate($payload, array_merge(V::battleID, V::host));
+
+    $token = Token::where('token', $payload['token'])->first();
+
+    if (!Battle::where('id', $payload['battleID'])->where('status', 1)->exists()) {
+      return Responder::respond(StatusCodes::NOT_FOUND, 'Battle not found');
+    }
+
+    $battle = Battle::where('id', $payload['battleID'])->first();
+
+    if ($payload['host'] == 1) {
+      $battle->hostvotes += 1;
+    } else {
+      $battle->guestvotes += 1;
+    }
+
+    $battle->save();
+
+
+    return Responder::respond(StatusCodes::SUCCESS, 'You voted for ' . ($payload['host'] == 1 ? 'host' : 'guest'));
   }
 
 }

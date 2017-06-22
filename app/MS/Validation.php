@@ -19,12 +19,13 @@ class Validation {
   const code          = ['code' => 'required|digits:6'];
   const title         = ['title' => 'min:2|max:200'];
   const image         = ['image' => 'required'];
-  const postID        = ['postID' => 'required'];
+  const postID        = ['postID' => 'required|numeric'];
   const term          = ['term' => 'required|alpha_num|min:1|max:50'];
   const comment       = ['comment' => 'required|min:1|max:500'];
-  const commentID     = ['commentID' => 'required'];
-  const battleID      = ['battleID' => 'required'];
-  const notificationID = ['notificationID' => 'required'];
+  const commentID     = ['commentID' => 'required|numeric'];
+  const battleID      = ['battleID' => 'required|numeric'];
+  const host          = ['host' => 'required|numeric|in:0,1'];
+  const notificationID = ['notificationID' => 'required|numeric'];
   const question      = ['question' => 'required'];
 
   const MESSAGES = [

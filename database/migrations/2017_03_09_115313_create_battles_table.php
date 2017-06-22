@@ -11,6 +11,8 @@ class CreateBattlesTable extends Migration {
       $table->increments('id');
       $table->integer('host')->unsigned();
       $table->integer('guest')->unsigned();
+      $table->integer('hostvotes')->unsigned()->default(0);
+      $table->integer('guestvotes')->unsigned()->default(0);
       $table->integer('status')->unsigned()->default(0);
       $table->timestamps();
 
