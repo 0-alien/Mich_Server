@@ -22,7 +22,7 @@ class Notification extends Model {
       return false;
     }
 
-    $badge = Notification::where('userid', $this->userid)->whereIn('type', [1,2,3])->where('status', 0)->count();
+    $badge = Notification::where('userid', $this->userid)->where('status', 0)->count();
     FCM::send(Token::where('id', $this->userid)->first()->fcmrt, $this->message, $this->message, [
       'type' => $this->type,
       'notificationid' => $this->id,

@@ -5,8 +5,6 @@ namespace App\MS\Helpers;
 class FCM {
 
   public static function send($to, $title, $body, $data, $badge) {
-    if (!in_array($data['type'], [1,2,3])) return false;
-
     $msg = array (
       'title'	=> 'MICH',
       'body' => $body,

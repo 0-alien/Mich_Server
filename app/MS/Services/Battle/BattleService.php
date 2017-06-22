@@ -59,7 +59,7 @@ class BattleService {
   public static function getAll($payload) {
     $token = Token::where('token', $payload['token'])->first();
 
-    $battles = Battle::orderBy('id', 'desc')->get();
+    $battles = Battle::whereIn('status', [0,1,3])->orderBy('id', 'desc')->get();
 
     foreach ($battles as $battle) {
       $battle->mybattle = false;
@@ -126,7 +126,7 @@ class BattleService {
     $notification->avatar = url('/api/media/display/' . $battle->hostCredential->user->avatar);
     $notification->userid = $battle->guest;
     $notification->save();
-    $notification->send();
+    $notification->swhereIn('type', [1,2,3])->end();
 
 
     return Responder::respond(StatusCodes::SUCCESS, 'Invitation sent');
