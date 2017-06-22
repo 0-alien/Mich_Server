@@ -126,7 +126,7 @@ class BattleService {
     $notification->avatar = url('/api/media/display/' . $battle->hostCredential->user->avatar);
     $notification->userid = $battle->guest;
     $notification->save();
-    $notification->swhereIn('type', [1,2,3])->end();
+    $notification->send();
 
 
     return Responder::respond(StatusCodes::SUCCESS, 'Invitation sent');
