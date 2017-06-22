@@ -3,6 +3,7 @@
 namespace App\MS\Services\Battle;
 
 use App\MS\Models\Battle\Battle;
+use App\MS\Models\Battle\Vote;
 use App\MS\Models\Notification;
 use App\MS\Models\Token;
 use App\MS\Models\User\Credential;
@@ -39,13 +40,13 @@ class BattleService {
       'id' => $battle->host,
       'username' => $battle->hostCredential->username,
       'avatar' => url('/api/media/display/' . $battle->hostCredential->user->avatar) . '?v=' . str_random(20),
-      'votes' => $battle->hostvotes
+      'votes' => Vote::where('battle', $battle->id)->where('host', 1)->count()
     ];
     $battle->guest = [
       'id' => $battle->guest,
       'username' => $battle->guestCredential->username,
       'avatar' => url('/api/media/display/' . $battle->guestCredential->user->avatar) . '?v=' . str_random(20),
-      'votes' => $battle->guestvotes
+      'votes' => Vote::where('battle', $battle->id)->where('host', 0)->count()
     ];
     unset($battle->hostCredential);
     unset($battle->guestCredential);
@@ -77,13 +78,13 @@ class BattleService {
         'id' => $battle->host,
         'username' => $battle->hostCredential->username,
         'avatar' => url('/api/media/display/' . $battle->hostCredential->user->avatar) . '?v=' . str_random(20),
-        'votes' => $battle->hostvotes
+        'votes' => Vote::where('battle', $battle->id)->where('host', 1)->count()
       ];
       $battle->guest = [
         'id' => $battle->guest,
         'username' => $battle->guestCredential->username,
         'avatar' => url('/api/media/display/' . $battle->guestCredential->user->avatar) . '?v=' . str_random(20),
-        'votes' => $battle->guestvotes
+        'votes' => Vote::where('battle', $battle->id)->where('host', 0)->count()
       ];
       unset($battle->hostCredential);
       unset($battle->guestCredential);
@@ -208,13 +209,10 @@ class BattleService {
 
     $battle = Battle::where('id', $payload['battleID'])->first();
 
-    if ($payload['host'] == 1) {
-      $battle->hostvotes += 1;
-    } else {
-      $battle->guestvotes += 1;
-    }
-
-    $battle->save();
+    $vote = new Vote();
+    $vote->battle = $battle->id;
+    $vote->host = $payload['host'];
+    $vote->save();
 
 
     return Responder::respond(StatusCodes::SUCCESS, 'You voted for ' . ($payload['host'] == 1 ? 'host' : 'guest'));
