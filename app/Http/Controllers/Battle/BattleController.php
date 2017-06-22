@@ -38,4 +38,10 @@ class BattleController extends BaseController {
     return BattleService::cancel($this->payload);
   }
 
+
+
+  public function vote() {
+    return BattleService::vote($this->payload);
+  }
+
 }
