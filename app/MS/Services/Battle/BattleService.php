@@ -109,6 +109,10 @@ class BattleService {
       return Responder::respond(StatusCodes::NO_PERMISSION, 'You can not invite yourself');
     }
 
+    if (Battle::where('host', $token->id)->where('guest', $payload['userID'])->whereIn('status', [0,1])->exists()) {
+      return Responder::respond(StatusCodes::ALREADY_EXISTS, 'You have already initiated the battle');
+    }
+
 
     $battle = new Battle();
     $battle->host = $token->id;
@@ -207,9 +211,14 @@ class BattleService {
       return Responder::respond(StatusCodes::NOT_FOUND, 'Battle not found');
     }
 
+    if (Vote::where('battle', $payload['battleID'])->where('user', $token->id)->where('host', 0)->exists() && Vote::where('battle', $payload['battleID'])->where('user', $token->id)->where('host', 1)->exists()) {
+      return Responder::respond(StatusCodes::TRY_LIMIT, 'You have already voted');
+    }
+
     $battle = Battle::where('id', $payload['battleID'])->first();
 
     $vote = new Vote();
+    $vote->user = $token->id;
     $vote->battle = $battle->id;
     $vote->host = $payload['host'];
     $vote->save();
