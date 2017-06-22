@@ -11,6 +11,9 @@ class CreateUsersTable extends Migration {
       $table->increments('id');
       $table->string('name');
       $table->string('avatar')->default('noavatar');
+      $table->integer('win')->unsigned(0);
+      $table->integer('draw')->unsigned(0);
+      $table->integer('loss')->unsigned(0);
       $table->timestamps();
 
       $table->foreign('id')->references('id')->on('credentials')->onDelete('cascade');

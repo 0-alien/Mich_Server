@@ -44,7 +44,10 @@ class UserService {
       'avatar' => url('/api/media/display/' . $user->avatar) . '?v=' . str_random(20),
       'nfollowers' => Relationship::where('following', $userID)->count(),
       'nfollowing' => Relationship::where('follower', $userID)->count(),
-      'blocked' => $blocked
+      'blocked' => $blocked,
+      'win' => $user->win,
+      'draw' => $user->draw,
+      'loss' => $user->loss
     ];
 
     return Responder::respond(StatusCodes::SUCCESS, '', $profile);
@@ -91,6 +94,9 @@ class UserService {
       'avatar' => url('/api/media/display/' . $user->avatar) . '?v=' . str_random(20),
       'nfollowers' => Relationship::where('following', $user->id)->count(),
       'nfollowing' => Relationship::where('follower', $user->id)->count(),
+      'win' => $user->win,
+      'draw' => $user->draw,
+      'loss' => $user->loss
     ];
 
     return Responder::respond(StatusCodes::SUCCESS, 'Account updated', $profile);

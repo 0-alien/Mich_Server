@@ -26,7 +26,7 @@ class SearchService {
     $resultCount = $result->count();
 
     if ($resultCount < $limit) {
-      $result = $result->merge( Credential::where('username', 'like', '%'.$payload['term'].'%')->orderBy('id')->limit($limit)->get() );
+      $result = $result->merge( Credential::where('username', 'like', '%'.$payload['term'].'%')->whereNotIn('id', $blockers)->orderBy('id')->limit($limit)->get() );
     }
 
     $users = [];
