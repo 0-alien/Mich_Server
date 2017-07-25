@@ -143,7 +143,7 @@ class BattleService {
   public static function getRandom($payload) {
     $token = Token::where('token', $payload['token'])->first();
 
-    $battle = Battle::whereIn('status', [0,1,3])->where('host', '!=', $token->id)->where('guest', '!=', $token->id)->inRandomOrder()->first();
+    $battle = Battle::whereIn('status', [1])->where('host', '!=', $token->id)->where('guest', '!=', $token->id)->inRandomOrder()->first();
 
     if (!$battle) {
       return Responder::respond(StatusCodes::NOT_FOUND, 'Battle not found');
