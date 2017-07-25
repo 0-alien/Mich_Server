@@ -22,6 +22,18 @@ class BattleController extends BaseController {
 
 
 
+  public function getMine() {
+    return BattleService::getMine($this->payload);
+  }
+
+
+
+  public function getRandom() {
+    return BattleService::getRandom($this->payload);
+  }
+
+
+
   public function invite() {
     return BattleService::invite($this->payload);
   }

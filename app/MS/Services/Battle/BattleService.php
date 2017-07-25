@@ -95,6 +95,88 @@ class BattleService {
 
 
 
+  public static function getMine($payload) {
+    $token = Token::where('token', $payload['token'])->first();
+
+    $battles = Battle::whereIn('status', [0,1,3])->orderBy('id', 'desc')->get();
+
+    $result = [];
+
+    foreach ($battles as $battle) {
+      if ($token->id === $battle->host || $token->id === $battle->guest) {
+        $battle->mybattle = false;
+        $battle->iamhost = false;
+        $battle->iamguest = false;
+
+        if ($token->id === $battle->host) {
+          $battle->mybattle = true;
+          $battle->iamhost = true;
+        } else if ($token->id === $battle->guest) {
+          $battle->mybattle = true;
+          $battle->iamguest = true;
+        }
+
+        $battle->host = [
+          'id' => $battle->host,
+          'username' => $battle->hostCredential->username,
+          'avatar' => url('/api/media/display/' . $battle->hostCredential->user->avatar) . '?v=' . str_random(20),
+          'votes' => Vote::where('battle', $battle->id)->where('host', 1)->count()
+        ];
+        $battle->guest = [
+          'id' => $battle->guest,
+          'username' => $battle->guestCredential->username,
+          'avatar' => url('/api/media/display/' . $battle->guestCredential->user->avatar) . '?v=' . str_random(20),
+          'votes' => Vote::where('battle', $battle->id)->where('host', 0)->count()
+        ];
+        unset($battle->hostCredential);
+        unset($battle->guestCredential);
+
+        array_push($result, $battle);
+      }
+    }
+
+    return Responder::respond(StatusCodes::SUCCESS, '', $result);
+  }
+
+
+
+  public static function getRandom($payload) {
+    $token = Token::where('token', $payload['token'])->first();
+
+    $battle = Battle::whereIn('status', [0,1,3])->where('host', '!=', $token->id)->where('guest', '!=', $token->id)->inRandomOrder()->first();
+
+    if (!$battle) {
+      return Responder::respond(StatusCodes::NOT_FOUND, 'Battle not found');
+    }
+
+    if ($token->id === $battle->host) {
+      $battle->mybattle = true;
+      $battle->iamhost = true;
+    } else if ($token->id === $battle->guest) {
+      $battle->mybattle = true;
+      $battle->iamguest = true;
+    }
+
+    $battle->host = [
+      'id' => $battle->host,
+      'username' => $battle->hostCredential->username,
+      'avatar' => url('/api/media/display/' . $battle->hostCredential->user->avatar) . '?v=' . str_random(20),
+      'votes' => Vote::where('battle', $battle->id)->where('host', 1)->count()
+    ];
+    $battle->guest = [
+      'id' => $battle->guest,
+      'username' => $battle->guestCredential->username,
+      'avatar' => url('/api/media/display/' . $battle->guestCredential->user->avatar) . '?v=' . str_random(20),
+      'votes' => Vote::where('battle', $battle->id)->where('host', 0)->count()
+    ];
+    unset($battle->hostCredential);
+    unset($battle->guestCredential);
+
+    return Responder::respond(StatusCodes::SUCCESS, '', $battle);
+  }
+
+
+
 
   public static function invite($payload) {
     V::validate($payload, V::reqUserID);
