@@ -17,6 +17,8 @@ use App\MS\Responder;
 use App\MS\StatusCodes;
 use App\MS\Validation as V;
 use Illuminate\Support\Facades\DB;
+use Intervention\Image\ImageManagerStatic as Image;
+
 
 class PostService {
 
@@ -35,7 +37,11 @@ class PostService {
     $post->image = Media::saveImage($payload['image'], [$token->id]);
     $post->save();
 
-    $post->image = url('/api/media/display/' . $post->image) . '?v=' . str_random(20);
+    $post->image = [
+      'url' => url('/api/media/display/' . $post->image) . '?v=' . str_random(20),
+      'width' => Image::make(storage_path('uploads/' . $post->image))->width(),
+      'height' => Image::make(storage_path('uploads/' . $post->image))->height(),
+    ];
 
     return Responder::respond(StatusCodes::SUCCESS, 'Post created', $post);
   }
@@ -58,7 +64,11 @@ class PostService {
     }
 
 
-    $post->image = url('/api/media/display/' . $post->image) . '?v=' . str_random(20);
+    $post->image = [
+      'url' => url('/api/media/display/' . $post->image) . '?v=' . str_random(20),
+      'width' => Image::make(storage_path('uploads/' . $post->image))->width(),
+      'height' => Image::make(storage_path('uploads/' . $post->image))->height(),
+    ];
     $post->likes = Like::where('postid', $post->id)->count();
     $post->mylike = (Like::where('postid', $post->id)->where('userid', $token->id)->exists() ? 1 : 0);
     $post->ncomments = Comment::where('postid', $post->id)->count();
@@ -149,7 +159,11 @@ class PostService {
     $posts = Post::whereIn('userid', $followingIDs)->whereNotIn('userid', $blockers)->orderBy('created_at', 'desc')->get();
 
     foreach ($posts as $post) {
-      $post->image = url('/api/media/display/' . $post->image) . '?v=' . str_random(20);
+      $post->image = [
+        'url' => url('/api/media/display/' . $post->image) . '?v=' . str_random(20),
+        'width' => Image::make(storage_path('uploads/' . $post->image))->width(),
+        'height' => Image::make(storage_path('uploads/' . $post->image))->height(),
+      ];
       $post->likes = Like::where('postid', $post->id)->count();
       $post->mylike = (Like::where('postid', $post->id)->where('userid', $token->id)->exists() ? 1 : 0);
       $post->ncomments = Comment::where('postid', $post->id)->count();
@@ -178,7 +192,11 @@ class PostService {
 
       if (in_array($post->userid, $blockers)) continue;
 
-      $post->image = url('/api/media/display/' . $post->image) . '?v=' . str_random(20);
+      $post->image = [
+        'url' => url('/api/media/display/' . $post->image) . '?v=' . str_random(20),
+        'width' => Image::make(storage_path('uploads/' . $post->image))->width(),
+        'height' => Image::make(storage_path('uploads/' . $post->image))->height(),
+      ];
       $post->likes = $like->nlikes;
       $post->mylike = (Like::where('postid', $post->id)->where('userid', $token->id)->exists() ? 1 : 0);
       $post->ncomments = Comment::where('postid', $post->id)->count();
