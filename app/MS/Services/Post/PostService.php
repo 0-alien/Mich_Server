@@ -39,8 +39,8 @@ class PostService {
 
     $post->image = [
       'url' => url('/api/media/display/' . $post->image) . '?v=' . str_random(20),
-      'width' => Image::make(storage_path('uploads/' . $post->image))->width(),
-      'height' => Image::make(storage_path('uploads/' . $post->image))->height(),
+      'width' => Image::make(storage_path('uploads/' . $post->image . '.jpg'))->width(),
+      'height' => Image::make(storage_path('uploads/' . $post->image . '.jpg'))->height(),
     ];
 
     return Responder::respond(StatusCodes::SUCCESS, 'Post created', $post);
@@ -66,8 +66,8 @@ class PostService {
 
     $post->image = [
       'url' => url('/api/media/display/' . $post->image) . '?v=' . str_random(20),
-      'width' => Image::make(storage_path('uploads/' . $post->image))->width(),
-      'height' => Image::make(storage_path('uploads/' . $post->image))->height(),
+      'width' => Image::make(storage_path('uploads/' . $post->image . '.jpg'))->width(),
+      'height' => Image::make(storage_path('uploads/' . $post->image . '.jpg'))->height(),
     ];
     $post->likes = Like::where('postid', $post->id)->count();
     $post->mylike = (Like::where('postid', $post->id)->where('userid', $token->id)->exists() ? 1 : 0);
@@ -161,8 +161,8 @@ class PostService {
     foreach ($posts as $post) {
       $post->image = [
         'url' => url('/api/media/display/' . $post->image) . '?v=' . str_random(20),
-        'width' => Image::make(storage_path('uploads/' . $post->image))->width(),
-        'height' => Image::make(storage_path('uploads/' . $post->image))->height(),
+        'width' => Image::make(storage_path('uploads/' . $post->image . '.jpg'))->width(),
+        'height' => Image::make(storage_path('uploads/' . $post->image . '.jpg'))->height(),
       ];
       $post->likes = Like::where('postid', $post->id)->count();
       $post->mylike = (Like::where('postid', $post->id)->where('userid', $token->id)->exists() ? 1 : 0);
@@ -194,8 +194,8 @@ class PostService {
 
       $post->image = [
         'url' => url('/api/media/display/' . $post->image) . '?v=' . str_random(20),
-        'width' => Image::make(storage_path('uploads/' . $post->image))->width(),
-        'height' => Image::make(storage_path('uploads/' . $post->image))->height(),
+        'width' => Image::make(storage_path('uploads/' . $post->image . '.jpg'))->width(),
+        'height' => Image::make(storage_path('uploads/' . $post->image . '.jpg'))->height(),
       ];
       $post->likes = $like->nlikes;
       $post->mylike = (Like::where('postid', $post->id)->where('userid', $token->id)->exists() ? 1 : 0);
