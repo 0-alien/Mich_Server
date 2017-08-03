@@ -38,8 +38,8 @@ class PostService {
     $post->save();
 
     $post->image = url('/api/media/display/' . $post->image) . '?v=' . str_random(20);
-    $post->imageWidth = Image::make(storage_path('uploads/' . $post->image . '.jpg'))->width();
-    $post->imageHeight = Image::make(storage_path('uploads/' . $post->image . '.jpg'))->height();
+    $post->imagewidth = Image::make(storage_path('uploads/' . $post->image . '.jpg'))->width();
+    $post->imageheight = Image::make(storage_path('uploads/' . $post->image . '.jpg'))->height();
 
     return Responder::respond(StatusCodes::SUCCESS, 'Post created', $post);
   }
@@ -63,8 +63,8 @@ class PostService {
 
 
     $post->image = url('/api/media/display/' . $post->image) . '?v=' . str_random(20);
-    $post->imageWidth = Image::make(storage_path('uploads/' . $post->image . '.jpg'))->width();
-    $post->imageHeight = Image::make(storage_path('uploads/' . $post->image . '.jpg'))->height();
+    $post->imagewidth = Image::make(storage_path('uploads/' . $post->image . '.jpg'))->width();
+    $post->imageheight = Image::make(storage_path('uploads/' . $post->image . '.jpg'))->height();
     $post->likes = Like::where('postid', $post->id)->count();
     $post->mylike = (Like::where('postid', $post->id)->where('userid', $token->id)->exists() ? 1 : 0);
     $post->ncomments = Comment::where('postid', $post->id)->count();
@@ -156,8 +156,8 @@ class PostService {
 
     foreach ($posts as $post) {
       $post->image = url('/api/media/display/' . $post->image) . '?v=' . str_random(20);
-      $post->imageWidth = Image::make(storage_path('uploads/' . $post->image . '.jpg'))->width();
-      $post->imageHeight = Image::make(storage_path('uploads/' . $post->image . '.jpg'))->height();
+      $post->imagewidth = Image::make(storage_path('uploads/' . $post->image . '.jpg'))->width();
+      $post->imageheight = Image::make(storage_path('uploads/' . $post->image . '.jpg'))->height();
       $post->likes = Like::where('postid', $post->id)->count();
       $post->mylike = (Like::where('postid', $post->id)->where('userid', $token->id)->exists() ? 1 : 0);
       $post->ncomments = Comment::where('postid', $post->id)->count();
@@ -187,8 +187,8 @@ class PostService {
       if (in_array($post->userid, $blockers)) continue;
 
       $post->image = url('/api/media/display/' . $post->image) . '?v=' . str_random(20);
-      $post->imageWidth = Image::make(storage_path('uploads/' . $post->image . '.jpg'))->width();
-      $post->imageHeight = Image::make(storage_path('uploads/' . $post->image . '.jpg'))->height();
+      $post->imagewidth = Image::make(storage_path('uploads/' . $post->image . '.jpg'))->width();
+      $post->imageheight = Image::make(storage_path('uploads/' . $post->image . '.jpg'))->height();
       $post->likes = $like->nlikes;
       $post->mylike = (Like::where('postid', $post->id)->where('userid', $token->id)->exists() ? 1 : 0);
       $post->ncomments = Comment::where('postid', $post->id)->count();
