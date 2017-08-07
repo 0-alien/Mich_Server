@@ -187,7 +187,11 @@ class BattleService {
   public static function getTop($payload) {
     $token = Token::where('token', $payload['token'])->first();
 
-    $battles = DB::table('votes')->select(DB::raw('*, COUNT(battle) as nBattle'))->groupBy('battle')->orderBy('nBattle', 'desc')->get();
+    $votes = DB::table('votes')->groupBy('battle')->select(DB::raw('battle, COUNT(battle) as nBattle'))->orderBy('nBattle', 'desc')->limit(20)->get();
+    $votes = $votes->pluck('battle')->toArray();
+    $battles = Battle::whereIn('id', $votes)->get()->sortBy(function ($model) use ($votes) {
+      return array_search($model->id, $votes);
+    });
 
     $result = [];
 
