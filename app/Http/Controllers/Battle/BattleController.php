@@ -28,6 +28,18 @@ class BattleController extends BaseController {
 
 
 
+  public function getActive() {
+    return BattleService::getActive($this->payload);
+  }
+
+
+
+  public function getTop() {
+    return BattleService::getTop($this->payload);
+  }
+
+
+
   public function getRandom() {
     return BattleService::getRandom($this->payload);
   }
