@@ -282,16 +282,8 @@ class BattleService {
       $battle = new Battle();
       $battle->host = $hostID;
       $battle->guest = $guestID;
+      $battle->status = 1;
       $battle->save();
-
-      $notification = new Notification();
-      $notification->type = 5;
-      $notification->battleid = $battle->id;
-      $notification->message = $battle->hostCredential->username . ' matched you to battle';
-      $notification->avatar = url('/api/media/display/' . $battle->hostCredential->user->avatar);
-      $notification->userid = $battle->guest;
-      $notification->save();
-      $notification->send();
 
       return Responder::respond(StatusCodes::SUCCESS, 'Battle created', ['battle' => $battle->id]);
     }
