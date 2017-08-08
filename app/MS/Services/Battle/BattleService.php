@@ -3,6 +3,7 @@
 namespace App\MS\Services\Battle;
 
 use App\MS\Models\Battle\Battle;
+use App\MS\Models\Battle\Queue;
 use App\MS\Models\Battle\Vote;
 use App\MS\Models\Notification;
 use App\MS\Models\Token;
@@ -264,6 +265,53 @@ class BattleService {
     unset($battle->guestCredential);
 
     return Responder::respond(StatusCodes::SUCCESS, '', $battle);
+  }
+
+
+
+
+  public static function playRandom($payload) {
+    $token = Token::where('token', $payload['token'])->first();
+
+    if (Queue::count() && !Queue::where('user', $token->id)->exists()) {
+      $hostID = Queue::first()->id;
+      $guestID = $token->id;
+
+      Queue::truncate();
+
+      $battle = new Battle();
+      $battle->host = $hostID;
+      $battle->guest = $guestID;
+      $battle->save();
+
+      $notification = new Notification();
+      $notification->type = 5;
+      $notification->battleid = $battle->id;
+      $notification->message = $battle->hostCredential->username . ' matched you to battle';
+      $notification->avatar = url('/api/media/display/' . $battle->hostCredential->user->avatar);
+      $notification->userid = $battle->guest;
+      $notification->save();
+      $notification->send();
+
+      return Responder::respond(StatusCodes::SUCCESS, 'Battle created', ['battle' => $battle->id]);
+    }
+
+    if (!Queue::where('user', $token->id)->exists()) {
+      $queue = new Queue();
+      $queue->user = $token->id;
+      $queue->save();
+    }
+
+    return Responder::respond(StatusCodes::IN_QUEUE, 'You are in battling queue');
+  }
+
+
+
+
+  public static function cancelPlay($payload) {
+    Queue::truncate();
+
+    return Responder::respond(StatusCodes::SUCCESS, 'Removed from waiting queue');
   }
 
 

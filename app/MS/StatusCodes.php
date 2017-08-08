@@ -19,6 +19,8 @@ class StatusCodes {
   const INVALID_PARAMETER = 31;
   const NO_PERMISSION = 32;
 
+  const IN_QUEUE = 40;
+
 
 
 
@@ -37,6 +39,8 @@ class StatusCodes {
     30 => 'already exists',
     31 => 'invalid parameter',
     32 => 'no permission',
+
+    40 => 'in queue'
   ];
 
 }

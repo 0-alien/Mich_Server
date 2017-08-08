@@ -86,6 +86,8 @@ Route::group(['prefix' => 'battle', 'middleware' => 'authToken'], function () {
   Route::post('getActive', 'Battle\BattleController@getActive');
   Route::post('getTop', 'Battle\BattleController@getTop');
   Route::post('getRandom', 'Battle\BattleController@getRandom');
+  Route::post('playRandom', 'Battle\BattleController@playRandom');
+  Route::post('cancelPlay', 'Battle\BattleController@cancelPlay');
   Route::post('getAll', 'Battle\BattleController@getAll');
   Route::post('invite', 'Battle\BattleController@invite');
   Route::post('accept', 'Battle\BattleController@accept');

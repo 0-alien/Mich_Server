@@ -46,6 +46,18 @@ class BattleController extends BaseController {
 
 
 
+  public function playRandom() {
+    return BattleService::playRandom($this->payload);
+  }
+
+
+
+  public function cancelPlay() {
+    return BattleService::cancelPlay($this->payload);
+  }
+
+
+
   public function invite() {
     return BattleService::invite($this->payload);
   }
