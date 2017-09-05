@@ -47,6 +47,8 @@ Route::group(['prefix' => 'post', 'middleware' => 'authToken'], function () {
 
   Route::post('explore', 'Post\PostController@explore');
 
+  Route::post('random', 'Post\PostController@random');
+
   Route::post('like', 'Post\PostController@like');
   Route::post('unlike', 'Post\PostController@unlike');
 

@@ -206,6 +206,20 @@ class PostService {
 
 
 
+  public static function random($payload) {
+    $token = Token::where('token', $payload['token'])->first();
+
+    $following = $token->credential->following;
+    $followingIDs = $following->pluck('id');
+    $followingIDsArray = $followingIDs->toArray();
+
+    $post = Post::whereIn('userid', $followingIDsArray)->inRandomOrder()->first();
+
+    return Responder::respond(StatusCodes::SUCCESS, '', $post);
+  }
+
+
+
   public static function like($payload) {
     V::validate($payload, V::postID);
 

@@ -44,6 +44,12 @@ class PostController extends BaseController {
 
 
 
+  public function random() {
+    return PostService::random($this->payload);
+  }
+
+
+
   public function like() {
     return PostService::like($this->payload);
   }
