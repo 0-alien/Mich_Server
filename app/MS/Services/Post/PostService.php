@@ -214,6 +214,15 @@ class PostService {
     $followingIDsArray = $followingIDs->toArray();
 
     $post = Post::whereIn('userid', $followingIDsArray)->inRandomOrder()->first();
+    $post->imagewidth = Image::make(storage_path('uploads/' . $post->image . '.jpg'))->width();
+    $post->imageheight = Image::make(storage_path('uploads/' . $post->image . '.jpg'))->height();
+    $post->image = url('/api/media/display/' . $post->image) . '?v=' . str_random(20);
+    $post->likes = Like::where('postid', $post->id)->count();
+    $post->mylike = (Like::where('postid', $post->id)->where('userid', $token->id)->exists() ? 1 : 0);
+    $post->ncomments = Comment::where('postid', $post->id)->count();
+    $post->username = $post->credential->username;
+    $post->avatar = url('/api/media/display/' . $post->credential->user->avatar) . '?v=' . str_random(20);
+    unset($post->credential);
 
     return Responder::respond(StatusCodes::SUCCESS, '', $post);
   }
