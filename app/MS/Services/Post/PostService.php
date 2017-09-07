@@ -209,11 +209,12 @@ class PostService {
   public static function random($payload) {
     $token = Token::where('token', $payload['token'])->first();
 
-    $following = $token->credential->following;
-    $followingIDs = $following->pluck('id');
-    $followingIDsArray = $followingIDs->toArray();
+    $post = Post::inRandomOrder()->first();
 
-    $post = Post::whereIn('userid', $followingIDsArray)->inRandomOrder()->first();
+    if (!$post) {
+      return Responder::respond(StatusCodes::NOT_FOUND, 'Post could not be found');
+    }
+
     $post->imagewidth = Image::make(storage_path('uploads/' . $post->image . '.jpg'))->width();
     $post->imageheight = Image::make(storage_path('uploads/' . $post->image . '.jpg'))->height();
     $post->image = url('/api/media/display/' . $post->image) . '?v=' . str_random(20);
