@@ -285,7 +285,30 @@ class BattleService {
       $battle->status = 1;
       $battle->save();
 
-      return Responder::respond(StatusCodes::SUCCESS, 'Battle created', ['battle' => $battle->id]);
+      if ($token->id === $battle->host) {
+        $battle->mybattle = true;
+        $battle->iamhost = true;
+      } else if ($token->id === $battle->guest) {
+        $battle->mybattle = true;
+        $battle->iamguest = true;
+      }
+
+      $battle->host = [
+        'id' => $battle->host,
+        'username' => $battle->hostCredential->username,
+        'avatar' => url('/api/media/display/' . $battle->hostCredential->user->avatar) . '?v=' . str_random(20),
+        'votes' => Vote::where('battle', $battle->id)->where('host', 1)->count()
+      ];
+      $battle->guest = [
+        'id' => $battle->guest,
+        'username' => $battle->guestCredential->username,
+        'avatar' => url('/api/media/display/' . $battle->guestCredential->user->avatar) . '?v=' . str_random(20),
+        'votes' => Vote::where('battle', $battle->id)->where('host', 0)->count()
+      ];
+      unset($battle->hostCredential);
+      unset($battle->guestCredential);
+
+      return Responder::respond(StatusCodes::SUCCESS, 'Battle created', $battle);
     }
 
     if (!Queue::where('user', $token->id)->exists()) {
