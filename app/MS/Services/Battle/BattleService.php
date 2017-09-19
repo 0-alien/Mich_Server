@@ -273,12 +273,27 @@ class BattleService {
   public static function playRandom($payload) {
     $token = Token::where('token', $payload['token'])->first();
 
-    if (Queue::count() && !Queue::where('user', $token->id)->exists()) {
-      $hostID = Queue::first()->id;
-      $guestID = $token->id;
+    $hostID = null;
+    $guestID = null;
 
-      Queue::truncate();
+    if (Queue::where('host', '!=', $token->id)->whereNull('guest')->exists()) {
+      $queue = Queue::where('host', '!=', $token->id)->whereNull('guest')->first();
+      $queue->guest = $token->id;
+      $queue->save();
 
+      $hostID = $queue->host;
+      $guestID = $queue->guest;
+    } else if (Queue::where('host', $token->id)->whereNotNull('guest')->exists()) {
+      $queue = Queue::where('host', $token->id)->whereNotNull('guest')->first();
+
+      $hostID = $queue->host;
+      $guestID = $queue->guest;
+
+      $queue->delete();
+    }
+
+
+    if (!is_null($hostID) && !is_null($guestID)) {
       $battle = new Battle();
       $battle->host = $hostID;
       $battle->guest = $guestID;
@@ -310,6 +325,7 @@ class BattleService {
 
       return Responder::respond(StatusCodes::SUCCESS, 'Battle created', $battle);
     }
+
 
     if (!Queue::where('user', $token->id)->exists()) {
       $queue = new Queue();
