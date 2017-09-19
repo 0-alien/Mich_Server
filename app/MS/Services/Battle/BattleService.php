@@ -342,8 +342,7 @@ class BattleService {
   public static function cancelPlay($payload) {
     $token = Token::where('token', $payload['token'])->first();
 
-    $queues = Queue::where('host', $token->id)->get();
-    $queues->delete();
+    Queue::where('host', $token->id)->delete();
 
     return Responder::respond(StatusCodes::SUCCESS, 'Removed from waiting queue');
   }
