@@ -327,9 +327,9 @@ class BattleService {
     }
 
 
-    if (!Queue::where('user', $token->id)->exists()) {
+    if (!Queue::where('host', $token->id)->exists()) {
       $queue = new Queue();
-      $queue->user = $token->id;
+      $queue->host = $token->id;
       $queue->save();
     }
 
@@ -340,7 +340,10 @@ class BattleService {
 
 
   public static function cancelPlay($payload) {
-    Queue::truncate();
+    $token = Token::where('token', $payload['token'])->first();
+
+    $queues = Queue::where('host', $token->id)->get();
+    $queues->delete();
 
     return Responder::respond(StatusCodes::SUCCESS, 'Removed from waiting queue');
   }
