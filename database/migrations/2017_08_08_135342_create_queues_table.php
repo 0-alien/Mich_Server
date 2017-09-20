@@ -9,10 +9,12 @@ class CreateQueuesTable extends Migration {
   public function up() {
     Schema::create('queues', function (Blueprint $table) {
       $table->increments('id');
-      $table->integer('user')->unsigned();
+      $table->integer('host')->unsigned();
+      $table->integer('guest')->unsigned()->nullable();
       $table->timestamps();
 
-      $table->foreign('user')->references('id')->on('credentials')->onDelete('cascade');
+      $table->foreign('host')->references('id')->on('credentials')->onDelete('cascade');
+      $table->foreign('guest')->references('id')->on('credentials')->onDelete('cascade');
     });
   }
 

@@ -273,24 +273,63 @@ class BattleService {
   public static function playRandom($payload) {
     $token = Token::where('token', $payload['token'])->first();
 
-    if (Queue::count() && !Queue::where('user', $token->id)->exists()) {
-      $hostID = Queue::first()->id;
-      $guestID = $token->id;
+    $hostID = null;
+    $guestID = null;
 
-      Queue::truncate();
+    if (Queue::where('host', '!=', $token->id)->whereNull('guest')->exists()) {
+      $queue = Queue::where('host', '!=', $token->id)->whereNull('guest')->first();
+      $queue->guest = $token->id;
+      $queue->save();
 
+      $hostID = $queue->host;
+      $guestID = $queue->guest;
+    } else if (Queue::where('host', $token->id)->whereNotNull('guest')->exists()) {
+      $queue = Queue::where('host', $token->id)->whereNotNull('guest')->first();
+
+      $hostID = $queue->host;
+      $guestID = $queue->guest;
+
+      $queue->delete();
+    }
+
+
+    if (!is_null($hostID) && !is_null($guestID)) {
       $battle = new Battle();
       $battle->host = $hostID;
       $battle->guest = $guestID;
       $battle->status = 1;
       $battle->save();
 
-      return Responder::respond(StatusCodes::SUCCESS, 'Battle created', ['battle' => $battle->id]);
+      if ($token->id === $battle->host) {
+        $battle->mybattle = true;
+        $battle->iamhost = true;
+      } else if ($token->id === $battle->guest) {
+        $battle->mybattle = true;
+        $battle->iamguest = true;
+      }
+
+      $battle->host = [
+        'id' => $battle->host,
+        'username' => $battle->hostCredential->username,
+        'avatar' => url('/api/media/display/' . $battle->hostCredential->user->avatar) . '?v=' . str_random(20),
+        'votes' => Vote::where('battle', $battle->id)->where('host', 1)->count()
+      ];
+      $battle->guest = [
+        'id' => $battle->guest,
+        'username' => $battle->guestCredential->username,
+        'avatar' => url('/api/media/display/' . $battle->guestCredential->user->avatar) . '?v=' . str_random(20),
+        'votes' => Vote::where('battle', $battle->id)->where('host', 0)->count()
+      ];
+      unset($battle->hostCredential);
+      unset($battle->guestCredential);
+
+      return Responder::respond(StatusCodes::SUCCESS, 'Battle created', $battle);
     }
 
-    if (!Queue::where('user', $token->id)->exists()) {
+
+    if (!Queue::where('host', $token->id)->exists()) {
       $queue = new Queue();
-      $queue->user = $token->id;
+      $queue->host = $token->id;
       $queue->save();
     }
 
@@ -301,7 +340,9 @@ class BattleService {
 
 
   public static function cancelPlay($payload) {
-    Queue::truncate();
+    $token = Token::where('token', $payload['token'])->first();
+
+    Queue::where('host', $token->id)->delete();
 
     return Responder::respond(StatusCodes::SUCCESS, 'Removed from waiting queue');
   }
