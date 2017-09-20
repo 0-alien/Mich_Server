@@ -16,11 +16,35 @@ use App\MS\Models\Token;
 use App\MS\Responder;
 use App\MS\StatusCodes;
 use App\MS\Validation as V;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\ImageManagerStatic as Image;
 
 
 class PostService {
+
+  private static function postDecorator($post, $isArray = false) {
+    $posts = [];
+
+    if (!$isArray) {
+      array_push($posts, $post);
+    } else {
+      $posts = $post;
+    }
+
+    foreach ($posts as &$post) {
+      $post = $post->toArray();
+      $created = Carbon::parse($post['created_at']);
+      $now = Carbon::now();
+
+      $post['created_at'] = $created->diffForHumans($now);
+    }
+
+    return ($isArray ? $posts : $posts[0]);
+  }
+
+
+
 
   public static function create($payload) {
     V::validate($payload, array_merge(V::title, V::image));
@@ -41,7 +65,7 @@ class PostService {
     $post->imageheight = Image::make(storage_path('uploads/' . $post->image . '.jpg'))->height();
     $post->image = url('/api/media/display/' . $post->image) . '?v=' . str_random(20);
 
-    return Responder::respond(StatusCodes::SUCCESS, 'Post created', $post);
+    return Responder::respond(StatusCodes::SUCCESS, 'Post created', self::postDecorator($post));
   }
 
 
@@ -72,7 +96,7 @@ class PostService {
     $post->avatar = url('/api/media/display/' . $post->credential->user->avatar) . '?v=' . str_random(20);
     unset($post->credential);
 
-    return Responder::respond(StatusCodes::SUCCESS, '', $post);
+    return Responder::respond(StatusCodes::SUCCESS, '', self::postDecorator($post));
   }
 
 
@@ -168,7 +192,7 @@ class PostService {
 
     $posts = self::filterHiddenPosts($posts, $token->id);
 
-    return Responder::respond(StatusCodes::SUCCESS, '', $posts);
+    return Responder::respond(StatusCodes::SUCCESS, '', self::postDecorator($posts, true));
   }
 
 
@@ -201,7 +225,7 @@ class PostService {
 
     $posts = self::filterHiddenPosts($posts, $token->id);
 
-    return Responder::respond(StatusCodes::SUCCESS, '', $posts);
+    return Responder::respond(StatusCodes::SUCCESS, '', self::postDecorator($posts, true));
   }
 
 
@@ -225,7 +249,7 @@ class PostService {
     $post->avatar = url('/api/media/display/' . $post->credential->user->avatar) . '?v=' . str_random(20);
     unset($post->credential);
 
-    return Responder::respond(StatusCodes::SUCCESS, '', $post);
+    return Responder::respond(StatusCodes::SUCCESS, '', self::postDecorator($post));
   }
 
 
