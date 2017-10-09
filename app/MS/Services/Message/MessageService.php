@@ -54,9 +54,14 @@ class MessageService {
       $message->save();
     }
 
+    $userCredential = ($token->id === $message->host ? $message->guestCredential : $message->hostCredential);
+
     $conversation = [
       'id' => $message->id,
-      'user' => $payload['userID']
+      'user' => [
+        'username' => $userCredential->username,
+        'avatar' => url('/api/media/display/' . $userCredential->user->avatar) . '?v=' . str_random(20),
+      ]
     ];
 
     return Responder::respond(StatusCodes::SUCCESS, 'Conversation started', $conversation);
