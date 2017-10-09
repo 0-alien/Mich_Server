@@ -12,12 +12,6 @@ use App\MS\Validation as V;
 class MessageService {
 
   public static function getMine($payload) {
-    V::validate($payload, V::messageID);
-
-    if (!Message::where('id', $payload['messageID'])->exists()) {
-      return Responder::respond(StatusCodes::NOT_FOUND, 'Conversation not found');
-    }
-
     $token = Token::where('token', $payload['token'])->first();
 
     $messages = Message::where('host', $token->id)->orWhere('guest', $token->id)->get();
