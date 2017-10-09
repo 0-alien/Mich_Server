@@ -44,6 +44,11 @@ class MessageService {
       return Responder::respond(StatusCodes::ALREADY_EXISTS, 'You have already started the conversation');
     }
 
+    $message = new Message();
+    $message->host = $token->id;
+    $message->guest = $payload['userID'];
+    $message->save();
+
     return Responder::respond(StatusCodes::SUCCESS, 'Conversation started');
   }
 
