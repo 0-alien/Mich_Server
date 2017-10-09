@@ -84,6 +84,18 @@ class UserService {
       $credential->save();
     }
 
+    if (!empty($payload['username']) && $payload['username'] != $user->credential->username) {
+      V::validate($payload, V::username);
+
+      if (Credential::where('username', $payload['username'])->exists()) {
+        return Responder::respond(StatusCodes::ALREADY_EXISTS, 'This username already exists');
+      }
+
+      $credential = $user->credential;
+      $credential->username = $payload['username'];
+      $credential->save();
+    }
+
     $user->save();
 
     $profile = [
