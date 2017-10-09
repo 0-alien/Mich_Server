@@ -13,8 +13,8 @@ class MessageController extends BaseController {
 
 
 
-  public function create() {
-    return MessageService::create($this->payload);
+  public function get() {
+    return MessageService::get($this->payload);
   }
 
 }

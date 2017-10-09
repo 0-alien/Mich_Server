@@ -101,7 +101,7 @@ Route::group(['prefix' => 'battle', 'middleware' => 'authToken'], function () {
 
 Route::group(['prefix' => 'message', 'middleware' => 'authToken'], function () {
   Route::post('getMine', 'Message\MessageController@getMine');
-  Route::post('create', 'Message\MessageController@create');
+  Route::post('get', 'Message\MessageController@get');
 });
 
 
