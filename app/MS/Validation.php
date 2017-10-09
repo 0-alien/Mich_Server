@@ -24,6 +24,7 @@ class Validation {
   const comment       = ['comment' => 'required|min:1|max:500'];
   const commentID     = ['commentID' => 'required|numeric'];
   const battleID      = ['battleID' => 'required|numeric'];
+  const messageID      = ['messageID' => 'required|numeric'];
   const host          = ['host' => 'required|numeric|in:0,1'];
   const notificationID = ['notificationID' => 'required|numeric'];
   const question      = ['question' => 'required'];

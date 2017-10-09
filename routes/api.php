@@ -99,6 +99,13 @@ Route::group(['prefix' => 'battle', 'middleware' => 'authToken'], function () {
 
 
 
+Route::group(['prefix' => 'message', 'middleware' => 'authToken'], function () {
+  Route::post('getMine', 'Message\MessageController@getMine');
+  Route::post('create', 'Message\MessageController@create');
+});
+
+
+
 Route::group(['prefix' => 'notification', 'middleware' => 'authToken'], function () {
   Route::post('get', 'Notification\NotificationController@get');
   Route::post('getAll', 'Notification\NotificationController@getAll');
