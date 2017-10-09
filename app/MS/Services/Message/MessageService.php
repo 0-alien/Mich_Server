@@ -40,7 +40,7 @@ class MessageService {
       return Responder::respond(StatusCodes::NO_PERMISSION, 'You can not message yourself');
     }
 
-    if (Message::where('host', $token->id)->where('guest', $payload['userID'])-exists()) {
+    if (Message::where('host', $token->id)->where('guest', $payload['userID'])->exists()) {
       return Responder::respond(StatusCodes::ALREADY_EXISTS, 'You have already started the conversation');
     }
 
