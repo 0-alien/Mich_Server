@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Battle;
+namespace App\Http\Controllers\Message;
 
 use App\Http\Controllers\BaseController;
 use App\MS\Services\MessageService;
