@@ -1,6 +1,7 @@
 <?php
 
-namespace App\MS\Services;
+namespace App\MS\Services\Message;
+
 use App\MS\Models\Message\Message;
 use App\MS\Models\Token;
 use App\MS\Models\User\Credential;
