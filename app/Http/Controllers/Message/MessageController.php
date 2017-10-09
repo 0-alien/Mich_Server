@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Message;
 
 use App\Http\Controllers\BaseController;
-use App\MS\Services\MessageService;
+use App\MS\Services\Message\MessageService;
 
 class MessageController extends BaseController {
 
