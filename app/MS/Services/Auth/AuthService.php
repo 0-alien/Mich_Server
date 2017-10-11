@@ -2,6 +2,7 @@
 
 namespace App\MS\Services\Auth;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 
 use App\MS\StatusCodes;
@@ -34,6 +35,8 @@ class AuthService {
     $user = new User();
     $user->id = $credential->id;
     $user->name = trim($payload['name']);
+    $user->location = trim($payload['placeOfBirth']);
+    $user->dateofbirth = Carbon::parse($payload['dateOfBirth']);
     $user->save();
 
     return Responder::respond(StatusCodes::SUCCESS, 'Account created');

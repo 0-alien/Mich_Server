@@ -10,6 +10,8 @@ class CreateUsersTable extends Migration {
     Schema::create('users', function (Blueprint $table)  {
       $table->increments('id');
       $table->string('name');
+      $table->datetime('dateofbirth');
+      $table->string('location');
       $table->string('avatar')->default('noavatar');
       $table->integer('win')->unsigned(0);
       $table->integer('draw')->unsigned(0);
