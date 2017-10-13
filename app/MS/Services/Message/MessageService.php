@@ -23,6 +23,7 @@ class MessageService {
       $conversation = [
         'id' => $message->id,
         'user' => [
+          'id' => $userCredential->id,
           'username' => $userCredential->username,
           'avatar' => url('/api/media/display/' . $userCredential->user->avatar) . '?v=' . str_random(20),
         ]
@@ -59,6 +60,7 @@ class MessageService {
     $conversation = [
       'id' => $message->id,
       'user' => [
+        'id' => $userCredential->id,
         'username' => $userCredential->username,
         'avatar' => url('/api/media/display/' . $userCredential->user->avatar) . '?v=' . str_random(20),
       ]
