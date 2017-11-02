@@ -12,6 +12,7 @@ class CreateCredentialsTable extends Migration {
       $table->string('username', 50)->unique();
       $table->string('email', 100)->unique();
       $table->char('password', 60);
+      $table->boolean('private')->default(0);
       $table->timestamps();
     });
   }

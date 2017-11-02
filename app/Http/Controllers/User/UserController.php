@@ -53,4 +53,9 @@ class UserController extends BaseController {
     return UserService::unblock($this->payload);
   }
 
+
+  public function toggleStatus() {
+    return UserService::toggleStatus($this->payload);
+  }
+
 }

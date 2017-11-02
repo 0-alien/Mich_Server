@@ -232,4 +232,15 @@ class UserService {
     return Responder::respond(StatusCodes::SUCCESS, 'User unblocked');
   }
 
+
+
+  public static function toggleStatus($payload) {
+    $token = Token::where('token', $payload['token'])->first();
+    $credential = $token->credential;
+    $credential->private = 1 - $credential->private;
+    $credential->save();
+    $statuses = ['public', 'private'];
+    return Responder::respond(StatusCodes::SUCCESS, 'You account is now ' . $statuses[$credential->private]);
+  }
+
 }
