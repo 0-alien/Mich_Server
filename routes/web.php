@@ -3,6 +3,6 @@
 
 Route::get('/', function () {
 
-  return 'Mich_Server';
+  return view('mail.recovery');
 
 });
