@@ -40,7 +40,7 @@ class AuthService {
     $user->dateofbirth = Carbon::parse($payload['dateOfBirth']);
     $user->save();
 
-    Mail::send('recovery', ['name' => $user->name, 'username' => $credential->username], $credential->email, $user->name, 'Welcome to MICH');
+    Mail::send('welcome', ['name' => $user->name, 'username' => $credential->username], $credential->email, $user->name, 'Welcome to MICH');
 
     return Responder::respond(StatusCodes::SUCCESS, 'Account created');
   }
