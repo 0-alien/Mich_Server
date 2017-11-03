@@ -3,6 +3,6 @@
 
 Route::get('/', function () {
 
-  return view('mail.recovery');
+  return view('mail.welcome');
 
 });

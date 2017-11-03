@@ -2,6 +2,7 @@
 
 namespace App\MS\Services\Auth;
 
+use App\MS\Helpers\Mail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 
@@ -38,6 +39,8 @@ class AuthService {
     $user->location = trim($payload['placeOfBirth']);
     $user->dateofbirth = Carbon::parse($payload['dateOfBirth']);
     $user->save();
+
+    Mail::send('recovery', ['name' => $user->name, 'username' => $credential->username], $credential->email, $user->name, 'Welcome to MICH');
 
     return Responder::respond(StatusCodes::SUCCESS, 'Account created');
   }
