@@ -156,12 +156,12 @@ class UserService {
 
     $payload['userID'] = $userID;
 
-    if (Credential::find($userID)->private && (!RelationshipService::isFollower($payload) || !RelationshipService::isFollowing($payload))) {
-      return Responder::respond(StatusCodes::NO_PERMISSION, 'This account is private');
-    }
-
     if (!User::where('id', $userID)->exists()) {
       return Responder::respond(StatusCodes::NOT_FOUND, 'User not found');
+    }
+
+    if ($token->id !== $userID && Credential::find($userID)->private && (!RelationshipService::isFollower($payload) || !RelationshipService::isFollowing($payload))) {
+      return Responder::respond(StatusCodes::NO_PERMISSION, 'This account is private');
     }
 
 
