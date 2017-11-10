@@ -11,6 +11,7 @@ use App\MS\Models\User\Credential;
 use App\MS\Responder;
 use App\MS\StatusCodes;
 use App\MS\Validation as V;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class BattleService {
@@ -29,6 +30,14 @@ class BattleService {
     $battle->mybattle = false;
     $battle->iamhost = false;
     $battle->iamguest = false;
+
+    $battle->timeout = 0;
+    $now = Carbon::now();
+    if ($battle->status == 0) {
+      $battle->timeout = 180;
+    } else if ($battle->status == 1) {
+      $battle->timeout = $now->diffInMinutes(Carbon::parse($battle->updated_at));
+    }
 
     if ($token->id === $battle->host) {
       $battle->mybattle = true;
@@ -76,6 +85,14 @@ class BattleService {
         $battle->iamguest = true;
       }
 
+      $battle->timeout = 0;
+      $now = Carbon::now();
+      if ($battle->status == 0) {
+        $battle->timeout = 180;
+      } else if ($battle->status == 1) {
+        $battle->timeout = $now->diffInMinutes(Carbon::parse($battle->updated_at));
+      }
+
       $battle->host = [
         'id' => $battle->host,
         'username' => $battle->hostCredential->username,
@@ -116,6 +133,14 @@ class BattleService {
         } else if ($token->id === $battle->guest) {
           $battle->mybattle = true;
           $battle->iamguest = true;
+        }
+
+        $battle->timeout = 0;
+        $now = Carbon::now();
+        if ($battle->status == 0) {
+          $battle->timeout = 180;
+        } else if ($battle->status == 1) {
+          $battle->timeout = $now->diffInMinutes(Carbon::parse($battle->updated_at));
         }
 
         $battle->host = [
@@ -161,6 +186,9 @@ class BattleService {
         $battle->mybattle = true;
         $battle->iamguest = true;
       }
+
+      $now = Carbon::now();
+      $battle->timeout = $now->diffInMinutes(Carbon::parse($battle->updated_at));
 
       $battle->host = [
         'id' => $battle->host,
@@ -209,6 +237,14 @@ class BattleService {
         $battle->iamguest = true;
       }
 
+      $battle->timeout = 0;
+      $now = Carbon::now();
+      if ($battle->status == 0) {
+        $battle->timeout = 180;
+      } else if ($battle->status == 1) {
+        $battle->timeout = $now->diffInMinutes(Carbon::parse($battle->updated_at));
+      }
+
       $battle->host = [
         'id' => $battle->host,
         'username' => $battle->hostCredential->username,
@@ -247,6 +283,14 @@ class BattleService {
     } else if ($token->id === $battle->guest) {
       $battle->mybattle = true;
       $battle->iamguest = true;
+    }
+
+    $battle->timeout = 0;
+    $now = Carbon::now();
+    if ($battle->status == 0) {
+      $battle->timeout = 180;
+    } else if ($battle->status == 1) {
+      $battle->timeout = $now->diffInMinutes(Carbon::parse($battle->updated_at));
     }
 
     $battle->host = [
@@ -306,6 +350,14 @@ class BattleService {
       } else if ($token->id === $battle->guest) {
         $battle->mybattle = true;
         $battle->iamguest = true;
+      }
+
+      $battle->timeout = 0;
+      $now = Carbon::now();
+      if ($battle->status == 0) {
+        $battle->timeout = 180;
+      } else if ($battle->status == 1) {
+        $battle->timeout = $now->diffInMinutes(Carbon::parse($battle->updated_at));
       }
 
       $battle->host = [
