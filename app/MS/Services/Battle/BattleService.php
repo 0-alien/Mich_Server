@@ -36,7 +36,7 @@ class BattleService {
     if ($battle->status == 0) {
       $battle->timeout = 180;
     } else if ($battle->status == 1) {
-      $battle->timeout = $now->diffInSeconds(Carbon::parse($battle->updated_at));
+      $battle->timeout = 180 - $now->diffInSeconds(Carbon::parse($battle->updated_at));
     }
 
     if ($token->id === $battle->host) {
@@ -90,7 +90,7 @@ class BattleService {
       if ($battle->status == 0) {
         $battle->timeout = 180;
       } else if ($battle->status == 1) {
-        $battle->timeout = $now->diffInSeconds(Carbon::parse($battle->updated_at));
+        $battle->timeout = 180 - $now->diffInSeconds(Carbon::parse($battle->updated_at));
       }
 
       $battle->host = [
@@ -140,7 +140,7 @@ class BattleService {
         if ($battle->status == 0) {
           $battle->timeout = 180;
         } else if ($battle->status == 1) {
-          $battle->timeout = $now->diffInSeconds(Carbon::parse($battle->updated_at));
+          $battle->timeout = 180 - $now->diffInSeconds(Carbon::parse($battle->updated_at));
         }
 
         $battle->host = [
@@ -188,7 +188,7 @@ class BattleService {
       }
 
       $now = Carbon::now();
-      $battle->timeout = $now->diffInSeconds(Carbon::parse($battle->updated_at));
+      $battle->timeout = 180 - $now->diffInSeconds(Carbon::parse($battle->updated_at));
 
       $battle->host = [
         'id' => $battle->host,
@@ -242,7 +242,7 @@ class BattleService {
       if ($battle->status == 0) {
         $battle->timeout = 180;
       } else if ($battle->status == 1) {
-        $battle->timeout = $now->diffInSeconds(Carbon::parse($battle->updated_at));
+        $battle->timeout = 180 - $now->diffInSeconds(Carbon::parse($battle->updated_at));
       }
 
       $battle->host = [
@@ -290,7 +290,7 @@ class BattleService {
     if ($battle->status == 0) {
       $battle->timeout = 180;
     } else if ($battle->status == 1) {
-      $battle->timeout = $now->diffInSeconds(Carbon::parse($battle->updated_at));
+      $battle->timeout = 180 - $now->diffInSeconds(Carbon::parse($battle->updated_at));
     }
 
     $battle->host = [
@@ -357,7 +357,7 @@ class BattleService {
       if ($battle->status == 0) {
         $battle->timeout = 180;
       } else if ($battle->status == 1) {
-        $battle->timeout = $now->diffInSeconds(Carbon::parse($battle->updated_at));
+        $battle->timeout = 180 - $now->diffInSeconds(Carbon::parse($battle->updated_at));
       }
 
       $battle->host = [
