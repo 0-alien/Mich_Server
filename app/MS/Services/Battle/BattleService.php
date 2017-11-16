@@ -336,13 +336,13 @@ class BattleService {
       return Responder::respond(StatusCodes::IN_QUEUE, 'You are in a battling queue');
     }
 
-    if (is_null($queue->guest)) {
-      $queue->guest = $token->id;
-    }
-
     $battle = $queue->battleObject;
-    $battle->status = 1;
-    $battle->save();
+
+    if (is_null($queue->guest)) {
+      $battle->guest = $token->id;
+      $battle->status = 1;
+      $battle->save();
+    }
 
     if ($token->id === $battle->host) {
       $battle->mybattle = true;
