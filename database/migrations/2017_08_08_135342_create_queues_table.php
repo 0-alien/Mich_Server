@@ -11,10 +11,12 @@ class CreateQueuesTable extends Migration {
       $table->increments('id');
       $table->integer('host')->unsigned();
       $table->integer('guest')->unsigned()->nullable();
+      $table->integer('battle')->unsigned();
       $table->timestamps();
 
       $table->foreign('host')->references('id')->on('credentials')->onDelete('cascade');
       $table->foreign('guest')->references('id')->on('credentials')->onDelete('cascade');
+      $table->foreign('battle')->references('id')->on('battles')->onDelete('cascade');
     });
   }
 

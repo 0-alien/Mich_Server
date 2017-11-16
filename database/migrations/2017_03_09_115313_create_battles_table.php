@@ -10,7 +10,7 @@ class CreateBattlesTable extends Migration {
     Schema::create('battles', function (Blueprint $table) {
       $table->increments('id');
       $table->integer('host')->unsigned();
-      $table->integer('guest')->unsigned();
+      $table->integer('guest')->unsigned()->nullable();
       $table->integer('status')->unsigned()->default(0);
       $table->timestamps();
 

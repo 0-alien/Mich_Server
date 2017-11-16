@@ -6,12 +6,22 @@ use Illuminate\Database\Eloquent\Model;
 
 class Queue extends Model {
 
-  protected $fillable = ['user'];
+  protected $fillable = ['host', 'guest', 'battle'];
 
 
 
-  public function credential() {
-    return $this->hasOne('\App\MS\Models\User\Credential', 'id', 'user');
+  public function hostCredential() {
+    return $this->hasOne('\App\MS\Models\User\Credential', 'id', 'host');
+  }
+
+
+  public function guestCredential() {
+    return $this->hasOne('\App\MS\Models\User\Credential', 'id', 'guest');
+  }
+
+
+  public function battleObject() {
+    return $this->hasOne('\App\MS\Models\Battle\Battle', 'id', 'battle');
   }
 
 }
