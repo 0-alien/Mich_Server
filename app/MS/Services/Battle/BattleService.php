@@ -339,6 +339,8 @@ class BattleService {
     $battle = $queue->battleObject;
 
     if (is_null($queue->guest)) {
+      $queue->delete();
+
       $battle->guest = $token->id;
       $battle->status = 1;
       $battle->save();
