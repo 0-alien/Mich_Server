@@ -29,7 +29,9 @@ class Media {
     $img = Image::make(base64_decode($base64))->encode('jpg');
 
     if ($img->width() > 1024) {
-      $img->fit(1024);
+      $img->resize(1024, null, function ($constraint) {
+        $constraint->aspectRatio();
+      });
     }
 
     $path = self::createDirectories($folders);
