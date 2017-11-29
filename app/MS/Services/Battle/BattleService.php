@@ -512,7 +512,7 @@ class BattleService {
       return Responder::respond(StatusCodes::NOT_FOUND, 'Battle not found');
     }
 
-    if (Vote::where('battle', $payload['battleID'])->where('user', $token->id)->where('host', 0)->exists() && Vote::where('battle', $payload['battleID'])->where('user', $token->id)->where('host', 1)->exists()) {
+    if (Vote::where('battle', $payload['battleID'])->where('user', $token->id)->where('host', $payload['host'])->exists()) {
       return Responder::respond(StatusCodes::TRY_LIMIT, 'You have already voted');
     }
 
