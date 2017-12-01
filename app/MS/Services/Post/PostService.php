@@ -11,6 +11,7 @@ use App\MS\Models\Hiddenpost;
 use App\MS\Models\Like;
 use App\MS\Models\Notification;
 use App\MS\Models\Post;
+use App\MS\Models\Relationship;
 use App\MS\Models\Report;
 use App\MS\Models\Token;
 use App\MS\Responder;
@@ -159,6 +160,54 @@ class PostService {
     }
 
     return Responder::respond(StatusCodes::SUCCESS, '', $comments);
+  }
+
+
+
+  public static function likes($payload) {
+    V::validate($payload, V::postID);
+
+    if (!Post::where('id', $payload['postID'])->exists()) {
+      return Responder::respond(StatusCodes::NOT_FOUND, 'Post not found');
+    }
+
+    $token = Token::where('token', $payload['token'])->first();
+    $post = Post::where('id', $payload['postID'])->first();
+    $blockers = self::getBlockers($token->id);
+
+    if (in_array($post->userid, $blockers)) {
+      return Responder::respond(StatusCodes::NOT_FOUND, 'Post not found');
+    }
+
+    $likes = $post->likes;
+
+    $result = [];
+
+    foreach ($likes as $like) {
+      $credential = $like->credential;
+
+      $user = $credential->user;
+
+      $blocked = Block::where('userid', $token->id)->where('blockid', $user->id)->exists();
+
+      $profile = [
+        'id' => $credential->id,
+        'name' => $user->name,
+        'username' => $credential->username,
+        'email' => $credential->email,
+        'avatar' => url('/api/media/display/' . $user->avatar) . '?v=' . str_random(20),
+        'nfollowers' => Relationship::where('following', $credential->id)->count(),
+        'nfollowing' => Relationship::where('follower', $credential->id)->count(),
+        'blocked' => $blocked,
+        'win' => $user->win,
+        'draw' => $user->draw,
+        'loss' => $user->loss
+      ];
+
+      $result[] = $profile;
+    }
+
+    return Responder::respond(StatusCodes::SUCCESS, '', $result);
   }
 
 
