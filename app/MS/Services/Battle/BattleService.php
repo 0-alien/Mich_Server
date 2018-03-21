@@ -271,7 +271,11 @@ class BattleService {
   public static function getRandom($payload) {
     $token = Token::where('token', $payload['token'])->first();
 
-    $battle = Battle::whereIn('status', [1])->where('host', '!=', $token->id)->where('guest', '!=', $token->id)->inRandomOrder()->first();
+    $battle = Battle::whereIn('status', [1])->where('host', '!=', $token->id)->where('guest', '!=', $token->id);
+    if (isset($payload['filter'])) {
+      $battle = $battle->where('location', 'like', '%'. $payload['filter'] .'%');
+    }
+    $battle = $battle->inRandomOrder()->first();
 
     if (!$battle) {
       return Responder::respond(StatusCodes::NOT_FOUND, 'Battle not found');
