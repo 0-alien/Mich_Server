@@ -356,8 +356,10 @@ class BattleService {
     if ($token->id === $battle->host) {
       $battle->mybattle = true;
       $battle->iamhost = true;
+      $battle->iamguest = false;
     } else if ($token->id === $battle->guest) {
       $battle->mybattle = true;
+      $battle->iamhost = false;
       $battle->iamguest = true;
     }
 
