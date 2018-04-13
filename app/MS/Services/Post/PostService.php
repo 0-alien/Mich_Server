@@ -38,7 +38,7 @@ class PostService {
       $created = Carbon::parse($post['created_at']);
       $now = Carbon::now();
 
-      $post['created_at'] = $created->diffForHumans($now);
+      $post['created_at'] = $created->diffForHumans($now, true) . ' ago';
     }
 
     return ($isArray ? $posts : $posts[0]);
