@@ -60,8 +60,6 @@ class UserService {
   public static function update($payload) {
     file_put_contents('request.txt', print_r($payload, true));
 
-    V::validate($payload, V::name);
-
     $token = Token::where('token', $payload['token'])->first();
 
     $user = $token->credential->user;
@@ -70,9 +68,9 @@ class UserService {
       $user->name = $payload['name'];
     }
 
-      if (!empty($payload['bio'])) {
-          $user->bio = $payload['bio'];
-      }
+    if (!empty($payload['bio'])) {
+        $user->bio = $payload['bio'];
+    }
 
     if (!empty($payload['avatar'])) {
       $user->avatar = Media::saveImage($payload['avatar'], [$user->id], 'avatar');
