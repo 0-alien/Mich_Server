@@ -48,7 +48,8 @@ class UserService {
       'blocked' => $blocked,
       'win' => $user->win,
       'draw' => $user->draw,
-      'loss' => $user->loss
+      'loss' => $user->loss,
+      'bio' => $user->bio
     ];
 
     return Responder::respond(StatusCodes::SUCCESS, '', $profile);
@@ -68,6 +69,10 @@ class UserService {
     if (!empty($payload['name'])) {
       $user->name = $payload['name'];
     }
+
+      if (!empty($payload['bio'])) {
+          $user->bio = $payload['bio'];
+      }
 
     if (!empty($payload['avatar'])) {
       $user->avatar = Media::saveImage($payload['avatar'], [$user->id], 'avatar');
@@ -110,7 +115,8 @@ class UserService {
       'nfollowing' => Relationship::where('follower', $user->id)->count(),
       'win' => $user->win,
       'draw' => $user->draw,
-      'loss' => $user->loss
+      'loss' => $user->loss,
+      'bio' => $user->bio
     ];
 
     return Responder::respond(StatusCodes::SUCCESS, 'Account updated', $profile);
