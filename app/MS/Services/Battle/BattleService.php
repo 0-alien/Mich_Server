@@ -67,6 +67,65 @@ class BattleService {
 
 
 
+  public static function getByUserID($payload) {
+    V::validate($payload, V::reqUserID);
+
+    if (!Credential::where('id', $payload['userID'])->exists()) {
+      return Responder::respond(StatusCodes::NOT_FOUND, 'User not found');
+    }
+
+    $token = Token::where('token', $payload['token'])->first();
+
+    $battles = Battle::where('host', $payload['userID'])->orWhere('guest', $payload['userID'])->orderBy('id', 'desc')->get();
+
+    $result = [];
+
+    foreach ($battles as $battle) {
+      if ($token->id === $battle->host || $token->id === $battle->guest) {
+        $battle->mybattle = false;
+        $battle->iamhost = false;
+        $battle->iamguest = false;
+
+        if ($token->id === $battle->host) {
+          $battle->mybattle = true;
+          $battle->iamhost = true;
+        } else if ($token->id === $battle->guest) {
+          $battle->mybattle = true;
+          $battle->iamguest = true;
+        }
+
+        $battle->timeout = 0;
+        $now = Carbon::now();
+        if ($battle->status == 0) {
+          $battle->timeout = 180;
+        } else if ($battle->status == 1) {
+          $battle->timeout = 180 - $now->diffInSeconds(Carbon::parse($battle->updated_at));
+        }
+
+        $battle->host = [
+          'id' => $battle->host,
+          'username' => $battle->hostCredential->username,
+          'avatar' => url('/api/media/display/' . $battle->hostCredential->user->avatar) . '?v=' . str_random(20),
+          'votes' => Vote::where('battle', $battle->id)->where('host', 1)->count()
+        ];
+        $battle->guest = [
+          'id' => $battle->guest,
+          'username' => $battle->guestCredential->username,
+          'avatar' => url('/api/media/display/' . $battle->guestCredential->user->avatar) . '?v=' . str_random(20),
+          'votes' => Vote::where('battle', $battle->id)->where('host', 0)->count()
+        ];
+        unset($battle->hostCredential);
+        unset($battle->guestCredential);
+
+        array_push($result, $battle);
+      }
+    }
+
+    return Responder::respond(StatusCodes::SUCCESS, '', $result);
+  }
+
+
+
   public static function getAll($payload) {
     $token = Token::where('token', $payload['token'])->first();
 

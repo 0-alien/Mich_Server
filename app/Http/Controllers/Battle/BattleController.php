@@ -16,6 +16,12 @@ class BattleController extends BaseController {
 
 
 
+  public function getByUserID() {
+    return BattleService::getByUserID($this->payload);
+  }
+
+
+
   public function getAll() {
     return BattleService::getAll($this->payload);
   }

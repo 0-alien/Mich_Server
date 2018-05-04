@@ -86,6 +86,7 @@ Route::group(['prefix' => 'search', 'middleware' => 'authToken'], function () {
 
 Route::group(['prefix' => 'battle', 'middleware' => 'authToken'], function () {
   Route::post('get', 'Battle\BattleController@get');
+  Route::post('getByUserID', 'Battle\BattleController@getByUserID');
   Route::post('getAll', 'Battle\BattleController@getAll');
   Route::post('getMine', 'Battle\BattleController@getMine');
   Route::post('getActive', 'Battle\BattleController@getActive');
